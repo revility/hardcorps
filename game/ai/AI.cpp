@@ -1499,11 +1499,11 @@ bool idAI::PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int g
 	//ivan start 
 
 	/*
-      se io sono/vado su ALTRO piano E c'è strada che collega:
+      se io sono/vado su ALTRO piano E c'Ã¨ strada che collega:
       - isXlocked 0 updXlock 0 --> mai lockato,    riesce a fare strada,
       - isXlocked 0 updXlock 1 --> si slocca,      riesce a fare strada,
       - isXlocked 1 updXlock 1 --> si slocca,      riesce a fare strada,
-      - isXlocked 1 updXlock 0 --> è lockato,      impazzisce cercando di fare strada,
+      - isXlocked 1 updXlock 0 --> Ã¨ lockato,      impazzisce cercando di fare strada,
 
       Soluz: se lockato e no updXlock, non deve provare a raggiungermi se X diversa.
 	*/
@@ -1514,14 +1514,14 @@ bool idAI::PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int g
 		}
 	}
 
-	/*se io sono/vado su STESSO piano E c'è strada alternativa su altro piano:
+	/*se io sono/vado su STESSO piano E c'Ã¨ strada alternativa su altro piano:
       - isXlocked 0 updXlock 0 --> mai lockato,    riesce a fare strada alternativa,
-      - isXlocked 0 updXlock 1 --> se già lockato, impazzisce cercando di fare strada alternativa, (quindi ora var isXlocked = 1)
-      - isXlocked 1 updXlock 1 --> è lockato,      impazzisce cercando di fare strada alternativa,
-      - isXlocked 1 updXlock 0 --> è lockato,      impazzisce cercando di fare strada alternativa,
+      - isXlocked 0 updXlock 1 --> se giÃ  lockato, impazzisce cercando di fare strada alternativa, (quindi ora var isXlocked = 1)
+      - isXlocked 1 updXlock 1 --> Ã¨ lockato,      impazzisce cercando di fare strada alternativa,
+      - isXlocked 1 updXlock 0 --> Ã¨ lockato,      impazzisce cercando di fare strada alternativa,
       
       Soluz: se lockato, non deve vedere la strada. 
-      Miglioramento: se updXlock 1 può cmq vederla, ma se deve anche sloccare...
+      Miglioramento: se updXlock 1 puÃ² cmq vederla, ma se deve anche sloccare...
     */
 
 	/*was:
@@ -4121,7 +4121,7 @@ void idAI::UpdateIsOnScreen( void ) {
 
 	//Y axis - horizontal distance
 	if( idMath::Fabs( delta.y ) > delta.x + 100 ){ //if horizontal dist is greater than camera dist, than we are out of view (Horizontal FOV 90 --> 90 45 45 triangle)
-		//Rev 2018 increased range by 120.  this allows enemies to attack as soon as they are fully on screen.
+		//Rev 2018 increased range by 100.  this allows enemies to attack as soon as they are fully on screen.
 		isOnScreen = false;
 		return;
 	}
