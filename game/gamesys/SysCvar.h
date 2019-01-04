@@ -31,7 +31,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "framework/CVarSystem.h"
 
-extern idCVar	developer;
+extern idCVar	developer; 
 
 extern idCVar	g_cinematic;
 extern idCVar	g_cinematicMaxSkipTime;
