@@ -367,7 +367,7 @@ idCVar net_serverDlTable(			"net_serverDlTable",		"",				CVAR_GAME | CVAR_ARCHIV
 //idCVar r_bloom_shiftSensitivity_delay( "r_bloom_shiftSensitivity_delay", "130", CVAR_GAME | CVAR_INTEGER, "Delay in millisecs for shifting the bloom sensitivity. \n0 : No shift sensitivity delay, sensitvity shifts immediately. \n-1 : Disables sensitivity shifting"); // New by Clone JCD
 //idCVar r_bloom_blurIterations( "r_bloom_blurIterations", "1", CVAR_GAME | CVAR_INTEGER, "Blur iterations for bloom"); // New by Clone JCD
 
-// HDR related - J.C.Denton
+// HDR related - J.C.Denton rev 2018
 idCVar r_HDR_enable					( "r_HDR_enable",					"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, " Enables HDR Rendering & post-processing.");
 idCVar r_HDR_enableDebugMode		( "r_HDR_enableDebugMode",			"0",			CVAR_GAME | CVAR_INTEGER, " Shows all the textures generated for HDR postprocess. \n 1: Shows all textures \n 2: Decodes and shows all textures");
 idCVar r_HDR_postProcess			( "r_HDR_postProcess",				"1",			CVAR_GAME | CVAR_INTEGER, " Activates HDR bloom . \n 1: HDR Bloom with automatic eye exposure ");
