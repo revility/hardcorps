@@ -11,3 +11,5 @@ List of updated features:
 
 +Invulneralbe to damage script.  After taking damage a script is called.  The script itself uses the new waitfordamage key to enable and disable the player taking damage for a brief period of time.
 This system is very similar to classic platformer games such as Castlevania and Ninja Gaiden.  Visuals and amount of time is controlled in the player's script.
+
++Various adjustments to enemy AI and projectile distance for wide screen aspect ratios *Not finished*
