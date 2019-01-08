@@ -26,7 +26,7 @@ If you have questions concerning this license or the applicable additional terms
 ===========================================================================
 */
 
-#include "sys/platform.h" 
+#include "sys/platform.h"
 #include "idlib/LangDict.h"
 #include "framework/async/NetworkSystem.h"
 #include "framework/DeclEntityDef.h"
@@ -8407,11 +8407,17 @@ void idPlayer::Think( void ) {
 			// -- crouch with "aim down" start -- 
 			if( (( usercmd.buttons & BUTTON_7 ) != 0 )			//aim down
 				&& ( inhibitAimCrouchTime < gameLocal.time )	//crouch allowed
-				&& ( usercmd.upmove == 0 ) )					//not jumping  
-			{ 
+				&& ( usercmd.upmove == 0 )){					
+//rev 2019 start allow aiming downwards contra style when not using mouse aim.						
+				if ( g_mouselook.GetBool() ){
+					usercmd.upmove = -127; //force crouch
+					usercmd.buttons &= ~BUTTON_7; //remove aim down button - don't aim down					
+				} else if (!usercmd.forwardmove){
 					usercmd.upmove = -127; //force crouch
 					usercmd.buttons &= ~BUTTON_7; //remove aim down button - don't aim down
-			}
+					}
+//rev 2019 end					
+				}
 			// -- crouch with "aim down" end -- 
 
 		} //end else slide
