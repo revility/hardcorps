@@ -1,5 +1,5 @@
-# hq2019
-updated files for Doom 3: Harqore 2 Dhewm 3 port.  This is an online back up of the updated files only during development.  They are meant to be used with Hardqore 2 for Dhewm 3 1.5.0
+# DHEWM 3 HARD CORPS 1.2.00
+updated files for Doom 3: Harqore 2 Dhewm 3 port.  This is an online back up of the updated files only during development.  They are meant to be used with Hardqore 2 1.2.00 for Dhewm 3 1.5.0 after it is released.  It will not work with the original HQ 2012 release.
 
 List of updated features:
 
