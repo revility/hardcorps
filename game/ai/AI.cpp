@@ -4121,7 +4121,7 @@ void idAI::UpdateIsOnScreen( void ) {
 
 	//Y axis - horizontal distance
 	if( idMath::Fabs( delta.y ) > delta.x + 100 ){ //if horizontal dist is greater than camera dist, than we are out of view (Horizontal FOV 90 --> 90 45 45 triangle)
-		//Rev 2018 increased range by 100.  this allows enemies to attack as soon as they are fully on screen.
+		//Rev 2018 increased range by 120.  this allows enemies to attack as soon as they are fully on screen.
 		isOnScreen = false;
 		return;
 	}
@@ -4525,7 +4525,8 @@ idProjectile *idAI::LaunchProjectile( const char *jointname, idEntity *target, b
 	idMat3				axis;
 	idVec3				tmp;
 	idProjectile		*lastProjectile;
-
+	int 				noAim; //rev 2019
+	
 	if ( !projectileDef ) {
 		gameLocal.Warning( "%s (%s) doesn't have a projectile specified", name.c_str(), GetEntityDefName() );
 		return NULL;
@@ -4544,6 +4545,8 @@ idProjectile *idAI::LaunchProjectile( const char *jointname, idEntity *target, b
 
 	lastProjectile = projectile.GetEntity();
 
+//rev 2019 start.  make the ai shoot only shoot straight ahead when the noaim key is set to 1 in their def file	
+/*
 	if ( target != NULL ) {
 		tmp = target->GetPhysics()->GetAbsBounds().GetCenter() - muzzle;
 		tmp.Normalize();
@@ -4551,6 +4554,27 @@ idProjectile *idAI::LaunchProjectile( const char *jointname, idEntity *target, b
 	} else {
 		axis = viewAxis;
 	}
+*/
+	noAim  = spawnArgs.GetInt( "noaim" );	
+	if ( noAim > 0 ) {
+		if ( target = NULL ) {
+			tmp = target->GetPhysics()->GetAbsBounds().GetCenter() - muzzle;
+			tmp.Normalize();
+			axis = tmp.ToMat3();
+		} else {
+			axis = viewAxis;
+			}
+		}	
+	if ( noAim < 1 ) {
+		if ( target != NULL ) {
+			tmp = target->GetPhysics()->GetAbsBounds().GetCenter() - muzzle;
+			tmp.Normalize();
+			axis = tmp.ToMat3();
+		} else {
+			axis = viewAxis;
+			}
+		}		
+//rev 2019 noaim end
 
 	// rotate it because the cone points up by default
 	tmp = axis[2];
@@ -5577,5 +5601,3 @@ void idCombatNode::Event_MarkUsed( void ) {
 		disabled = true;
 	}
 }
-
-
