@@ -9,6 +9,8 @@ List of updated features:
 
 +Waitfordamage key.  Checked from the player.def file. used to stop enable and disable the player taking damage.
 
++noaim key for enemies.  When set to 1, enemies and bots will only shoot straight ahead in the direction of the player and not aim directly at them.  Very common side scrollers.
+
 +Invulneralbe to damage script.  After taking damage a script is called.  The script itself uses the new waitfordamage key to enable and disable the player taking damage for a brief period of time.
 This system is very similar to classic platformer games such as Castlevania and Ninja Gaiden.  Visuals and amount of time is controlled in the player's script.
 
