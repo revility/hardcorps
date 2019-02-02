@@ -33,7 +33,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "physics/Physics_Player.h"
 #include "Item.h"
-#include "Actor.h" 
+#include "Actor.h"
 #include "Weapon.h"
 #include "Projectile.h"
 #include "PlayerIcon.h"
@@ -56,6 +56,9 @@ class idAI;
 ===============================================================================
 */
 
+extern const idEventDef EV_Player_SetGravityInAnimMove; 
+extern const idEventDef EV_Player_StartKick; 
+extern const idEventDef EV_Player_StopKick; 
 extern const idEventDef EV_Player_GetButtons;
 extern const idEventDef EV_Player_GetMove;
 extern const idEventDef EV_Player_GetViewAngles;
@@ -147,7 +150,19 @@ enum {
 	INFLUENCE_LEVEL3,			// slow player movement
 };
 
-typedef struct { //un noted change from original sdk
+//ivan start
+//values must match scripts!
+enum {
+	ANIMMOVE_NONE = 0,
+	ANIMMOVE_ALWAYS,
+	ANIMMOVE_GROUND,
+	ANIMMOVE_FREEZE,
+	ANIMMOVE_PHYSICS,
+	ANIMMOVE_NUMTYPES //always the last one, not valid value
+};
+//ivan end
+
+typedef struct {
 	char		name[64];
 	idList<int>	toggleList;
 } WeaponToggle_t;
@@ -499,7 +514,7 @@ public:
 	//ivan start
 	//was: void					DropWeapon( bool died );
 	bool					DropWeapon( bool died, bool selectNext=true );
-	bool					StartForcedMov( idEntity *destinationEntity, int inhibitInputDelay = 0, bool canAbort = true, bool totalForce = false, bool forceStart = false );
+	bool					StartForcedMov( idEntity *destinationEntity, int inhibitInputDelay = 0, bool canAbort = true, bool totalForce = false, bool forceStart = false ); //rev 2019 note rivensin can abort fyi
 	void					BlockForcedMov( void );
 	void					UpdForcedMov( void );
 	void					StopForcedMov( void );
@@ -628,6 +643,7 @@ public:
 
 private:
 	//ivan start
+	bool					IsComboActive( void ); 
 	//const char *			interactShownWeaponName;
 	int						interactShownWeaponNum;
 	int						interactFlag;
@@ -661,7 +677,6 @@ private:
 	bool					keep_walk_dir;	//don't change the walking direction 
 	bool					fw_toggled;		
 	bool					fw_inverted;
-	bool					blendModelYaw;
 	float					old_viewAngles_yaw;
     float					viewPos; // This determines which what the player will face. <= 0 faces right. > 0 faces left //TODO: float really needed?	
 	int						inhibitInputTime;
@@ -697,6 +712,28 @@ private:
 
 	idPhysics_Player		physicsObj;			// player physics
 
+	//ivan start
+	//bool					isAnimMove;			// true when the movement is based on animation delta
+	int						animMoveType;		 
+	bool					animMoveNoGravity;	 
+	bool					allowTurn;			
+	bool					comboOn;			// comboOn
+	bool					blendModelYaw;		// true when isAnimMove ends, to blend the model angles
+	//ivan ewnd
+
+	//ivan - kick stuff start //rev 2019
+	idStr					kickDefName;
+	const idDeclEntityDef *	kickDef;
+	idEntity *				lastKickedEnt;
+	int						nextKickFx;
+	int						nextKickSnd;
+	bool					kickEnabled;
+	float					kickDmgMultiplier;
+	float					kickDistance;
+	idBounds				kickBox;
+	jointHandle_t			fromJointKick;
+	jointHandle_t			toJointKick;
+	//ivan - kick stuff end //rev 2019
 	idList<aasLocation_t>	aasLocation;		// for AI tracking the player
 
 	/*
@@ -866,6 +903,12 @@ private:
 	bool					WeaponAvailable( const char* name ); //new //un noted change from original sdk
 	
 	void					UseVehicle( void );
+	
+	//ivan start
+	bool					EvaluateKick( void );
+	void					Event_StartKick( const char *meleeDefName, float dmgMult );
+	void					Event_StopKick( void ); 
+	//ivan end
 
 	void					Event_WeaponAvailable( const char* name ); // new //un noted change from original sdk
 	void					Event_GetImpulseKey( void ); // new
@@ -890,6 +933,9 @@ private:
 	void					Event_GetIdealWeapon( void );
 
 	//ivan start
+	void					Event_StartAutoMelee( float dmgMult, int trailNum );
+	void					Event_StopAutoMelee( void );
+
 	void					Event_HudEvent( const char* name ); 
 	void					Event_SetHudParm( const char *key, const char *val ); 
 	void					Event_GetHudFloat( const char *key);
@@ -900,11 +946,13 @@ private:
 	void					Event_DoubleJumpEnabled( int on );
 	void					Event_WallJumpEnabled( int on );
 	void					Event_SetSkin( const char *skinname );
-	void					Event_SetFullBodyAnimOn( int anim_movement );
+	void					Event_SetFullBodyAnimOn( int anim_movement, int allow_turn, int iscombo );
 	void					Event_SetFullBodyAnimOff( void );
+	void					Event_SetGravityInAnimMove( float mult );
+	void					Event_ComboForceHighPain( int mode );
 
 	//smart AI start
-	void					Event_ForceUpdateNpcStatus( void ); 
+	void					Event_ForceUpdateNpcStatus( void );
 	void					Event_SetCommonEnemy( idEntity *enemy ); 
 	void					Event_GetCommonEnemy( void );
 	//smart AI end

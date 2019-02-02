@@ -74,7 +74,7 @@ idCVar *					idCVar::staticVars = NULL;
 
 idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM, "force generic platform independent SIMD" );
 
-#endif
+#endif // GAME_DLL
 
 idRenderWorld *				gameRenderWorld = NULL;		// all drawing is done to this world
 idSoundWorld *				gameSoundWorld = NULL;		// all audio goes to this world
@@ -202,6 +202,7 @@ void idGameLocal::Clear( void ) {
 	sessionCommand.Clear();
 	locationEntities = NULL;
 	smokeParticles = NULL;
+	trailsManager = NULL; //ivan rev 2019
 	editEntities = NULL;
 	entityHash.Clear( 1024, MAX_GENTITIES );
 	inCinematic = false;
@@ -261,7 +262,7 @@ void idGameLocal::Clear( void ) {
 
 	memset( lagometer, 0, sizeof( lagometer ) );
 
-#ifdef _PORTALSKY //un noted change from original sdk
+#ifdef _PORTALSKY
 	portalSkyEnt			= NULL;
 	portalSkyActive			= false;
 #endif
@@ -332,6 +333,7 @@ void idGameLocal::Init( void ) {
 	program.Startup( SCRIPT_DEFAULT );
 
 	smokeParticles = new idSmokeParticles;
+	trailsManager = new idTrailManager; //ivan rev 2019
 
 	// set up the aas
 	dict = FindEntityDefDict( "aas_types" );
@@ -387,6 +389,11 @@ void idGameLocal::Shutdown( void ) {
 
 	delete smokeParticles;
 	smokeParticles = NULL;
+
+	//ivan start //rev 2019
+	delete trailsManager;
+	trailsManager = NULL;
+	//ivan end //rev 2019
 
 	idClass::Shutdown();
 
@@ -485,6 +492,9 @@ void idGameLocal::SaveGame( idFile *f ) {
 		savegame.WriteDict( &persistentPlayerInfo[ i ] );
 	}
 
+	//ivan - save/reload trails BEFORE other entities //rev 2019
+	trailsManager->Save( &savegame );
+
 	for( i = 0; i < MAX_GENTITIES; i++ ) {
 		savegame.WriteObject( entities[ i ] );
 		savegame.WriteInt( spawnIds[ i ] );
@@ -557,7 +567,7 @@ void idGameLocal::SaveGame( idFile *f ) {
 	savegame.WriteBool( isNewFrame );
 	savegame.WriteFloat( clientSmoothing );
 
-#ifdef _PORTALSKY //un noted change from original sdk
+#ifdef _PORTALSKY
 	portalSkyEnt.Save( &savegame );
 	savegame.WriteBool( portalSkyActive );
 #endif
@@ -983,6 +993,9 @@ void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	smokeParticles->Init();
 
 	// cache miscellanious media references
+	trailsManager->Init(); //rev 2019
+
+	// cache miscellanious media references
 	FindEntityDef( "preCacheExtras", false );
 
 	if ( !sameMap ) {
@@ -1015,6 +1028,9 @@ void idGameLocal::LocalMapRestart( ) {
 
 	// clear the smoke particle free list
 	smokeParticles->Init();
+
+	// clear the sound system
+	trailsManager->Init(); //rev 2019
 
 	// clear the sound system
 	if ( gameSoundWorld ) {
@@ -1313,6 +1329,9 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 		savegame.ReadDict( &persistentPlayerInfo[ i ] );
 	}
 
+	//ivan - save/reload trails BEFORE other entities //rev 2019
+	trailsManager->Restore( &savegame );
+
 	for( i = 0; i < MAX_GENTITIES; i++ ) {
 		savegame.ReadObject( reinterpret_cast<idClass *&>( entities[ i ] ) );
 		savegame.ReadInt( spawnIds[ i ] );
@@ -1400,7 +1419,7 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 	savegame.ReadBool( isNewFrame );
 	savegame.ReadFloat( clientSmoothing );
 
-#ifdef _PORTALSKY //un noted change from original sdk
+#ifdef _PORTALSKY
 	portalSkyEnt.Restore( &savegame );
 	savegame.ReadBool( portalSkyActive );
 #endif
@@ -1544,6 +1563,10 @@ void idGameLocal::MapShutdown( void ) {
 		smokeParticles->Shutdown();
 	}
 
+	if ( trailsManager ) { //rev 2019
+		trailsManager->Shutdown(); //rev 2019
+	} //rev 2019
+	
 	pvs.Shutdown();
 
 	clip.Shutdown();
@@ -2059,7 +2082,7 @@ void idGameLocal::SetupPlayerPVS( void ) {
 			pvs.FreeCurrentPVS( otherPVS );
 			playerConnectedAreas = newPVS;
 
-#ifdef _PORTALSKY //un noted change from original sdk
+#ifdef _PORTALSKY
 		// if portalSky is preset, then merge into pvs so we get rotating brushes, etc
 		if ( portalSkyEnt.GetEntity() ) {
 			idEntity *skyEnt = portalSkyEnt.GetEntity();
@@ -2311,6 +2334,9 @@ gameReturn_t idGameLocal::RunFrame( const usercmd_t *clientCmds ) {
 
 		// free old smoke particles
 		smokeParticles->FreeSmokes();
+
+		// process events on the server
+		trailsManager->Think(); //rev 2019
 
 		// process events on the server
 		ServerProcessEntityNetworkEventQueue();

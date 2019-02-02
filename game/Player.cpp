@@ -40,6 +40,10 @@ If you have questions concerning this license or the applicable additional terms
 #include "Camera.h"
 #include "Fx.h"
 #include "Misc.h"
+//#include "Weapon.h"
+
+#include "Moveable.h" //rev 2019
+#include "BrittleFracture.h" //rev 2019
 
 const int ASYNC_PLAYER_INV_AMMO_BITS = idMath::BitsForInteger( 999 );	// 9 bits to cover the range [0, 999]
 const int ASYNC_PLAYER_INV_CLIP_BITS = -7;								// -7 bits to cover the range [-1, 60]
@@ -111,13 +115,18 @@ const idEventDef EV_Player_FreeCamera( "freeCamera" );
 const idEventDef EV_Player_ForceCameraY( "forceCameraY", "f" );
 const idEventDef EV_Player_DoubleJumpEnabled( "doubleJumpEnabled", "d" );
 const idEventDef EV_Player_WallJumpEnabled( "wallJumpEnabled", "d" );
-const idEventDef EV_Player_SetFullBodyAnimOn( "setFullBodyAnimOn", "d" ); 
+const idEventDef EV_Player_SetFullBodyAnimOn( "setFullBodyAnimOn", "ddd" ); //rev 2019 rivensin is ddd. HQ was d
 const idEventDef EV_Player_SetFullBodyAnimOff( "setFullBodyAnimOff" );
+const idEventDef EV_Player_SetGravityInAnimMove( "setGravityInAnimMove", "f" );
+
 const idEventDef EV_Player_HideInfo( "hideInfo" );
 const idEventDef EV_Player_GetWaterLevel( "getWaterLevel", NULL, 'd' );
 
 //smart AI start
 const idEventDef EV_Player_ForceUpdateNpcStatus( "forceUpdateNpcStatus" );
+const idEventDef EV_Player_StartKick( "startKick", "sf" );
+const idEventDef EV_Player_StopKick( "stopKick" );
+
 const idEventDef EV_Player_SetCommonEnemy( "setCommonEnemy", "E" );
 const idEventDef EV_Player_GetCommonEnemy( "getCommonEnemy", NULL, 'e' );
 //smart AI end
@@ -147,6 +156,13 @@ EVENT( EV_Player_GetImpulseKey,			idPlayer::Event_GetImpulseKey )	// Added By Cl
 EVENT( EV_Player_GetIdealWeapon,		idPlayer::Event_GetIdealWeapon )
 
 //ivan start
+EVENT( EV_Player_SetFullBodyAnimOn,     idPlayer::Event_SetFullBodyAnimOn) 
+EVENT( EV_Player_SetFullBodyAnimOff,    idPlayer::Event_SetFullBodyAnimOff)
+EVENT( EV_Player_SetGravityInAnimMove,  idPlayer::Event_SetGravityInAnimMove)
+EVENT( EV_Player_StartKick,				idPlayer::Event_StartKick )
+EVENT( EV_Player_StopKick,			    idPlayer::Event_StopKick )
+EVENT( EV_Weapon_StartAutoMelee,		idPlayer::Event_StartAutoMelee )		//proxy for weapon
+EVENT( EV_Weapon_StopAutoMelee,			idPlayer::Event_StopAutoMelee )			//proxy for weapon
 EVENT( EV_Player_HudEvent,				idPlayer::Event_HudEvent) 
 EVENT( EV_Player_SetHudParm,			idPlayer::Event_SetHudParm) 
 EVENT( EV_Player_GetHudFloat,			idPlayer::Event_GetHudFloat) 
@@ -157,8 +173,6 @@ EVENT( EV_Player_ForceCameraY,			idPlayer::Event_ForceCameraY)
 EVENT( EV_Player_DoubleJumpEnabled,		idPlayer::Event_DoubleJumpEnabled) 
 EVENT( EV_Player_WallJumpEnabled,		idPlayer::Event_WallJumpEnabled) 
 EVENT( EV_SetSkin,						idPlayer::Event_SetSkin ) //override idEntity::Event_SetSkin
-EVENT( EV_Player_SetFullBodyAnimOn,     idPlayer::Event_SetFullBodyAnimOn) 
-EVENT( EV_Player_SetFullBodyAnimOff,    idPlayer::Event_SetFullBodyAnimOff)
 EVENT( EV_Player_HideInfo,				idPlayer::Event_HideInfo )
 EVENT( EV_Player_GetWaterLevel,			idPlayer::Event_GetWaterLevel)
 
@@ -957,7 +971,7 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 			}
 
 			if ( !gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) || ( weaponName == "weapon_fists" ) || ( weaponName == "weapon_soulcube" ) ) {
-				if ( ( weapons & ( 1 << i ) ) == 0 || gameLocal.isMultiplayer ) { 
+				if ( ( weapons & ( 1 << i ) ) == 0 || gameLocal.isMultiplayer ) {
 					/*
 					//commented out by ivan: picked up weapon is now selected in idPlayer::AddWeaponToSlots
 					if ( owner->GetUserInfo()->GetBool( "ui_autoSwitch" ) && idealWeapon ) {
@@ -1219,6 +1233,13 @@ idPlayer::idPlayer() {
 	godmode					= false;
 	
 	waitForDamage			= 1;	//rev 2018
+	//ivan start
+	animMoveNoGravity		= false; 
+	animMoveType			= ANIMMOVE_NONE;
+	comboOn					= false;
+	allowTurn				= true;
+	blendModelYaw			= false; 
+	//ivan end
 
 //rev 2018 start
 	touchofdeathx			= 1;
@@ -1306,7 +1327,7 @@ idPlayer::idPlayer() {
 	idealWeapon				= -1;
 	previousWeapon			= -1;
 	quickWeapon				= -1; //new //un noted change from original sdk
-	weaponSwitchTime		=  0; 
+	weaponSwitchTime		=  0;
 	weaponEnabled			= true;
 	weapon_soulcube			= -1;
 	weapon_pda				= -1;
@@ -1408,6 +1429,20 @@ idPlayer::idPlayer() {
 	isChatting				= false;
 
 	selfSmooth				= false;
+
+	//ivan start - kick vars
+	kickDefName				= "";
+	kickDef					= NULL;
+	lastKickedEnt			= NULL;
+	nextKickFx				= 0;
+	nextKickSnd				= 0;
+	kickEnabled				= false;
+	kickDmgMultiplier		= 0.0f;
+	kickDistance			= 0.0f;
+	fromJointKick			= INVALID_JOINT;
+	toJointKick				= INVALID_JOINT;
+	kickBox.Zero();
+	//ivan end
 
 #ifdef _DENTONMOD_PLAYER_CPP
 	memset( &weaponZoom, 0, sizeof( weaponZoom ) ); // New
@@ -2098,6 +2133,15 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 
 	savefile->WriteBool( noclip );
 	savefile->WriteBool( godmode );
+	//ivan start
+	savefile->WriteBool( animMoveNoGravity ); 
+	savefile->WriteInt( animMoveType ); 
+	savefile->WriteBool( comboOn ); 
+	savefile->WriteBool( allowTurn ); 
+	savefile->WriteBool( blendModelYaw );
+ 
+	//not saved: lastSpread
+	//ivan end
 
 	// don't save spawnAnglesSet, since we'll have to reset them after loading the savegame
 	savefile->WriteAngles( spawnAngles );
@@ -2117,7 +2161,10 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	inventory.Save( savefile );
 	weapon.Save( savefile );
 
-	savefile->WriteUserInterface( hud, false );
+	
+	//savefile->WriteUserInterface( hud, false ); // DG: don't save HUD, just create it like in Spawn()
+	savefile->WriteString( "" ); // DG: write empty string which is handled as "HUD is NULL" by Restore() for backwards-compat
+
 	savefile->WriteUserInterface( objectiveSystem, false );
 	savefile->WriteBool( objectiveSystemOpen );
 
@@ -2360,6 +2407,20 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	//interactShownWeaponName not saved
 	savefile->WriteBool( skipMouseUpd ); 
 
+	//ivan start - kick
+	savefile->WriteString( kickDefName );
+
+	//kickDef is not saved! -> it'll be reastored thanks to kickDefName 
+	savefile->WriteObject( lastKickedEnt ); 
+	savefile->WriteInt( nextKickFx );
+	savefile->WriteInt( nextKickSnd );
+	savefile->WriteBool( kickEnabled );
+	savefile->WriteFloat( kickDmgMultiplier );
+	savefile->WriteFloat( kickDistance );
+	savefile->WriteBounds( kickBox ); 
+	savefile->WriteJoint( fromJointKick );
+	savefile->WriteJoint( toJointKick );
+
 #ifdef AUTOUPD_RESPAWN_POS
 	savefile->WriteInt( nextRespPosTime ); 
 	//not saved: idVec3	tempRespawnPos
@@ -2404,6 +2465,14 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadBool( noclip );
 	savefile->ReadBool( godmode );
 
+	//ivan start
+	savefile->ReadBool( animMoveNoGravity );
+	savefile->ReadInt( animMoveType );
+	savefile->ReadBool( comboOn ); 
+	savefile->ReadBool( allowTurn );
+	savefile->ReadBool( blendModelYaw );
+	//ivan end
+	
 	savefile->ReadAngles( spawnAngles );
 	savefile->ReadAngles( viewAngles );
 	savefile->ReadAngles( cmdAngles );
@@ -2671,6 +2740,20 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 
 	//ivan start
 	savefile->ReadInt( health_lost );
+
+	//ivan start - kick
+	savefile->ReadString( kickDefName );
+	kickDef = gameLocal.FindEntityDef( kickDefName, false );
+	savefile->ReadObject( reinterpret_cast<idClass *&>( lastKickedEnt ) ); //ivan
+	savefile->ReadInt( nextKickFx );
+	savefile->ReadInt( nextKickSnd );
+	savefile->ReadBool( kickEnabled );
+	savefile->ReadFloat( kickDmgMultiplier );
+	savefile->ReadFloat( kickDistance );
+	savefile->ReadBounds( kickBox ); 
+	savefile->ReadJoint( fromJointKick );
+	savefile->ReadJoint( toJointKick );
+
 	savefile->ReadInt( currentSlot );
 	savefile->ReadFloat( viewPos );
 	savefile->ReadVec3( oldCameraPos );	
@@ -2876,7 +2959,7 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 	hq2QuickRespawning = quickRespawn; //ivan
 
 	Init();
-	
+
 	fl.noknockback = false;
 
 	// stop any ragdolls being used
@@ -3249,7 +3332,7 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 			_hud->SetStateString( "player_ammo_pct", va( "%i", 100*ammoamount/maxAmmo ) );
 		}
 		//ivan end
-	} 
+	}
 	_hud->SetStateBool( "player_ammo_empty", ( ammoamount == 0 ) );
 	_hud->SetStateBool( "player_clip_empty", ( weapon.GetEntity()->ClipSize() ? inclip == 0 : false ) );
 	_hud->SetStateBool( "player_clip_low", ( weapon.GetEntity()->ClipSize() ? inclip <= weapon.GetEntity()->LowAmmo() : false ) );
@@ -4490,6 +4573,7 @@ void idPlayer::Reload( void ) {
 		weapon.GetEntity()->Reload();
 	}
 }
+
 /*
 ===============
 idPlayer::WeaponSpecialFunction 
@@ -4519,6 +4603,7 @@ idPlayer::NextBestWeapon
 */
 void idPlayer::NextBestWeapon( void ) {
 	const char *weap;
+
 	//ivan start
 	int w; //was: int w = MAX_WEAPONS;
 	int s;	
@@ -4595,6 +4680,7 @@ void idPlayer::NextBestWeapon( void ) {
 	}
 	*/
 	//ivan end
+
 #ifdef _DENTONMOD
 	if( w != idealWeapon ) {
 		quickWeapon = idealWeapon;
@@ -5084,6 +5170,7 @@ bool idPlayer::DropWeapon( bool died, bool selectNext ) { //ivan - bool selectNe
 		common->DPrintf( "idPlayer::DropWeapon: bad ammo setup\n" );
 		return false; //un noted change from original sdk
 	}
+
 	idEntity *item = NULL;
 	if ( died ) {
 		// ain't gonna throw you no weapon if I'm dead
@@ -5097,7 +5184,7 @@ bool idPlayer::DropWeapon( bool died, bool selectNext ) { //ivan - bool selectNe
 	}
 	// set the appropriate ammo in the dropped object
 	const idKeyValue * keyval = item->spawnArgs.MatchPrefix( "inv_ammo_" );
-	if ( keyval ) {		
+	if ( keyval ) {	
 		//item->spawnArgs.SetInt( keyval->GetKey(), ammoavailable ); //ivan - commented out
 		idStr inclipKey = keyval->GetKey();
 		inclipKey.Insert( "inclip_", 4 );
@@ -5278,7 +5365,7 @@ void idPlayer::Weapon_Combat( void ) {
 #else
 				// weapons can switch automatically if they have no more ammo
 				NextBestWeapon();
-#endif 
+#endif
 			} else {
 				weapon.GetEntity()->Raise();
 				state = GetScriptFunction( "RaiseWeapon" );
@@ -6027,8 +6114,7 @@ void idPlayer::CrashLand( const idVec3 &oldOrigin, const idVec3 &oldVelocity ) {
 	float		a, b, c, den;
 	waterLevel_t waterLevel;
 	bool		noDamage;
-	
-	
+
 	AI_SOFTLANDING = false;
 	AI_HARDLANDING = false;
 
@@ -6060,7 +6146,7 @@ void idPlayer::CrashLand( const idVec3 &oldOrigin, const idVec3 &oldVelocity ) {
 			//StartSound( "snd_land_hard", SND_CHANNEL_ANY, 0, false, NULL ); //rev 2018 removed.  not needed.
 			break;
 		}
-	} 
+	}
 
 	origin = GetPhysics()->GetOrigin();
 	gravityVector = physicsObj.GetGravity();
@@ -6156,138 +6242,6 @@ void idPlayer::BobCycle( const idVec3 &pushVelocity ) {
 	vel = velocity - ( velocity * gravityDir ) * gravityDir;
 	xyspeed = vel.LengthFast();
 }
-//was:
-/*
-void idPlayer::BobCycle( const idVec3 &pushVelocity ) {
-	float		bobmove;
-	int			old, deltaTime;
-	idVec3		vel, gravityDir, velocity;
-	idMat3		viewaxis;
-	float		bob;
-	float		delta;
-	float		speed;
-	float		f;
-
-	//
-	// calculate speed and cycle to be used for
-	// all cyclic walking effects
-	//
-	velocity = physicsObj.GetLinearVelocity() - pushVelocity;
-
-	gravityDir = physicsObj.GetGravityNormal();
-	vel = velocity - ( velocity * gravityDir ) * gravityDir;
-	xyspeed = vel.LengthFast();
-
-	// do not evaluate the bob for other clients
-	// when doing a spectate follow, don't do any weapon bobbing
-	if ( gameLocal.isClient && entityNumber != gameLocal.localClientNum ) {
-		viewBobAngles.Zero();
-		viewBob.Zero();
-		return;
-	}
-
-	if ( !physicsObj.HasGroundContacts() || influenceActive == INFLUENCE_LEVEL2 || ( gameLocal.isMultiplayer && spectating ) ) {
-		// airborne
-		bobCycle = 0;
-		bobFoot = 0;
-		bobfracsin = 0;
-	} else if ( ( !usercmd.forwardmove && !usercmd.rightmove ) || ( xyspeed <= MIN_BOB_SPEED ) ) {
-		// start at beginning of cycle again
-		bobCycle = 0;
-		bobFoot = 0;
-		bobfracsin = 0;
-	} else {
-		if ( physicsObj.IsCrouching() ) {
-			bobmove = pm_crouchbob.GetFloat();
-			// ducked characters never play footsteps
-		} else {
-			// vary the bobbing based on the speed of the player
-			bobmove = pm_walkbob.GetFloat() * ( 1.0f - bobFrac ) + pm_runbob.GetFloat() * bobFrac;
-		}
-
-		// check for footstep / splash sounds
-		old = bobCycle;
-		bobCycle = (int)( old + bobmove * gameLocal.msec ) & 255;
-		bobFoot = ( bobCycle & 128 ) >> 7;
-		bobfracsin = idMath::Fabs( sin( ( bobCycle & 127 ) / 127.0 * idMath::PI ) );
-	}
-
-	// calculate angles for view bobbing
-	viewBobAngles.Zero();
-
-	viewaxis = viewAngles.ToMat3() * physicsObj.GetGravityAxis();
-
-	// add angles based on velocity
-	delta = velocity * viewaxis[0];
-	viewBobAngles.pitch += delta * pm_runpitch.GetFloat();
-
-	delta = velocity * viewaxis[1];
-	viewBobAngles.roll -= delta * pm_runroll.GetFloat();
-
-	// add angles based on bob
-	// make sure the bob is visible even at low speeds
-	speed = xyspeed > 200 ? xyspeed : 200;
-
-	delta = bobfracsin * pm_bobpitch.GetFloat() * speed;
-	if ( physicsObj.IsCrouching() ) {
-		delta *= 3;		// crouching
-	}
-	viewBobAngles.pitch += delta;
-	delta = bobfracsin * pm_bobroll.GetFloat() * speed;
-	if ( physicsObj.IsCrouching() ) {
-		delta *= 3;		// crouching accentuates roll
-	}
-	if ( bobFoot & 1 ) {
-		delta = -delta;
-	}
-	viewBobAngles.roll += delta;
-
-	// calculate position for view bobbing
-	viewBob.Zero();
-
-	if ( physicsObj.HasSteppedUp() ) {
-
-		// check for stepping up before a previous step is completed
-		deltaTime = gameLocal.time - stepUpTime;
-		if ( deltaTime < STEPUP_TIME ) {
-			stepUpDelta = stepUpDelta * ( STEPUP_TIME - deltaTime ) / STEPUP_TIME + physicsObj.GetStepUp();
-		} else {
-			stepUpDelta = physicsObj.GetStepUp();
-		}
-		if ( stepUpDelta > 2.0f * pm_stepsize.GetFloat() ) {
-			stepUpDelta = 2.0f * pm_stepsize.GetFloat();
-		}
-		stepUpTime = gameLocal.time;
-	}
-
-	idVec3 gravity = physicsObj.GetGravityNormal();
-
-	// if the player stepped up recently
-	deltaTime = gameLocal.time - stepUpTime;
-	if ( deltaTime < STEPUP_TIME ) {
-		viewBob += gravity * ( stepUpDelta * ( STEPUP_TIME - deltaTime ) / STEPUP_TIME );
-	}
-
-	// add bob height after any movement smoothing
-	bob = bobfracsin * xyspeed * pm_bobup.GetFloat();
-	if ( bob > 6 ) {
-		bob = 6;
-	}
-	viewBob[2] += bob;
-
-	// add fall height
-	delta = gameLocal.time - landTime;
-	if ( delta < LAND_DEFLECT_TIME ) {
-		f = delta / LAND_DEFLECT_TIME;
-		viewBob -= gravity * ( landChange * f );
-	} else if ( delta < LAND_DEFLECT_TIME + LAND_RETURN_TIME ) {
-		delta -= LAND_DEFLECT_TIME;
-		f = 1.0 - ( delta / LAND_RETURN_TIME );
-		viewBob -= gravity * ( landChange * f );
-	}
-}
-*/
-//ivan end
 
 /*
 ================
@@ -6442,12 +6396,10 @@ idPlayer::UpdateViewAngles
 ================
 */
 void idPlayer::UpdateViewAngles( void ) {
-	//int i; //un noted change from original sdk
+	//int i; rev 2019 commented out in rivensin
 	idAngles delta;
-	//ivan start
-	idAngles modelang; 
-	float deltaModelYaw;
-	//ivan end
+	idAngles modelang; //ivan
+	float deltaModelYaw; //ivan
 
 	if ( !noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || influenceActive == INFLUENCE_LEVEL2 || objectiveSystemOpen ) ) {
 		// no view changes at all, but we still want to update the deltas or else when
@@ -6718,7 +6670,7 @@ void idPlayer::UpdateViewAngles( void ) {
 			deltaModelYaw = idMath::AngleNormalize180(deltaModelYaw);
 			//gameLocal.Printf( "deltaModelYaw blend %f (normalized)\n", deltaModelYaw );
 			if(deltaModelYaw > 1.0f || deltaModelYaw < -1.0f){ //blend again
-				SetAngles( idAngles( 0, idMath::AngleNormalize180( modelang.yaw + deltaModelYaw*0.4f ), 0 ) ); //was 0.3
+				SetAngles( idAngles( 0, idMath::AngleNormalize180( modelang.yaw + deltaModelYaw*0.4f ), 0 ) ); //was 0.3 //rev 2019 note rivensin is 0.5f fyi
 			}else{ //stop blending 
 				SetAngles( idAngles( 0, viewAngles.yaw, 0 ) );
 				blendModelYaw = false;
@@ -7736,7 +7688,7 @@ idPlayer::AdjustBodyAngles
 ==============
 */
 void idPlayer::AdjustBodyAngles( void ) {
-	idMat3	lookAxis;
+	idMat3	lookAxis; //rev 2019 note this commented out in rivensin fyi
 	idMat3	legsAxis;
 	bool	blend;
 	float	diff;
@@ -7829,7 +7781,7 @@ void idPlayer::AdjustBodyAngles( void ) {
 			forwardBlend	= 1.0f + frac;
 			upBlend			= -frac;
 		}
-	}//ivan
+    }
 
 	if(force_torso_override){ //ivan 
 		//no looking up/down
@@ -7970,6 +7922,27 @@ void idPlayer::Move( void ) {
 
 	//ivan start
 	physicsObj.SetFwInverted( fw_inverted );
+
+	//ivan start
+	if ( animMoveNoGravity ){
+		physicsObj.SetContents( CONTENTS_BODY );
+		physicsObj.SetMovementType( PM_FREEZE );
+	}else if ( animMoveType ){
+	    physicsObj.SetContents( CONTENTS_BODY );
+		if( animMoveType == ANIMMOVE_ALWAYS){
+			physicsObj.SetMovementType( PM_ANIM_ALWAYS );
+			GetMoveDelta( viewAxis, viewAxis, delta ); //to: check what happens to viewAxis 
+			physicsObj.SetDelta( delta );
+		}else if( animMoveType == ANIMMOVE_GROUND){
+			physicsObj.SetMovementType( PM_ANIM_GROUND );
+			GetMoveDelta( viewAxis, viewAxis, delta ); //to: check what happens to viewAxis  
+			physicsObj.SetDelta( delta );
+		}else if( animMoveType == ANIMMOVE_PHYSICS){
+			physicsObj.SetMovementType( PM_PHYSICS_ONLY );
+		}else { //that is, ANIMMOVE_FREEZE
+			physicsObj.SetMovementType( PM_FREEZE );
+		}
+	} else 
 	//ivan end
 
 	if ( noclip ) {
@@ -8006,7 +7979,7 @@ void idPlayer::Move( void ) {
 		physicsObj.SetClipMask( MASK_PLAYERSOLID );
 	}
 
-	physicsObj.SetDebugLevel( g_debugMove.GetBool() );	
+	physicsObj.SetDebugLevel( g_debugMove.GetBool() );
 	physicsObj.SetPlayerInput( usercmd, viewAngles );
 
 	// FIXME: physics gets disabled somehow
@@ -8085,7 +8058,7 @@ void idPlayer::Move( void ) {
 //rev 2018 end
 			}
 			physicsObj.SetLinearVelocity( vel );
-				
+		
 		}	
 	}
 
@@ -8651,6 +8624,14 @@ void idPlayer::Think( void ) {
 	// determine if portal sky is in pvs
 	gameLocal.portalSkyActive = gameLocal.pvs.CheckAreasForPortalSky( gameLocal.GetPlayerPVS(), GetPhysics()->GetOrigin() );
 #endif
+
+	//ivan start
+	//kick
+	if ( kickEnabled && !noclip && !spectating && ( health > 0 ) && !IsHidden() ) {
+		EvaluateKick();
+	}
+	//ivan end
+	
 }
 
 /*
@@ -9815,7 +9796,7 @@ create the renderView for the current tic
 */
 void idPlayer::CalculateRenderView( void ) {
 	int i;
-	//float range; //un noted change from original sdk
+	//float range; //rev 2019 commented out in rivensin fyi
 
 	if ( !renderView ) {
 		renderView = new renderView_t;
@@ -10796,7 +10777,7 @@ bool idPlayer::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 			}
 			return true;
 							}
-		case EVENT_PICKUPNAME: { //New, Not so sure what it does //un noted change from original sdk
+		case EVENT_PICKUPNAME: { //New, Not so sure what it does
 			char buf[MAX_EVENT_PARAM_SIZE];
 			msg.ReadString(buf, MAX_EVENT_PARAM_SIZE);
 			inventory.AddPickupName(buf, "", this); //New from_D3XP
@@ -11174,6 +11155,16 @@ return "";
 
 /*
 ===============
+idPlayer::IsComboActive
+==============
+*/
+bool idPlayer::IsComboActive( void ) {
+	return comboOn;
+}
+
+
+/*
+===============
 idPlayer::Event_HudEvent
 ==============
 */
@@ -11181,6 +11172,32 @@ void idPlayer::Event_HudEvent( const char* name ) {
 	if ( hud ) {
 		hud->HandleNamedEvent( name );
 	}
+}
+
+/*
+===============
+idPlayer::Event_SetGravityInAnimMove
+==============
+*/
+
+void idPlayer::Event_SetGravityInAnimMove( float mult ) {
+	//physicsObj.SetGravityInAnimMove( 1 ); //mult
+
+	//never accept negative values. They means frozen movement. 
+	if( mult < 0.0f  ){
+		mult = 1.0f;
+		animMoveNoGravity = true;
+	}else{
+		animMoveNoGravity = false;
+
+		//FIX!
+		//we cannot really set 0 or everything will be fucked up. Sets a value little enough.
+		if( mult == 0.0f ){ 
+			mult = 1e-4f;
+		}
+	}
+
+	physicsObj.SetGravity( mult * gameLocal.GetGravity() );
 }
 	
 /*
@@ -11723,10 +11740,25 @@ void idPlayer::Event_GetCommonEnemy( void ) {
 idPlayer::Event_SetFullBodyAnimOn
 ==============
 */
-void idPlayer::Event_SetFullBodyAnimOn( int anim_movement ) {
+void idPlayer::Event_SetFullBodyAnimOn( int anim_movement, int allow_turn, int iscombo ) {
+/* replaced with rivensin version rev 2019
 	blendModelYaw = false;
 	force_torso_override = true;
 	animBasedMovement = ( anim_movement != 0 );
+*/
+
+	blendModelYaw = false;
+	force_torso_override = true;
+
+	if ( anim_movement >= 0 && anim_movement < ANIMMOVE_NUMTYPES ) {
+		animMoveType = anim_movement;
+	}else{
+		gameLocal.Error("Unknown animMoveType!");
+	}
+
+	allowTurn = ( allow_turn != 0 );
+	comboOn = ( iscombo != 0 );
+
 }
 
 
@@ -11736,9 +11768,22 @@ idPlayer::Event_SetFullBodyAnimOff
 ==============
 */
 void idPlayer::Event_SetFullBodyAnimOff( void ) {
+/* replaced with rivensin version rev 2019:
 	blendModelYaw = false; //directly go to the dir
 	force_torso_override = false;
 	animBasedMovement = false;
+*/
+	blendModelYaw = true;
+	force_torso_override = false;
+
+	animMoveNoGravity = false;
+	animMoveType = ANIMMOVE_NONE;
+	allowTurn = true;
+	comboOn = false;
+
+	//reset gravity
+	animMoveNoGravity = false;
+	physicsObj.SetGravity( gameLocal.GetGravity() );
 }
 
 /*
@@ -11822,6 +11867,209 @@ bool idPlayer::SpawnInsteadOfGiving( const char *classname, int offsetYmult, int
 
 	return gameLocal.SpawnEntityDef( dict );
 }
-//ivan end - cheat fix
-
 //ivan end
+//rev 2019 from rivensin start
+/*
+=====================
+idPlayer::Event_StartAutoMelee
+=====================
+*/
+void idPlayer::Event_StartAutoMelee( float dmgMult, int trailNum ) {  
+	if ( weapon.GetEntity() ) {
+		weapon.GetEntity()->StartAutoMelee( dmgMult, trailNum );
+	}
+}
+
+/*
+=====================
+idPlayer::Event_StopAutoMelee
+=====================
+*/
+void idPlayer::Event_StopAutoMelee(void) {
+	if (weapon.GetEntity()) {
+		weapon.GetEntity()->StopAutoMelee();
+	}
+}
+/*
+=====================
+idPlayer::Event_StartKick
+=====================
+*/
+void idPlayer::Event_StartKick( const char *meleeDefName, float dmgMult ) {  
+	kickDmgMultiplier = dmgMult;
+	
+	//get the def
+	kickDef = gameLocal.FindEntityDef( meleeDefName, false );
+	if ( !kickDef ) {
+		gameLocal.Error( "No kickDef" );
+	}
+
+	//setup vars
+	kickDefName = idStr( kickDef->GetName() ); //TODO: new???
+
+	fromJointKick = GetAnimator()->GetJointHandle( kickDef->dict.GetString("from_joint") ); //"Rloleg"
+	toJointKick = GetAnimator()->GetJointHandle( kickDef->dict.GetString("to_joint") ); //"Rankle_r"
+
+	kickBox.Zero();
+	kickBox.ExpandSelf( kickDef->dict.GetFloat( "kick_tracerWidth", "1" ) );
+
+	kickDistance = kickDef->dict.GetFloat( "kick_distance" );
+
+	lastKickedEnt = NULL; //reset it so that can be hit again
+    kickEnabled = true;
+	
+	nextKickFx = gameLocal.time + 100; //delay snd+prt for LOW priority entities after the beginning of the attack
+	nextKickSnd = gameLocal.time + 100; //don't play snd on world too early - this could not be used
+}
+
+/*
+=====================
+idPlayer::Event_StopKick
+=====================
+*/
+void idPlayer::Event_StopKick( void ) {
+    kickDmgMultiplier = 1.0f;
+	lastKickedEnt = NULL; //don't remember it in the future  	
+	kickEnabled = false;
+}
+
+/*
+=====================
+idPlayer::EvaluateKick
+=====================
+*/
+bool idPlayer::EvaluateKick( void ) {  
+	idEntity *ent;
+	trace_t tr;
+
+	//temp vars
+	idVec3 start;
+	idVec3 end;
+	idVec3 dir;
+	idMat3 useless;
+	bool damaged;
+	//end temp
+
+	if ( !kickDef ) {
+		gameLocal.Error( "No kickDef" );
+	}
+
+	if ( gameLocal.isClient ) {
+		return false;
+	}
+
+	//init vars
+	damaged = false;
+	GetJointWorldTransform( fromJointKick, gameLocal.time, start, useless );
+	GetJointWorldTransform( toJointKick, gameLocal.time, end, useless ); 
+	dir = end - start; //get dir
+	dir.Normalize(); //normalize
+	end = start + dir * kickDistance * PowerUpModifier( MELEE_DISTANCE );
+
+	gameLocal.clip.TraceBounds( tr, start, end, kickBox, MASK_SHOT_RENDERMODEL, this ); //ignore player
+
+	if ( tr.fraction < 1.0f ) {	
+		ent = gameLocal.entities[ tr.c.entityNum ]; //fix the headshot bug with melee attacks
+		if(( ent ) && !(ent->IsType( idAFAttachment::Type))){ //only if it's not an idAFAttachment
+			ent = gameLocal.GetTraceEntity( tr );
+		}
+	} else {
+		ent = NULL;
+	}
+
+	if ( g_debugWeapon.GetBool() ) {
+		gameRenderWorld->DebugLine( colorYellow, start, end, 100 );
+		gameRenderWorld->DebugBounds( colorBlue, kickBox, start, 100 );
+		gameRenderWorld->DebugBounds( colorBlue, kickBox, end, 100 );
+
+		if ( ent ) {
+			gameRenderWorld->DebugBounds( colorRed, ent->GetPhysics()->GetBounds(), ent->GetPhysics()->GetOrigin(), 100 );
+		}
+	}
+
+	if ( ent ) {  //something hit
+
+		//is it the last one?
+		if(ent == lastKickedEnt){ //ignore the last entity hit
+			//gameLocal.Printf( "idPlayer::EvaluateKick - entity ignored\n" );
+			return true; //we hit the same thing again... do nothing now.
+		}
+		//gameLocal.Printf( "idPlayer::EvaluateKick - ent = %s \n",ent->GetName());
+
+		if ( ent->fl.takedamage ) {
+			idVec3 kickDir, globalKickDir;
+			kickDef->dict.GetVector( "kickDir", "0 0 0", kickDir );
+			globalKickDir = renderEntity.axis * kickDir; //TODO: check if this is always the dir we want...
+
+			//Ivan fix - transform clipmodel to joint handle to correctly get the damage zone in idActor::Damage
+			//was: ent->Damage( owner, owner, globalKickDir, kickDefName, owner->PowerUpModifier( MELEE_DAMAGE ), tr.c.id );
+			ent->Damage( this, this, globalKickDir, kickDefName, (kickDmgMultiplier * PowerUpModifier( MELEE_DAMAGE )) , CLIPMODEL_ID_TO_JOINT_HANDLE( tr.c.id ) );
+			lastKickedEnt = ent; //remember this to avoid hitting it consecutively
+			damaged = true; //hit and damaged!
+		}
+
+		//push it
+		float push = kickDef->dict.GetFloat( "push" );
+		//idVec3 impulse = -push * PowerUpModifier( SPEED ) * tr.c.normal;
+		idVec3 impulse = push * PowerUpModifier( SPEED ) * dir;
+
+		//extra push for AFs
+		if( (ent->health <= 0) && (ent->IsType(idAFEntity_Base::Type)) ){
+			idAFEntity_Base *p = static_cast< idAFEntity_Base * >( ent );
+
+			if ( p->IsActiveAF() ){
+				//gameLocal.Printf( "p->IsActiveAF()\n" );
+				impulse *= kickDef->dict.GetInt( "pushAFMult", "1" );
+			}
+		}
+
+		ent->ApplyImpulse( this, tr.c.id, tr.c.point, impulse );
+
+		//case 1/3: (HIGH priority entities) AND (can bleed) -> ALWAYS play the snd and the prt on them, unless 'bleed' key is set to '0'. 
+		if ( (ent->IsType(idBrittleFracture::Type) || ent->IsType(idAnimatedEntity::Type) || ent->IsType(idMoveable::Type) || ent->IsType(idMoveableItem::Type)) && ent->spawnArgs.GetBool( "bleed", "1" ) ) {	 
+			nextKickFx = gameLocal.time + 500; ///delay snd+prt for LOW priority entities after an hit on HIGH priority entity
+			//hitSound = kickDef->dict.GetString( PowerUpActive( BERSERK ) ? "snd_hit_berserk" : "snd_hit" );
+			ent->AddDamageEffect( tr, impulse, kickDef->dict.GetString( "classname" ) ); //play the sound from the entity hit!
+			//addDamageEffect already plays its own sound
+		} 
+		//case 2/3: (LOW priority entities) AND (can bleed) -> play the snd and the prt less frequently - (example: sword on LOW priority entities)
+		else if ( ent->spawnArgs.GetBool( "bleed", "1" )){ // Again, this is not done if 'bleed' key is set to '0'.
+			if (( gameLocal.time > nextKickFx )  ){ //this is usually the worldspawn... don't play too much snd and prt on it!
+				nextKickFx = gameLocal.time + 300; //delay snd+prt  for LOW priority entities after an hit on LOW priority entity
+				//hitSound = kickDef->dict.GetString( PowerUpActive( BERSERK ) ? "snd_hit_berserk" : "snd_hit" );
+				ent->AddDamageEffect( tr, impulse, kickDef->dict.GetString( "classname" ), this ); //play the sound from the player itself!
+				//AddDamageEffect already plays its own sound from the player
+			}				
+		} 
+		//case 3/3: (LOW or HIGH priority entities) AND (cannot bleed) -> do nothing... only sound?
+		else { 
+			int type = tr.c.material->GetSurfaceType();
+			if ( type == SURFTYPE_NONE ) {
+				type = GetDefaultSurfaceType();
+			}
+			const char *materialType = gameLocal.sufaceTypeNames[ type ];
+
+			// start impact sound based on material type
+			const char *hitSound = kickDef->dict.GetString( va( "snd_%s", materialType ) );
+			if ( *hitSound == '\0' ) {
+				hitSound = kickDef->dict.GetString( "snd_metal" );
+			}
+
+			if ( gameLocal.time > nextKickFx ) { //don't play it too frequently
+				nextKickFx = gameLocal.time + 200;
+
+				//play sound if (we damaged something ) or (hit something even not damaged, as world, and we are beyond the min time)
+				if( (damaged) || ( gameLocal.time > nextKickSnd )) {
+					if ( *hitSound != '\0' ) {
+						const idSoundShader *snd = declManager->FindSound( hitSound );
+						StartSoundShader( snd, SND_CHANNEL_BODY2, 0, true, NULL );
+						nextKickSnd = gameLocal.time + 1000;
+					}
+				}
+			} 
+		}
+	} //end something hit
+
+	return damaged;
+}
+//rev 2019 from rivensin end
