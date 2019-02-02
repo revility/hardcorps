@@ -269,7 +269,7 @@ idCVar pm_normalviewheight(			"pm_normalviewheight",		"68",			CVAR_GAME | CVAR_N
 idCVar pm_deadheight(				"pm_deadheight",			"20",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "height of player's bounding box while dead" );
 idCVar pm_deadviewheight(			"pm_deadviewheight",		"10",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "height of player's view while dead" );
 idCVar pm_crouchrate(				"pm_crouchrate",			"0.87",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "time it takes for player's view to change from standing to crouching" );
-idCVar pm_bboxwidth(				"pm_bboxwidth",				"32",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "x/y size of player's bounding box" );
+idCVar pm_bboxwidth(				"pm_bboxwidth",				"20",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "x/y size of player's bounding box" );
 idCVar pm_crouchbob(				"pm_crouchbob",				"0.5",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "bob much faster when crouched" );
 idCVar pm_walkbob(					"pm_walkbob",				"0.3",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "bob slowly when walking" );
 idCVar pm_runbob(					"pm_runbob",				"0.4",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "bob faster when running" );
@@ -367,7 +367,7 @@ idCVar net_serverDlTable(			"net_serverDlTable",		"",				CVAR_GAME | CVAR_ARCHIV
 //idCVar r_bloom_shiftSensitivity_delay( "r_bloom_shiftSensitivity_delay", "130", CVAR_GAME | CVAR_INTEGER, "Delay in millisecs for shifting the bloom sensitivity. \n0 : No shift sensitivity delay, sensitvity shifts immediately. \n-1 : Disables sensitivity shifting"); // New by Clone JCD
 //idCVar r_bloom_blurIterations( "r_bloom_blurIterations", "1", CVAR_GAME | CVAR_INTEGER, "Blur iterations for bloom"); // New by Clone JCD
 
-// HDR related - J.C.Denton rev 2018
+// HDR related - J.C.Denton
 idCVar r_HDR_enable					( "r_HDR_enable",					"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, " Enables HDR Rendering & post-processing.");
 idCVar r_HDR_enableDebugMode		( "r_HDR_enableDebugMode",			"0",			CVAR_GAME | CVAR_INTEGER, " Shows all the textures generated for HDR postprocess. \n 1: Shows all textures \n 2: Decodes and shows all textures");
 idCVar r_HDR_postProcess			( "r_HDR_postProcess",				"1",			CVAR_GAME | CVAR_INTEGER, " Activates HDR bloom . \n 1: HDR Bloom with automatic eye exposure ");
