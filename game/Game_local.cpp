@@ -1305,6 +1305,7 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 
 	// precache the player
 	FindEntityDef( "player_doommarine", false );
+	FindEntityDef( "player_scarlet", false );	//rev 2019
 
 	// precache any media specified in the map
 	for ( i = 0; i < mapFile->GetNumEntities(); i++ ) {
@@ -1913,7 +1914,16 @@ void idGameLocal::SpawnPlayer( int clientNum ) {
 
 	args.SetInt( "spawn_entnum", clientNum );
 	args.Set( "name", va( "player%d", clientNum + 1 ) );
+	
+//rev 2019 start character select via cvar
+	if ( cvarSystem->GetCVarBool( "pm_character") ) {
+	args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_scarlet" );
+	}else{
 	args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );
+	}
+	//args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );	
+//rev 2019 character select end	
+
 	if ( !SpawnEntityDef( args, &ent ) || !entities[ clientNum ] ) {
 		Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
 	}
