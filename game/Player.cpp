@@ -8884,9 +8884,9 @@ void idPlayer::CalcDamagePoints( idEntity *inflictor, idEntity *attacker, const 
 									}
 
 									//ivan start - no damage during full body anim
-									if ( force_torso_override ) { 
-										damage = 0;
-									}
+									//if ( force_torso_override ) { 
+										//damage = 0;
+									//}
 									//ivan end
 			//Rev 2018 no damage for a brief amount of time after being hit
 			waitForDamage  = spawnArgs.GetInt( "waitfordamage" );
