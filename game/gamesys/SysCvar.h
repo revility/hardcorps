@@ -31,7 +31,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "framework/CVarSystem.h"
 
-extern idCVar	developer; 
+extern idCVar	developer;
 
 extern idCVar	g_cinematic;
 extern idCVar	g_cinematicMaxSkipTime;
@@ -212,6 +212,7 @@ extern idCVar	pm_thirdPerson;
 extern idCVar	pm_thirdPersonDeath;
 extern idCVar	pm_modelView;
 extern idCVar	pm_airTics;
+extern idCVar	pm_character;	//rev 2019
 
 extern idCVar	g_showPlayerShadow;
 extern idCVar	g_showHud;
