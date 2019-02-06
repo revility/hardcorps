@@ -1931,7 +1931,10 @@ idStaticEntity::Spawn
 void idStaticEntity::Spawn( void ) {
 	bool solid;
 	bool hidden;
-
+	bool platform; //rev 2019
+	
+	platform = spawnArgs.GetBool( "platform" );  //rev 2019
+	
 	// an inline static model will not do anything at all
 	if ( spawnArgs.GetBool( "inline" ) || gameLocal.world->spawnArgs.GetBool( "inlineAllStatics" ) ) {
 		Hide();
@@ -1941,12 +1944,17 @@ void idStaticEntity::Spawn( void ) {
 	solid = spawnArgs.GetBool( "solid" );
 	hidden = spawnArgs.GetBool( "hide" );
 
-	if ( solid && !hidden ) {
-		GetPhysics()->SetContents( CONTENTS_SOLID );
+//rev 2019 start
+	if (!platform) {
+		if ( solid && !hidden ) {
+			GetPhysics()->SetContents( CONTENTS_SOLID );
+		} else {
+			GetPhysics()->SetContents( 0 );
+		}
 	} else {
-		GetPhysics()->SetContents( 0 );
+		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
 	}
-
+//rev 2019 end	
 	spawnTime = gameLocal.time;
 	active = false;
 
@@ -2031,8 +2039,18 @@ idStaticEntity::Hide
 ================
 */
 void idStaticEntity::Hide( void ) {
-	idEntity::Hide();
-	GetPhysics()->SetContents( 0 );
+	bool platform; //rev 2019
+	
+	platform = spawnArgs.GetBool( "platform" ); //rev 2019
+
+//rev 2019 start
+	if (!platform){	
+		idEntity::Hide();	
+		GetPhysics()->SetContents( 0 );
+	} else {
+		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+	}
+//rev 2019 end
 }
 
 /*
@@ -2043,10 +2061,19 @@ idStaticEntity::Show
 void idStaticEntity::Show( void ) {
 	idEntity::Show();
 	float solid;
+	bool platform; //rev 2019
 	
-	if ( spawnArgs.GetBool( "solid" ) ) {	
-		GetPhysics()->SetContents( CONTENTS_SOLID );
+	platform = spawnArgs.GetBool( "platform" ); //rev 2019
+
+//rev 2019 start
+	if (!platform){
+		if ( spawnArgs.GetBool( "solid" ) ) {	
+			GetPhysics()->SetContents( CONTENTS_SOLID );
+		}
+	} else {
+		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
 	}
+//rev 2019 end
 }
 
 /*
@@ -2059,7 +2086,7 @@ void idStaticEntity::Event_Activate( idEntity *activator ) {
 
 	spawnTime = gameLocal.time;
 	active = !active;
-
+	
 	const idKeyValue *kv = spawnArgs.FindKey( "hide" );
 	if ( kv ) {
 		if ( IsHidden() ) {
