@@ -6553,18 +6553,23 @@ void idPlayer::UpdateViewAngles( void ) {
 			if ( ( ( oldButtons ^ usercmd.buttons ) & BUTTON_6 ) || ( ( oldButtons ^ usercmd.buttons ) & BUTTON_7 ) || fw_toggled ){ //something has changed: start transition
 				if ( usercmd.buttons & BUTTON_6 ){ //up					
 					if( usercmd.forwardmove ){
-						centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, -35.0f );
+						//centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, -35.0f );
+						viewAngles.pitch =  -35.0f;	//rev 2020 instant aim changing					
 					}else{
-						centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, -89.0f );
+						//centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, -89.0f );
+						viewAngles.pitch =  -89.0f; //rev 2020 instant aim changing
 					}
 				} else if ( usercmd.buttons & BUTTON_7 ){ //down		
 					if( usercmd.forwardmove ){
-						centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 35.0f );
+						//centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 35.0f );
+						viewAngles.pitch =  35.0f;	//rev 2020 instant aim changing							
 					}else{
-						centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 89.0f  );
+						//centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 89.0f  );
+						viewAngles.pitch =  89.0f;	//rev 2020 instant aim changing	
 					}
 				} else if( viewAngles.pitch != 0.0f ){ //none of them pressed
-					centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 0 );
+					//centerView.Init( gameLocal.time, LOOK_BLEND_TIME, viewAngles.pitch, 0 );
+					viewAngles.pitch =  0;	//rev 2020 instant aim changing	
 				}
 			}else if ( !centerView.IsDone( gameLocal.time ) ) { //upd transition, if any
 				viewAngles.pitch = centerView.GetCurrentValue(gameLocal.time);
