@@ -3,6 +3,8 @@ Updated files for Doom 3: Harqore 2 Dhewm 3 port.  This is an online back up of 
 
 List of updated features:
 
++Instant aim change when using Contra controls.  Removes the lag when changing angles. Massive improvement to firing.
+
 +Replaced ROE bloom with Denton's HDR lighting system.  Note that the needed shaders and material file can be found in the Rivensin mod.  This is not the same HDR lighting system found in the Denton mod.  It has been modified and improved.  This includes incorporating rebb's improved ambient lighting.
 
 +New "touchofdeath" key for enemies.  Enemies who has this set to 1 will damage the player via touch.
