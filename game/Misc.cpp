@@ -2048,6 +2048,7 @@ void idStaticEntity::Hide( void ) {
 		idEntity::Hide();	
 		GetPhysics()->SetContents( 0 );
 	} else {
+		idEntity::Show();	//rev 2020
 		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
 	}
 //rev 2019 end
