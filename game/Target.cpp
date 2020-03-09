@@ -429,7 +429,7 @@ void idTarget_Show::Event_Activate( idEntity *activator ) {
 /*
 ===============================================================================
 
-idTarget_Show_Repeat //rev 2020 new entity this one does not disapear after one use
+idTarget_Show_Repeat //rev 2020 new entity this one does not disappear after one use
 
 ===============================================================================
 */
@@ -440,7 +440,7 @@ END_CLASS
 
 /*
 ================
-idTarget_Show_Repeat::Event_Activate
+idTarget_Show_Repeat::Event_Activate //rev 2020 added new type of target entity
 ================
 */
 void idTarget_Show_Repeat::Event_Activate( idEntity *activator ) {
@@ -461,7 +461,7 @@ void idTarget_Show_Repeat::Event_Activate( idEntity *activator ) {
 /*
 ===============================================================================
 
-idTarget_Hide_Repeat rev 2020 added new entity
+idTarget_Hide_Repeat // rev 2020 added new entity
 
 ===============================================================================
 */
@@ -472,7 +472,7 @@ END_CLASS
 
 /*
 ================
-idTarget_Hide_Repeat::Event_Activate rev 2020 added new entity
+idTarget_Hide_Repeat::Event_Activate // rev 2020 added new entity
 ================
 */
 void idTarget_Hide_Repeat::Event_Activate( idEntity *activator ) {

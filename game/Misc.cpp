@@ -1933,7 +1933,7 @@ void idStaticEntity::Spawn( void ) {
 	bool hidden;
 	bool platform; //rev 2019
 	
-	platform = spawnArgs.GetBool( "platform" );  //rev 2019
+
 	
 	// an inline static model will not do anything at all
 	if ( spawnArgs.GetBool( "inline" ) || gameLocal.world->spawnArgs.GetBool( "inlineAllStatics" ) ) {
@@ -1944,7 +1944,17 @@ void idStaticEntity::Spawn( void ) {
 	solid = spawnArgs.GetBool( "solid" );
 	hidden = spawnArgs.GetBool( "hide" );
 
+/*
+	if ( solid && !hidden ) {
+		GetPhysics()->SetContents( CONTENTS_SOLID );
+	} else {
+		GetPhysics()->SetContents( 0 );
+	}
+*/
+
 //rev 2019 start
+	platform = spawnArgs.GetBool( "platform" );  //rev 2019
+	
 	if (!platform) {
 		if ( solid && !hidden ) {
 			GetPhysics()->SetContents( CONTENTS_SOLID );
@@ -1955,6 +1965,8 @@ void idStaticEntity::Spawn( void ) {
 		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
 	}
 //rev 2019 end	
+
+
 	spawnTime = gameLocal.time;
 	active = false;
 
@@ -2052,6 +2064,10 @@ void idStaticEntity::Hide( void ) {
 		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
 	}
 //rev 2019 end
+/*
+	idEntity::Hide();
+	GetPhysics()->SetContents( 0 );
+*/
 }
 
 /*
@@ -2062,8 +2078,8 @@ idStaticEntity::Show
 void idStaticEntity::Show( void ) {
 	idEntity::Show();
 	float solid;
-	bool platform; //rev 2019
 	
+	bool platform; //rev 2019	
 	platform = spawnArgs.GetBool( "platform" ); //rev 2019
 
 //rev 2019 start
@@ -2075,6 +2091,12 @@ void idStaticEntity::Show( void ) {
 		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
 	}
 //rev 2019 end
+
+/*
+	if ( spawnArgs.GetBool( "solid" ) ) {
+		GetPhysics()->SetContents( CONTENTS_SOLID );
+	}
+*/
 }
 
 /*

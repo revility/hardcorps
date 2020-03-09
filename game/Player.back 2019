@@ -7928,8 +7928,6 @@ void idPlayer::Move( void ) {
 	//ivan start
 	physicsObj.SetFwInverted( fw_inverted );
 
-	waitForDamage  = spawnArgs.GetInt( "waitfordamage" ); //rev 2020 used for pass through enemies during invulnerability
-			
 	//ivan start
 	if ( animMoveNoGravity ){
 		physicsObj.SetContents( CONTENTS_BODY );
@@ -7972,15 +7970,7 @@ void idPlayer::Move( void ) {
 		GetMoveDelta( viewAxis, viewAxis, delta ); //no changes to Axis since no turning is allowed
 		physicsObj.SetDelta( delta );
 	}	
-	//ivan en
-
-//rev 2020		allow the player to pass through enemies when invulnerability is active.  also prevents standing on heads.	
-	else if ( waitForDamage > 0 ) {
-	physicsObj.SetContents( CONTENTS_CORPSE );
-	physicsObj.SetMovementType( PM_NORMAL );
-		}
-//rev 2020
-	
+	//ivan en		
 	else {
 		physicsObj.SetContents( CONTENTS_BODY );
 		physicsObj.SetMovementType( PM_NORMAL );
@@ -7990,15 +7980,7 @@ void idPlayer::Move( void ) {
 		physicsObj.SetClipMask( MASK_DEADSOLID );
 	} else if ( health <= 0 ) {
 		physicsObj.SetClipMask( MASK_DEADSOLID );
-	} 
-	
-//rev 2020	allow the player to pass through enemies when invulnerability is active.  also prevents standing on heads.
-		else if ( waitForDamage > 0 ) {
-			physicsObj.SetClipMask( MASK_DEADSOLID );
-		}
-//rev 2020	
-	
-	else {
+	} else {
 		physicsObj.SetClipMask( MASK_PLAYERSOLID );
 	}
 
@@ -8288,15 +8270,6 @@ void idPlayer::Think( void ) {
 	}
 	*/
 
-// rev 2020 check the last time we were damaged, if too long, run a script to enable damage again.
-		waitForDamage  = spawnArgs.GetInt( "waitfordamage" );
-		if (( gameLocal.time > lastDmgTime + 1500 ) && ( waitForDamage > 0 ) ) {	//check wait for damage or the slide move will not work
-			SetState( "BlinkOff" ); 
-			UpdateScript();
-			
-
-		}
-		
 	// grab out usercmd
 	usercmd_t oldCmd = usercmd;
 	usercmd = gameLocal.usercmds[ entityNumber ];
@@ -9156,8 +9129,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	  
 	  
 		SetState( "BlinkOn" );	// rev 2018 triggers the player's script to start no damage for a bit.
-		UpdateScript();	
-		
+	  
   } else {
 	  // don't accumulate impulses
 	  if ( af.IsLoaded() ) {
