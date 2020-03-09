@@ -9098,7 +9098,10 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
   // add to the damage inflicted on a player this frame
   // the total will be turned into screen blends and view angle kicks
   // at the end of the frame
-  if ( health > 0 ) {
+  //if ( health > 0 ) {
+	waitForDamage  = spawnArgs.GetInt( "waitfordamage" );	//rev 2020 no dmg effect on screen when invulnerability is on
+	if (( health > 0 ) && ( waitForDamage < 1 )) {
+  //if ( health > 0 ) {
 	  playerView.DamageImpulse( localDamageVector, &damageDef->dict );
   }
 
