@@ -2051,23 +2051,8 @@ idStaticEntity::Hide
 ================
 */
 void idStaticEntity::Hide( void ) {
-	bool platform; //rev 2019
-	
-	platform = spawnArgs.GetBool( "platform" ); //rev 2019
-
-//rev 2019 start
-	if (!platform){	
-		idEntity::Hide();	
-		GetPhysics()->SetContents( 0 );
-	} else {
-		idEntity::Show();	//rev 2020
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
-	}
-//rev 2019 end
-/*
 	idEntity::Hide();
 	GetPhysics()->SetContents( 0 );
-*/
 }
 
 /*
@@ -2077,26 +2062,10 @@ idStaticEntity::Show
 */
 void idStaticEntity::Show( void ) {
 	idEntity::Show();
-	float solid;
-	
-	bool platform; //rev 2019	
-	platform = spawnArgs.GetBool( "platform" ); //rev 2019
-
-//rev 2019 start
-	if (!platform){
-		if ( spawnArgs.GetBool( "solid" ) ) {	
-			GetPhysics()->SetContents( CONTENTS_SOLID );
-		}
-	} else {
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
-	}
-//rev 2019 end
-
-/*
 	if ( spawnArgs.GetBool( "solid" ) ) {
 		GetPhysics()->SetContents( CONTENTS_SOLID );
 	}
-*/
+
 }
 
 /*
@@ -2109,16 +2078,20 @@ void idStaticEntity::Event_Activate( idEntity *activator ) {
 
 	spawnTime = gameLocal.time;
 	active = !active;
-	
-	const idKeyValue *kv = spawnArgs.FindKey( "hide" );
-	if ( kv ) {
-		if ( IsHidden() ) {
-			Show();
-		} else {
-			Hide();
-		}
-	}
 
+	bool platform_cant_hide; //rev 2020	
+	platform_cant_hide = spawnArgs.GetBool( "platform_cant_hide" ); //rev 2020	
+	
+	if (!platform_cant_hide){ //rev 2020
+		const idKeyValue *kv = spawnArgs.FindKey( "hide" );
+		if ( kv ) {
+			if ( IsHidden() ) {
+				Show();
+			} else {
+				Hide();
+			}
+		}
+	} //rev 2020
 	renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( spawnTime );
 	renderEntity.shaderParms[5] = active;
 	// this change should be a good thing, it will automatically turn on
