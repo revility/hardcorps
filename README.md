@@ -9,14 +9,14 @@ List of updated features:
 
 +Jump through platform support.  Done with a trigger_jumpdown for above and just a trigger_multiple with wait set to 0 below.  Both entities should target the new func_platform_jumpthrough entity.  This functions the same as a fun_static with the new platform key set to 1...  this key is checked in the hard code for setting the contents to allow the player to go through or not go through.  Any entity with the platform 1 set will also allow everything but bullets to go through it as a useful by product.
 
-+New "touchofdeath" key for enemies.  Enemies who has this set to 1 will damage the player via touch.
++New "touchofdeath" key for enemies.  Enemies who have this set to 1 will damage the player via touch.
 
-+Waitfordamage key.  Checked from the player.def file. used to stop enable and disable the player taking damage.
++Waitfordamage key.  Checked from the player.def file. Used to stop enable and disable the player taking damage.
 
 +noaim key for enemies.  When set to 1, enemies and bots will only shoot straight ahead in the direction of the player and not aim directly at them.  Very common side scrollers.
 
-+Invulnerability to damage script.  After taking damage a script is called.  The script itself uses the new waitfordamage key to enable and disable the player taking damage for a brief period of time.  sdk is used to call the scripts and timer to turn off.
-This system is very similar to classic platformer games such as Castlevania and Ninja Gaiden.  Visuals and amount of time is controlled in the player's script.
++Player invulnerability after taking damage and knock up.  After taking damage a script is called.  The script itself uses the new waitfordamage key to enable and disable the player taking damage for a brief period of time.  sdk is used to call the scripts and timer to turn off.  The player is also knocked up a bit.
+This system is very similar to classic platformer games such as Castlevania and Ninja Gaiden.  Visual fx is controlled in the player's script and def.
 
 +Various adjustments to enemy AI and projectile distance for wide screen aspect ratios *Not finished*
 
