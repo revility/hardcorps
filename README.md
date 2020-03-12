@@ -7,6 +7,8 @@ List of updated features:
 
 +Replaced ROE bloom with Denton's HDR lighting system.  Note that the needed shaders and material file can be found in the Rivensin mod.  This is not the same HDR lighting system found in the Denton mod.  It has been modified and improved.  This includes incorporating rebb's improved ambient lighting.
 
++Jump through platform support.  Done with a trigger_jumpdown for above and just a trigger_multiple with wait set to 0 below.  Both entities should target the new func_platform_jumpthrough entity.  This functions the same as a fun_static with the new platform key set to 1...  this key is checked in the hard code for setting the contents to allow the player to go through or not go through.  Any entity with the platform 1 set will also allow everything but bullets to go through it as a useful by product.
+
 +New "touchofdeath" key for enemies.  Enemies who has this set to 1 will damage the player via touch.
 
 +Waitfordamage key.  Checked from the player.def file. used to stop enable and disable the player taking damage.
