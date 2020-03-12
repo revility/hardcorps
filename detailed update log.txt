@@ -14,18 +14,7 @@ BUGS:
 	+RuinBlade charge shot crashes game during actual levels, but not test. Loop issue?
 	+dash back laggy
 	+Enemy death fx instead of ragdolls?
-		*Or faster enemy ragdoll fall down
-		+restore original wasted hate for balancing
-			+pinky boss health too high
-			+Pinky delay before charging needs to be longer?
-			+moving platform around pinky?
-			+Lights out before and then flash on for pinky fight
-			+wasted hate needs to use new soldier enemies
-			+wasted hate boss music doesn't stop old music
-			+enemy triggers too late
-			+commandos line of site too low
-			+doors trigger too late
-			+less enemy health, and more enemies balance
+	+Melee weapons cause enemy ragdolls to freeze.
 
 
 	*SDK:
