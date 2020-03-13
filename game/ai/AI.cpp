@@ -799,8 +799,8 @@ void idAI::Spawn( void ) {
 	spawnArgs.GetFloat( "kick_force",			"4096",		kickForce );
 	spawnArgs.GetBool( "ignore_obstacles",		"1",		ignore_obstacles ); //ivan: set default to 1
 	spawnArgs.GetFloat( "blockedRadius",		"-1",		blockedRadius );
-	spawnArgs.GetInt( "blockedMoveTime",		"750",		blockedMoveTime );
-	spawnArgs.GetInt( "blockedAttackTime",		"750",		blockedAttackTime );
+	spawnArgs.GetInt( "blockedMoveTime",		"450",		blockedMoveTime );	//rev 2020 was 750 reduced the time
+	spawnArgs.GetInt( "blockedAttackTime",		"450",		blockedAttackTime );
 
 	spawnArgs.GetInt(	"num_cinematics",		"0",		num_cinematics );
 	current_cinematic = 0;
@@ -1499,11 +1499,11 @@ bool idAI::PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int g
 	//ivan start 
 
 	/*
-      se io sono/vado su ALTRO piano E c'Ã¨ strada che collega:
+      se io sono/vado su ALTRO piano E c'è strada che collega:
       - isXlocked 0 updXlock 0 --> mai lockato,    riesce a fare strada,
       - isXlocked 0 updXlock 1 --> si slocca,      riesce a fare strada,
       - isXlocked 1 updXlock 1 --> si slocca,      riesce a fare strada,
-      - isXlocked 1 updXlock 0 --> Ã¨ lockato,      impazzisce cercando di fare strada,
+      - isXlocked 1 updXlock 0 --> è lockato,      impazzisce cercando di fare strada,
 
       Soluz: se lockato e no updXlock, non deve provare a raggiungermi se X diversa.
 	*/
@@ -1514,14 +1514,14 @@ bool idAI::PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int g
 		}
 	}
 
-	/*se io sono/vado su STESSO piano E c'Ã¨ strada alternativa su altro piano:
+	/*se io sono/vado su STESSO piano E c'è strada alternativa su altro piano:
       - isXlocked 0 updXlock 0 --> mai lockato,    riesce a fare strada alternativa,
-      - isXlocked 0 updXlock 1 --> se giÃ  lockato, impazzisce cercando di fare strada alternativa, (quindi ora var isXlocked = 1)
-      - isXlocked 1 updXlock 1 --> Ã¨ lockato,      impazzisce cercando di fare strada alternativa,
-      - isXlocked 1 updXlock 0 --> Ã¨ lockato,      impazzisce cercando di fare strada alternativa,
+      - isXlocked 0 updXlock 1 --> se già lockato, impazzisce cercando di fare strada alternativa, (quindi ora var isXlocked = 1)
+      - isXlocked 1 updXlock 1 --> è lockato,      impazzisce cercando di fare strada alternativa,
+      - isXlocked 1 updXlock 0 --> è lockato,      impazzisce cercando di fare strada alternativa,
       
       Soluz: se lockato, non deve vedere la strada. 
-      Miglioramento: se updXlock 1 puÃ² cmq vederla, ma se deve anche sloccare...
+      Miglioramento: se updXlock 1 può cmq vederla, ma se deve anche sloccare...
     */
 
 	/*was:
@@ -5601,3 +5601,5 @@ void idCombatNode::Event_MarkUsed( void ) {
 		disabled = true;
 	}
 }
+
+
