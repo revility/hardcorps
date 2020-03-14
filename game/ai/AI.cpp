@@ -799,7 +799,7 @@ void idAI::Spawn( void ) {
 	spawnArgs.GetFloat( "kick_force",			"4096",		kickForce );
 	spawnArgs.GetBool( "ignore_obstacles",		"1",		ignore_obstacles ); //ivan: set default to 1
 	spawnArgs.GetFloat( "blockedRadius",		"-1",		blockedRadius );
-	spawnArgs.GetInt( "blockedMoveTime",		"450",		blockedMoveTime );	//rev 2020 was 750 reduced the time
+	spawnArgs.GetInt( "blockedMoveTime",		"750",		blockedMoveTime );
 	spawnArgs.GetInt( "blockedAttackTime",		"450",		blockedAttackTime );
 
 	spawnArgs.GetInt(	"num_cinematics",		"0",		num_cinematics );
@@ -4134,7 +4134,7 @@ void idAI::UpdateIsOnScreen( void ) {
 	}
 
 	//Y axis - horizontal distance
-	if( idMath::Fabs( delta.y ) > delta.x + 100 ){ //if horizontal dist is greater than camera dist, than we are out of view (Horizontal FOV 90 --> 90 45 45 triangle)
+	if( idMath::Fabs( delta.y ) > delta.x + 120 ){ //if horizontal dist is greater than camera dist, than we are out of view (Horizontal FOV 90 --> 90 45 45 triangle)
 		//Rev 2018 increased range by 120.  this allows enemies to attack as soon as they are fully on screen.
 		isOnScreen = false;
 		return;
