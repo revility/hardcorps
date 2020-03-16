@@ -3,6 +3,90 @@ DOOM 3: HARD CORPS
 2019 UPDATE LOG
 FINAL BUILD: 1.0.00
 
+NOTES ON THE PAK FILES:
+	pak 1100 contains the original HQ assets merged with the 1.1 build pak assets
+	pak 1200 contains the 2018-2020 updated content.
+	
+************************************************************************************************
+
+Build: 0.8.30
+03.??.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+increased fps of shotgun fire from 24 to 30
+	*Weapons player:
+		+shotgun now fires faster
+	*Enemies:
+	*Other:
+		+Skins: fixed typos in barrel skins
+	*Maps:
+		*Wasted Hate:
+			+Fixed console warning related to barrel skins
+			+fixed material _untitled error
+			+fixed broken ammo pick ups
+			+adjusted trigger position for many enemy triggers
+			+Added many more enemies... more than doubled the enemy count
+			+replaced flame thrower with security armor
+			+added a 2nd wall jump tip before the boss fight
+			-removed falling body in fourth area... scream was terrible.  Looked cheesy.
+			+adjusted script to make sure the old music stops before boss fight
+			-removed door triggers added in previous build... nolonger needed
+			+fixed expand_bounds key for secret wall door
+			+fixed ammo clip poisition in main shaft room
+			+fixed fat zombie facing direction in shaft room.
+			-removed or replaced bad item pick ups.
+			+replaced all zsec with monster_soldiers
+		*Playground
+			-removed old unused weapons and items
+			+Added updated weapons, new weapons and ammo pick ups.
+
+************************************************************************************************
+
+Build: 0.8.29
+03.15.20
+Focus: 
+
+	*SDK:
+		+Enemies can pass through each other if on the same team and key team_non_solid enabled.  AI.cpp
+		+New key for doors added: expand_bounds... increases the size to trigger it to open.  default is 200. mover.cpp		
+	*Player Updates:
+		+Fixed RuinBlade weapon weapon info set to 0 instead of 18
+		+Fixed frame numbers for pick axe and csg
+		+Fixed animation name "Fourth" for melee weapons mispelled from forth
+		+Updated default ammo values
+		+Updated max ammo values
+		+Updated a couple ammo gui names.
+	*Weapons player:
+		+Updated skeleton of pick axe to work with Ruinblade animations
+		+Updated Pick axe to new idle animation and motion trails.
+		+Pick axe now uses the fake projectile system like other melee weapons.
+			*This is much more dependable than using standard melee damage and melee collision detection.
+		+Fixed CSG and RuinBlade invisible projectile freezing ragdolls when killing enemies...  melee damage must be 1 not 0.
+		+Fixed RuinBlade missing melee info in def causing the game to crashes
+		+Updated RuinBlade and CSG to use the same style script as the pick axe... much cleaner and simple code.  Old versions archived
+		+Cleaned up pick axe script
+		-removed cross bow part of advocate
+		-Lowered charge time for Ruin Blade charge shot... now faster to fire.
+		-Lowered SMG rate of fire from 0.2 to 0.24
+		+Rocket launcher, enforcer and grenade launcher now share the new explosive ammo type
+		+Changed GUI Grenade Launcher names from Hand Grenades.
+	*Enemies:
+		+Minor improvements to enemy fov and chase after player
+		+New key team_non_solid added to monster default to allow monsters to pass through each other.
+	*Other:
+		+Door default speed increased from 100 to 200
+		+New key for doors added: expand_bounds... increases the size to trigger it to open.  default is 200. fun.def
+		+Fixed and cleaned up Ammo.def.  Removed unused ammo types and cleaned up file, adjusted models, amounts and more.
+		+Added explosive ammo type.  replaces rockets and grenades.  
+		+backback item: Fixed up and modified amounts of ammo, ammo types and more given
+	*Maps:
+		+Restored original Wasted Hate
+			+Added an extra large ammo clip before boss fight
+			-lowered boss health from 2200 to 1200.
+			+Fixed ragdoll not falling from ceiling when scream is heard.
+	
 
 ************************************************************************************************
 
@@ -14,7 +98,18 @@ BUGS:
 	+RuinBlade charge shot crashes game during actual levels, but not test. Loop issue?
 	+dash back laggy
 	+Enemy death fx instead of ragdolls?
-	+Melee weapons cause enemy ragdolls to freeze.
+		*Or faster enemy ragdoll fall down
+		+restore original wasted hate for balancing
+			+pinky boss health too high
+			+Pinky delay before charging needs to be longer?
+			+moving platform around pinky?
+			+Lights out before and then flash on for pinky fight
+			+wasted hate needs to use new soldier enemies
+			+wasted hate boss music doesn't stop old music
+			+enemy triggers too late
+			+commandos line of site too low
+			+doors trigger too late
+			+less enemy health, and more enemies balance
 
 
 	*SDK:
