@@ -7430,11 +7430,13 @@ void idPlayer::PerformImpulse( int impulse ) {
 		return;
 	}
 
-	if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
+//rev 2020 start... different characters have different default weapons start
+	//if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
+	if ( impulse >= (IMPULSE_0 || IMPULSE_11) && impulse <= IMPULSE_12 ) {		//0 IS Chainsaw gauntlet for Doom marine.  11 is ruin blade for scarlet
+//rev 2020 end... different characters have different default weapons start
 		WeaponToggle_t* weaponToggle; //un noted change from original sdk
-
-		// This loop works as a small bug fix for toggle weapons -By Clone JC Denton
-		// It simply increments the impulse value if there are multiple weapons under one weapon slot.
+// This loop works as a small bug fix for toggle weapons -By Clone JC Denton
+// It simply increments the impulse value if there are multiple weapons under one weapon slot.
 
 		for (int i=0; i<impulse; i++) {
 			if (weaponToggles.Get(va("weapontoggle%d", i), &weaponToggle))
@@ -10190,7 +10192,14 @@ void idPlayer::Event_GetPreviousWeapon( void ) {
 		weapon = spawnArgs.GetString( va( "def_weapon%d", pw) );
 		idThread::ReturnString( weapon );
 	} else {
+		//idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+//rev 2020 start character select default weapon
+		if ( cvarSystem->GetCVarBool( "pm_character") ) {
+		idThread::ReturnString( spawnArgs.GetString( "def_weapon12" ) );
+		}else{
 		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+		}	
+//rev 2020 end character select default weapon
 	}
 }
 
