@@ -7430,6 +7430,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 		return;
 	}
 
+/* //rev 2020 original code
 	if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
 		WeaponToggle_t* weaponToggle; //un noted change from original sdk
 // This loop works as a small bug fix for toggle weapons -By Clone JC Denton
@@ -7447,6 +7448,43 @@ void idPlayer::PerformImpulse( int impulse ) {
 		}
 		return;
 	}
+*/
+//rev 2020 start character select default weapon toggle
+	if ( cvarSystem->GetCVarBool( "pm_character") ) {
+		if ( impulse >= IMPULSE_1 && impulse <= IMPULSE_12 ) {
+			WeaponToggle_t* weaponToggle;
+
+			for (int i=0; i<impulse; i++) {
+				if (weaponToggles.Get(va("weapontoggle%d", i), &weaponToggle))
+					impulse += weaponToggle->toggleList.Num() - 1;
+			}
+
+			prevIdealWeap = idealWeapon;
+			SelectWeapon( impulse, false, true);
+			if( idealWeapon != prevIdealWeap ) {
+				quickWeapon = prevIdealWeap;
+			}
+			return;
+		}
+	}else{
+		if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
+			WeaponToggle_t* weaponToggle;
+
+			for (int i=0; i<impulse; i++) {
+				if (weaponToggles.Get(va("weapontoggle%d", i), &weaponToggle))
+					impulse += weaponToggle->toggleList.Num() - 1;
+			}
+
+			prevIdealWeap = idealWeapon;
+			SelectWeapon( impulse, false, true);
+			if( idealWeapon != prevIdealWeap ) {
+				quickWeapon = prevIdealWeap;
+			}
+			return;
+		}
+	}	
+//rev 2020 character select default weapon toggle end
+
 	switch( impulse ) {
 		case IMPULSE_13: {
 			//ivan start
@@ -7472,10 +7510,11 @@ void idPlayer::PerformImpulse( int impulse ) {
 			break;
 						 }
 		case IMPULSE_16: {  //un noted change from original sdk
+//rev 2020 never drop weapons
 			//ivan start - drop the weapon only if it is in a slot.
-			if( currentSlot >= 0 ){ 
-				DropWeapon( false );
-			}
+			//if( currentSlot >= 0 ){ 
+			//	DropWeapon( false );
+			//}
 			break;
 			
 			/*
@@ -8784,12 +8823,12 @@ void idPlayer::Killed( idEntity *inflictor, idEntity *attacker, int damage, cons
 	// get rid of weapon
 	weapon.GetEntity()->OwnerDied();
 
+//rev 2020 don't drop the weapon! Doom Slayer don't drop weapons... they are the weapon! lol
 	// drop the weapon as an item
 	//ivan start -drop the weapon only if it is in a slot
-	//was: DropWeapon( true );
-	if( currentSlot >= 0 ){
-		DropWeapon( true );
-	}
+	//if( currentSlot >= 0 ){
+	//	DropWeapon( true );
+	//}
 	//ivan end
 
 	if ( !g_testDeath.GetBool() ) {
@@ -10189,7 +10228,14 @@ void idPlayer::Event_GetPreviousWeapon( void ) {
 		weapon = spawnArgs.GetString( va( "def_weapon%d", pw) );
 		idThread::ReturnString( weapon );
 	} else {
-		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+//rev 2020 start character select via cvar		
+//was:		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+		if ( cvarSystem->GetCVarBool( "pm_character") ) {
+			idThread::ReturnString( spawnArgs.GetString( "def_weapon1" ) );
+		}else{
+			idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+		}	
+//rev 2020 character select end
 	}
 }
 
