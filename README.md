@@ -5,6 +5,8 @@ List of updated features:
 
 +Instant aim change when using "Contra", keyboard/controller, controls.  Removes the lag when changing angles. Massive improvement to firing.
 
++Instant melee weapon attack.  Each character has a melee weapon they can fire instantly instead of being forced to select them.  Most of the changes are in the soft code per weapon.  Pressing the bound impulse key will go straight to the attack and then back to previous weapon.  This makes melee weapons much more useful.  Scarlet Uses a sword, Doom Marine uses the chainsaw gauntlet.
+
 +Replaced ROE bloom with Denton's HDR lighting system.  Note that the needed shaders and material file can be found in the Rivensin mod.  This is not the same HDR lighting system found in the Denton mod.  It has been modified and improved.  This includes incorporating rebb's improved ambient lighting.
 
 +Jump through platform support.  Done with a trigger_jumpdown for above and just a trigger_multiple with wait set to 0 below.  Both entities should target the new func_platform_jumpthrough entity.  This functions the same as a fun_static with the new platform key set to 1...  this key is checked in the hard code for setting the contents to allow the player to go through or not go through.  Any entity with the platform 1 set will also allow everything but bullets to go through it as a useful by product.
