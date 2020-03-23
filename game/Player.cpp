@@ -7430,7 +7430,6 @@ void idPlayer::PerformImpulse( int impulse ) {
 		return;
 	}
 
-/* //rev 2020 original code
 	if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
 		WeaponToggle_t* weaponToggle; //un noted change from original sdk
 // This loop works as a small bug fix for toggle weapons -By Clone JC Denton
@@ -7448,42 +7447,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 		}
 		return;
 	}
-*/
-//rev 2020 start character select default weapon toggle
-	if ( cvarSystem->GetCVarBool( "pm_character") ) {
-		if ( impulse >= IMPULSE_1 && impulse <= IMPULSE_12 ) {
-			WeaponToggle_t* weaponToggle;
 
-			for (int i=0; i<impulse; i++) {
-				if (weaponToggles.Get(va("weapontoggle%d", i), &weaponToggle))
-					impulse += weaponToggle->toggleList.Num() - 1;
-			}
-
-			prevIdealWeap = idealWeapon;
-			SelectWeapon( impulse, false, true);
-			if( idealWeapon != prevIdealWeap ) {
-				quickWeapon = prevIdealWeap;
-			}
-			return;
-		}
-	}else{
-		if ( impulse >= IMPULSE_0 && impulse <= IMPULSE_12 ) {
-			WeaponToggle_t* weaponToggle;
-
-			for (int i=0; i<impulse; i++) {
-				if (weaponToggles.Get(va("weapontoggle%d", i), &weaponToggle))
-					impulse += weaponToggle->toggleList.Num() - 1;
-			}
-
-			prevIdealWeap = idealWeapon;
-			SelectWeapon( impulse, false, true);
-			if( idealWeapon != prevIdealWeap ) {
-				quickWeapon = prevIdealWeap;
-			}
-			return;
-		}
-	}	
-//rev 2020 character select default weapon toggle end
 
 	switch( impulse ) {
 		case IMPULSE_13: {
@@ -10227,15 +10191,8 @@ void idPlayer::Event_GetPreviousWeapon( void ) {
 		int pw = ( gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) ? 0 : previousWeapon;
 		weapon = spawnArgs.GetString( va( "def_weapon%d", pw) );
 		idThread::ReturnString( weapon );
-	} else {
-//rev 2020 start character select via cvar		
-//was:		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
-		if ( cvarSystem->GetCVarBool( "pm_character") ) {
-			idThread::ReturnString( spawnArgs.GetString( "def_weapon1" ) );
-		}else{
-			idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
-		}	
-//rev 2020 character select end
+	} else {	
+		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
 	}
 }
 
