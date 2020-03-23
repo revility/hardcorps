@@ -307,15 +307,8 @@ void Cmd_Give_f( const idCmdArgs &args ) {
 		if ( gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) {
 			gameLocal.world->spawnArgs.SetBool( "no_Weapons", false );
 			for( i = 0; i < gameLocal.numClients; i++ ) {
-				if ( gameLocal.entities[ i ] ) {
-//rev 2020 start character select via cvar					
-				//was:	gameLocal.entities[ i ]->PostEventSec( &EV_Player_SelectWeapon, 0.5f, gameLocal.entities[ i ]->spawnArgs.GetString( "def_weapon0" ) ); //ivan - was: def_weapon1 - 0 is chainsaw
-					if ( cvarSystem->GetCVarBool( "pm_character") ) {
-						gameLocal.entities[ i ]->PostEventSec( &EV_Player_SelectWeapon, 0.5f, gameLocal.entities[ i ]->spawnArgs.GetString( "def_weapon1" ) );
-					}else{
-						gameLocal.entities[ i ]->PostEventSec( &EV_Player_SelectWeapon, 0.5f, gameLocal.entities[ i ]->spawnArgs.GetString( "def_weapon0" ) );
-					}	
-//rev 2020 character select end
+				if ( gameLocal.entities[ i ] ) {			
+					gameLocal.entities[ i ]->PostEventSec( &EV_Player_SelectWeapon, 0.5f, gameLocal.entities[ i ]->spawnArgs.GetString( "def_weapon0" ) ); //ivan - was: def_weapon1 - 0 is chainsaw
 				}
 			}
 		}
