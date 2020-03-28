@@ -6,7 +6,79 @@ FINAL BUILD: 1.0.00
 NOTES ON THE PAK FILES:
 	pak 1100 contains the original HQ assets merged with the 1.1 build pak assets
 	pak 1200 contains the 2018-2020 updated content.
-	
+
+************************************************************************************************
+
+Build: 0.8.32
+03.24.20
+Focus: 
+
+	*SDK:	
+		+reverted toggle melee weapon changes. player.cpp and syscmd.cpp
+	*Player Updates:
+		+Ruinblade now shares the same weapon0 slot as the CSG.  done via Scarlet's def file.
+			*Note that both characters share the same base... each character can have their own weapons or stats.
+				*However they should be weapons the other can not pick up or else it introduces many, many bugs.
+		-Removed inventory nails from player defs
+		+Scarlet now starts off with bullets instead of nails
+	*Weapons player:
+		+Advocate now uses bullets to make having it as a default weapon for Scarlet more usable.
+		+Onslaught now uses shells to make it more usable.
+	*Enemies:
+	*Other:
+		-Ammo: removed nails ammo types
+		-Ammo/items: removed nail pick ups
+	*GUI:
+	*Maps:
+
+************************************************************************************************
+
+Build: 0.8.31
+03.23.20
+Focus: 
+
+	*SDK:	
+		+Player no longer looses weapon upon death. player.cpp
+		+Fixed Ruin Blade weapon slot toggle not working.  player.cpp syscmd.cpp
+		+melee_snd_raise player key added.  used to disable weapon equip sounds after a melee attack
+	*Player Updates:
+		*commented out unused csg attack for new ones
+		+Player now instantly attacks when selecting the chainsaw gauntlet and reverts to previous weapon
+	*Weapons player:
+		+CSG invisible projectile size, speed and fuse adjusted.  smaller faster collision box.
+			*fixes the projectile going through objects when too close causing the player to miss.
+			*fixes the damage fx spawning too close to the player model
+		+CSG instant attack:  When pressing the csg key, the player will automatically attack and then revert to previous weapon.
+		+The above changes have been applied to the Ruin Blade
+		-Ruin Blade no longer does a charge attack as a result of the change.
+		+Increased CSG damage
+		+CSG flesh hitting sound updated
+		+Fixed all weapons playing the equip sound after swinging a melee weapon using the melee_snd_raise player key
+	*Enemies:
+		+Monster_soldier pistol max shots reduced from 6 to 3
+		+Monster_soldier shotgun max shots reduced from 3 to 2
+	*Other:
+		+Default controls updated:
+			-removed drop weapon key.  unused, not  needed, causes weapon slot bugs.
+			+changed f key to dash/button5
+			+changed mouse2 to melee attack key
+			+Keyboard/controller is now the default aiming method.
+	*GUI:
+		+Updating naming for various attack, dash and aim related options to better reflect what they do
+		-removed drop weapon key bind options
+		+replaced drop weapon key bind with dash key bind.
+		+Hud updated weapon pick up info
+		+Hud: added placeholder images and missing info for advocate, onslaught, ruinblade, CSG
+	*Maps:
+		*Wasted Hate:
+			-removed use of music_speakers from map. replaced with triggering standard speakers. Much more dependable.
+				*music_speakers system looses speaker info when the player dies is why.
+			+Cleaned up level script
+			+removed monster clip texture in boss room preventing the pinky from attacking the player and breaking ai routines.
+			-removed a couple obsolete triggers
+			-replaced pick axe with shotgun
+			+added more enemies
+
 ************************************************************************************************
 
 Build: 0.8.30
@@ -93,25 +165,6 @@ Focus:
 Build: 0.8.28
 03.11.20
 Focus: 
-
-BUGS:
-	+RuinBlade charge shot crashes game during actual levels, but not test. Loop issue?
-	+dash back laggy
-	+Enemy death fx instead of ragdolls?
-		*Or faster enemy ragdoll fall down
-		+restore original wasted hate for balancing
-			+pinky boss health too high
-			+Pinky delay before charging needs to be longer?
-			+moving platform around pinky?
-			+Lights out before and then flash on for pinky fight
-			+wasted hate needs to use new soldier enemies
-			+wasted hate boss music doesn't stop old music
-			+enemy triggers too late
-			+commandos line of site too low
-			+doors trigger too late
-			+less enemy health, and more enemies balance
-
-
 	*SDK:
 		+Entities now check if they are activating a jump through platform and will active the solid state properly for it. entity.cpp, entity h
 			*This is done via having the jumpthrough key set to 1 for the triggering entity and the platform key set to 1 on the target entity.
@@ -144,11 +197,6 @@ BUGS:
 Build: 0.8.26
 02.09.19
 Focus: 
-
-BUGS:
-	+Fullbody anims do not reset damage delay/blinking
-	+RuinBlade charge shot crashes game during actual levels, but not test. Loop issue?
-
 	*SDK:
 		+Added new cvar: pm_character.  changes the player character.
 		+Updated game_local.cpp for player character select
