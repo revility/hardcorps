@@ -3311,13 +3311,33 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	ammoamount	= weapon.GetEntity()->AmmoAvailable();
 	maxAmmo		= weapon.GetEntity()->GetMaxAmmo(); //ivan
 
+	
+//rev 2020 display all ammo types in hud start
+	int ammo_exp;
+	int ammo_souls;
+	int ammo_cells;
+	int ammo_bullets;
+	int ammo_shells;
+	ammo_exp = inventory.HasAmmo( 1, 1 );
+	ammo_souls = inventory.HasAmmo( 2, 1 );
+	ammo_cells = inventory.HasAmmo( 4, 1 );
+	ammo_bullets = inventory.HasAmmo( 5, 1 );
+	ammo_shells	= inventory.HasAmmo( 6, 1 );
+	
+	_hud->SetStateString( "player_ammo_bullets", va( "%i", ammo_bullets ) );
+	_hud->SetStateString( "player_ammo_shells", va( "%i", ammo_shells ) ); 
+	_hud->SetStateString( "player_ammo_cells", va( "%i", ammo_cells ) ); 
+	_hud->SetStateString( "player_ammo_souls", va( "%i", ammo_souls ) ); 
+	_hud->SetStateString( "player_ammo_exp", va( "%i", ammo_exp ) ); 		
+//rev 2020 display all ammo types in hud end
+	
 	if ( ammoamount < 0 || !weapon.GetEntity()->IsReady() ) {
 		// show infinite ammo
 		_hud->SetStateString( "player_ammo", "" );
 		_hud->SetStateString( "player_totalammo", "--" ); //ivan - "--" added
 		_hud->SetStateString( "player_ammo_pct", "100" ); //ivan
 	} else {
-		// show remaining ammo
+		// show remaining ammo				
 		_hud->SetStateString( "player_totalammo", va( "%i", ammoamount ) ); //new
 		//_hud->SetStateString( "player_totalammo", va( "%i", ammoamount - inclip ) ); 
 		_hud->SetStateString( "player_ammo", weapon.GetEntity()->ClipSize() ? va( "%i", inclip ) : "--" );		// how much in the current clip
@@ -3446,10 +3466,10 @@ void idPlayer::UpdateHudWeapon( bool flashWeapon ) {
 
 		//ivan - upd short ammo name
 		hud->SetStateString( "player_slotammotxt", spawnArgs.GetString( va( "weapon%d_slotammotxt", idealWeapon ), "Ammo:" ) );
-
 	}
 
 	//ivan start - see also idWeapon::UpdateGUI
+
 	bool slotChanged = SetCurrentSlot( inventory.GetSlotByWeap( idealWeapon ) );
 
 	for ( int i = 0; i < NUM_SLOTS; i++ ) {
@@ -7981,7 +8001,7 @@ void idPlayer::Move( void ) {
 	physicsObj.SetContents( CONTENTS_CORPSE );
 	physicsObj.SetMovementType( PM_NORMAL );
 		}
-//rev 2020
+//rev 2020 end
 	
 	else {
 		physicsObj.SetContents( CONTENTS_BODY );
@@ -7998,7 +8018,7 @@ void idPlayer::Move( void ) {
 		else if ( waitForDamage > 0 ) {
 			physicsObj.SetClipMask( MASK_DEADSOLID );
 		}
-//rev 2020	
+//rev 2020	end
 	
 	else {
 		physicsObj.SetClipMask( MASK_PLAYERSOLID );
