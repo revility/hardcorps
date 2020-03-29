@@ -9,6 +9,44 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.33
+03.29.20
+Focus: 
+
+	*SDK:	
+		+Added the ability for the hud to display multiple ammo types. player.cpp  Vanilla D3 could only do the current weapon
+			*Ammo Def numbers are used to determine which ammo type amount is displayed
+	*Player Updates:
+		+pistol weapon18 fixed bullets ammo info 
+	*Weapons player:
+		+Ruin Blade no longer plays the equip sound when used
+		+Rockets no longer damage the player
+		+BFG now uses cell ammo.  amount used when fired adjusted
+	*Enemies:
+	*Other:
+	*GUI:
+		*Hud: revamped player stats area
+			+cleaned up code
+			-removed outdated and unused code
+			+improved health and armor number visibility
+			+Added new health and armor icons
+			+Added new weapon icons and imported ones from Rivensin
+			+Added new weapon icon border image
+			+adjusted weapon ammo info
+			+Added Ammo icons
+			+Now displays  all ammo types carried by the player at all times
+			+moved lives and score info
+			+Moved stamina bar to the top above lives and score.
+			+New stamina border and bar images
+			+Moved air gauge left
+			+Moved radio chatter to the bottom center
+			+Moved and adjusted boss health bar.  changed text
+			+Moved and adjust jet pack fuel bar
+			+Objective window and objective complete windows moved upward by a 100
+			+Increased the resolution of some of the images such as the stamina gauge, boss gauge, radio and air gauges
+	*Maps:
+
+************************************************************************************************
 Build: 0.8.32
 03.24.20
 Focus: 
