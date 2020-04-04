@@ -39,6 +39,8 @@ If you have questions concerning this license or the applicable additional terms
 #include "gamesys/Event.h"
 #include "Game_local.h"
 
+#include "framework/DeclEntityDef.h" //rev 2020 was in Rivensin
+
 #ifdef _DENTONMOD
 #ifndef _DENTONMOD_ENTITY_CPP
 #define _DENTONMOD_ENTITY_CPP

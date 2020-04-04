@@ -33,7 +33,6 @@ If you have questions concerning this license or the applicable additional terms
 #include "Entity.h"
 #include "Light.h"
 #include "Actor.h"
-#include "TrailGenerator.h" //rev 2019 added.  not in rivensin, but needed here?
 
 //ivan - uncomment this to create other test trails that are not removed and don't fade out
 //#define TEST_TRAIL
