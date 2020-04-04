@@ -2008,6 +2008,18 @@ static void Cmd_SaveParticles_f( const idCmdArgs &args ) {
 	mapFile->Write( mapName, ".map" );
 }
 
+#ifdef _DENTONMOD
+/*
+==================
+Cmd_UpdateCookedMathData_f
+==================
+*/
+static void Cmd_UpdateCookedMathData_f( const idCmdArgs &args )
+{
+	// This would cause a cooked math data update. 
+	r_HDR_colorCurveBias.SetModified();
+}
+#endif
 
 /*
 ==================
