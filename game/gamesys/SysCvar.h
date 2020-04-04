@@ -310,6 +310,8 @@ extern idCVar g_mouselook;
 //extern idCVar ai_debugXlock;
 //Ivan end
 
+//rev 2020
+extern idCVar	pm_thirdPersonZ;
 /*
 //Revility start
 extern idCVar	pm_thirdPersonUp;
