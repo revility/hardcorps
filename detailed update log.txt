@@ -7,8 +7,68 @@ NOTES ON THE PAK FILES:
 	pak 1100 contains the original HQ assets merged with the 1.1 build pak assets
 	pak 1200 contains the 2018-2020 updated content.
 
+
 ************************************************************************************************
 
+Build: 0.8.35
+04.03.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+Skin update:  Gauntlet is now always shown, only the chainsaw part hides when not used.
+		+Fixed player legs resetting animations when weapons were raised. "weapon_ready" is no longer checked in legs anims. player.script
+	*Weapons player:
+		+Revamped BFG.  Now functions similar to the Rivensin version, just faster firing.
+		+Onslaught changed from homing projectiles to regular projectiles.
+		+Nails projectile used on Onslaught and Advocate now glow blue.  Easier to see.
+	*Enemies:
+		+Monster soldier pistol/ai bots using pistol now drop small bullets clips instead instead of pistols... far more useful.
+		+Monster soldier/bot/etc....  various sounds updated to match closer to zsec pain/chatter and death sounds.
+	*Other:
+		+Uncapped frames no longer default setting. default.cfg
+		+Fixed ammo_explosives crashing to console due to giving old rocket ammo instead. ammo.def
+		+Changed models used for ammo bullet small and large
+		+Fixed ammo_cells_large using the incorrect model.
+		+Added bfg debris and other shell/casing models from Rivensin.
+		+Updated debris.def with bfg debris.
+	*GUI:
+		*Hud:
+			+Fixed missing shadow fx for Explosives ammo count
+			+Updated some weapon pick up names
+			+Updated all Large Weapon pick up icon images, text, colors and positions.
+	*Maps:
+
+************************************************************************************************
+Build: 0.8.34
+03.31.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+Increased shotgun fire fps to 36
+		+Increased shotgun DB reload fps to 48
+	*Weapons player:
+		+Chaingun: increased rate of fire by almost 50%
+		+Chaingun: lowered damage
+		+Sub MachineGun: increased rate of fire by almost 50%
+		+Sub MachineGun: lowered damage
+		+MachineGun: increased rate of fire by almost 50%
+		+MachineGun: lowered damage
+		+Shotgun: increased rate of fire by almost 50%
+		+Shotgun: lowered damage
+		+Increased shotgun world model fire fps to 36
+		+Shotgun: increased rate of fire by more than 50%
+		+Shotgun: lowered damage by 50%
+		+Increased shotgun world model fire fps to 48
+		+Plasma gun: increased projectiles from 2 back to 3
+	*Enemies:
+	*Other:
+		-Fire damage, typically caused by archvile attacks for example, time reduced from 8 to 2
+		-reduced the time of other damage fx types such as electro, and toxic.
+		+New loading screen image added
+
+************************************************************************************************
 Build: 0.8.33
 03.29.20
 Focus: 
