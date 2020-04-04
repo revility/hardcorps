@@ -22,6 +22,8 @@ This system is very similar to classic platformer games such as Castlevania and 
 
 +Various adjustments to enemy AI and projectile distance for wide screen aspect ratios *Not finished*
 
++Camera updates: Enable/disable the camera following the player vertically similar to many 2d games.
+
 +Ported Rivensin's melee motion trail system.  Uses the melee bone and it's children on a world weapon model to create a trail.  Called from animation frames through automelee system
 
 +Ported Rivensin's automelee system.  System uses the world weapon model's melee bone, must be named melee*, to detect hits and does not hit more than one target at a time.  Turned on and off via animations.  Includes damage multiplier and motion trails.
