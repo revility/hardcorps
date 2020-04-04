@@ -9678,8 +9678,13 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 			}	
 
 			//new z pos
-			view.z = oldCameraPos.z + ( delta * speed * CAMERA_SENSIBILITY );
-		//}
+//Rev 2020 lock the z position of the camera so that it does not move. 
+//use pm_thirdpersonheight to adjust Or use target_camera_z_locks to change the value in maps.
+		    if ( pm_thirdPersonZ.GetBool() ) {
+				view.z = height;
+			} else {
+				view.z = oldCameraPos.z + ( delta * speed * CAMERA_SENSIBILITY );
+			}
 	}
 
 	// --- X pos --- (distance)
