@@ -5794,17 +5794,19 @@ bool idPlayer::Collide( const trace_t &collision, const idVec3 &velocity ) {
 
 	other = gameLocal.entities[ collision.c.entityNum ];
 
+//REV 2020 UPDATED.  JUST CHECK WHAT WERE TOUCHING.  The groundent check is not needed.
 //rev 2018 start damage the player when touching enemies
-	idEntity *groundEnt = physicsObj.GetGroundEntity();
-	if ( groundEnt && !groundEnt->IsType( idAI::Type ) ) {	//we need to double check this in order to make sure the pain animation will play when it does occur
-		if ( other && other->IsType( idAI::Type )  ) {
+	//idEntity *groundEnt = physicsObj.GetGroundEntity();
+	if ( other->IsType( idAI::Type ) ) {	//we need to double check this in order to make sure the pain animation will play when it does occur
+		//if ( other && other->IsType( idAI::Type )  ) {
 		touchofdeathx = other->spawnArgs.GetInt( "touchofdeath" );
-			if ( touchofdeathx > 0 ) {
-			Damage( NULL, NULL, vec3_origin, "damage_touchofdeath", 1.0f, 0 );					
-				}
+		if ( touchofdeathx > 0 ) {
+		Damage( NULL, NULL, vec3_origin, "damage_touchofdeath", 1.0f, 0 );					
 			}
+			//}
 	}
 //rev 2018 end
+//REV 2020 END
 	if ( other ) {
 		other->Signal( SIG_TOUCH );
 		if ( !spectating ) {
@@ -8084,6 +8086,8 @@ void idPlayer::Move( void ) {
 		AI_ONLADDER	= physicsObj.OnLadder();
 		AI_JUMP		= physicsObj.HasJumped();
 
+//REV 2020 START.  THIS ISN'T NEEDED.  CHECKED IN PLAYER::COLLIDE
+/*
 //rev 2018 start. damage the player when touching enemies from above
 		// check if we're standing on top of a monster and give a push if we are
 		idEntity *groundEnt = physicsObj.GetGroundEntity();
@@ -8104,7 +8108,9 @@ void idPlayer::Move( void ) {
 			}
 			physicsObj.SetLinearVelocity( vel );
 		
-		}	
+		}
+*/
+//REV 2020 END		
 	}
 
 	if ( AI_JUMP ) {
