@@ -1,5 +1,5 @@
 # DHEWM 3 HARD CORPS 1.0.00
-Updated files for Doom 3: Harqore 2 Dhewm 3 port.  This is an online back up of the updated files only during development.  They are meant to be used with Hard Corps 1.0.00 for Dhewm 3 1.5.0 after it is released.  It will not work with the original HardQore 2012 release.
+Updated files for Doom 3: Harqore 2 Dhewm 3 port.  This is an online back up of the updated files only during development.  The original sdk with all files is over at dhewm3 sdk's hub.  They are meant to be used with Hard Corps 1.0.00 for Dhewm 3 1.5.0+ after it is released.  It will not work with the original HardQore 2012 release.
 
 List of updated features:
 
