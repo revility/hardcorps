@@ -1270,6 +1270,8 @@ idPlayer::idPlayer() {
 	lastHeartAdjust			= 0;
 	lastHeartBeat			= 0;
 	lastDmgTime				= 0;
+	lastChargeTime			= 0;	//rev 2020 charge checks the time difference since we last charge attacked or added to the charge attack gauge
+	chargeAmount			= 0;	//rev 2020 charge maximum amount of times we can charge
 	deathClearContentsTime	= 0;
 	lastArmorPulse			= -10000;
 	stamina					= 0.0f;
@@ -1612,11 +1614,13 @@ void idPlayer::Init( void ) {
 
 
 	lastDmgTime				= 0;
+	lastChargeTime			= 0;	//rev 2020 charge
 	lastArmorPulse			= -10000;
 	lastHeartAdjust			= 0;
 	lastHeartBeat			= 0;
 	heartInfo.Init( 0, 0, 0, 0 );
 
+	chargeAmount			= spawnArgs.GetInt( "charge_amount", "2" );	//rev 2020 charge
 	/* //un noted change from original sdk
 	bobCycle				= 0;
 	bobFrac					= 0.0f;
@@ -3372,8 +3376,9 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	float max_stamina;
 
 	assert( _hud );
-
-	max_stamina = pm_stamina.GetFloat();
+	
+	chargeAmount = spawnArgs.GetInt( "charge_amount" );	//rev 2020 charge  needed to check again to get the CURRENT amount
+	max_stamina = pm_stamina.GetFloat();	
 	if ( !max_stamina ) {
 		// stamina disabled, so show full stamina bar
 		staminapercentage = 100.0f;
@@ -3383,6 +3388,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 
 	_hud->SetStateInt( "player_health", health );
 	_hud->SetStateInt( "player_stamina", staminapercentage );
+	_hud->SetStateInt( "player_charges", chargeAmount );	//rev 2020 charge
 	_hud->SetStateInt( "player_armor", inventory.armor );
 	_hud->SetStateInt( "player_hr", heartRate );
 	_hud->SetStateInt( "player_nostamina", ( max_stamina == 0 ) ? 1 : 0 );
@@ -3778,12 +3784,12 @@ bool idPlayer::Give( const char *statname, const char *value ) {
 		}
 
 	} else if ( !idStr::Icmp( statname, "stamina" ) ) {
-		if ( stamina >= 100 ) {
+		if ( stamina >= 2 ) {	//rev 2020 charge was 100
 			return false;
 		}
 		stamina += atof( value );
-		if ( stamina > 100 ) {
-			stamina = 100;
+		if ( stamina > 2 ) { 	//rev 2020 charge was 100
+			stamina = 2; 		//rev 2020 charge was 100
 		}
 
 	} else if ( !idStr::Icmp( statname, "heartRate" ) ) {
@@ -4176,7 +4182,7 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 				break;
 							   }
 			case ADRENALINE: {
-				stamina = 100.0f;
+				stamina = 2.0f; //rev 2020 charge was 100.0f
 				break;
 							 }
 			case MEGAHEALTH: {
@@ -5064,6 +5070,7 @@ void idPlayer::AddLifes( int num ){
 	}
 	StartSound( "snd_extraLife", SND_CHANNEL_ITEM, 0, false, NULL );
 }
+
 
 void idPlayer::AddSecretFound( void ){
 	gameLocal.secrets_found_counter++;
@@ -8150,7 +8157,7 @@ void idPlayer::UpdateHud( void ) {
 	if ( entityNumber != gameLocal.localClientNum ) {
 		return;
 	}
-
+	
 	int c = inventory.pickupItemNames.Num();
 	if ( c > 0 ) {
 		if ( gameLocal.time > inventory.nextItemPickup ) {
@@ -8287,6 +8294,23 @@ void idPlayer::SetSlideMoveState( void ) {
 }
 //ivan end
 
+//REV 2020 START DASH MOVE
+/*
+==============
+idPlayer::SetChargeMoveState
+==============
+*/
+void idPlayer::SetChargeMoveState( void ) {
+	const function_t *newstate = GetScriptFunction( "ChargeMove" );
+	
+	if ( newstate ) {
+		lastChargeTime = gameLocal.time;	// start the clock to possibly give charges if not at maximum
+		SetState( newstate );
+		UpdateScript();
+	}
+}
+//REV 2020 charge
+
 /*
 ==============
 idPlayer::Think
@@ -8298,7 +8322,7 @@ void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
 
 	UpdatePlayerIcons();
-
+	
 	// latch button actions
 	oldButtons = usercmd.buttons;
 
@@ -8394,6 +8418,30 @@ void idPlayer::Think( void ) {
 		fw_toggled = ( usercmd.forwardmove != oldCmd.forwardmove );
 	}
 
+//REV 2020 CHARGE ATTACK START
+	if ( chargeAmount < 2 ) {	// 2 is the maximum amount we can do in a row
+		if ( gameLocal.time > lastChargeTime + 1500 ) {
+			if ( chargeAmount == 1 ) {				
+				spawnArgs.Set( "charge_amount", "2" );	//this method proved be the most reliable in setting the amount.
+				//gameLocal.Printf(" c1 + 1 ");
+				lastChargeTime = gameLocal.time;	//added here to reset the time of when to check if we need another or else it will spam it.
+			} else {
+				spawnArgs.Set( "charge_amount", "1" );
+				gameLocal.Printf(" c0 + 1 ");
+				lastChargeTime = gameLocal.time;
+			}
+		}
+	}	
+
+	//if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) && (chargeAmount > 0 ) ){ 
+	if ( chargeAmount > 0 ) {
+		if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) ){ 
+			//gameLocal.Printf(" charging now! ");
+			SetChargeMoveState();
+		}
+	}		
+//REV 2020 CHARGE ATTACK END	
+	
 	//onground and ready --> do stuff
 	if( AI_ONGROUND && !force_torso_override && ( forcedMovState == FORCEDMOVE_STATE_DISABLED ) ){ //note: we check "forcedMovState" instead of "isXlocked" so player can still be unlocked and do stuff 
 
@@ -8411,11 +8459,11 @@ void idPlayer::Think( void ) {
 			}
 		}
 #endif
+
 		// -- slide start --
 		if( ( oldCmd.upmove < 0 ) && ( usercmd.upmove > 0 ) && ( landTime + 200 < gameLocal.time ) ){ //AI_CROUCH
 				SetSlideMoveState();
 		}
-		// -- slide up/down end  -- 
 
 		else{ //don't interact or crouch if slided
 

@@ -350,6 +350,8 @@ public:
 	int						lastHeartAdjust;
 	int						lastHeartBeat;
 	int						lastDmgTime;
+	int						lastChargeTime;	//rev 2020 charge
+	int						chargeAmount;	//rev 2020 charge
 	int						deathClearContentsTime;
 	bool					doingDeathSkin;
 	int						lastArmorPulse;		// lastDmgTime if we had armor at time of hit
@@ -964,6 +966,7 @@ private:
 	void					SetupSlots( void );
 	void					Interact( void );
 	void					SetSlideMoveState( void );
+	void					SetChargeMoveState( void );	//Rev 2020 charge
 	void					Hq2QuickRespawn( void );
 	void					ShowPossibleInteract( void );
 	//ivan end	
