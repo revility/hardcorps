@@ -3784,12 +3784,12 @@ bool idPlayer::Give( const char *statname, const char *value ) {
 		}
 
 	} else if ( !idStr::Icmp( statname, "stamina" ) ) {
-		if ( stamina >= 2 ) {	//rev 2020 charge was 100
+		if ( stamina >= 100 ) {
 			return false;
 		}
 		stamina += atof( value );
-		if ( stamina > 2 ) { 	//rev 2020 charge was 100
-			stamina = 2; 		//rev 2020 charge was 100
+		if ( stamina > 100 ) {
+			stamina = 100;
 		}
 
 	} else if ( !idStr::Icmp( statname, "heartRate" ) ) {
@@ -4182,7 +4182,7 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 				break;
 							   }
 			case ADRENALINE: {
-				stamina = 2.0f; //rev 2020 charge was 100.0f
+				stamina = 100.0f;
 				break;
 							 }
 			case MEGAHEALTH: {
