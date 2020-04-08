@@ -10,6 +10,28 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.36
+04.07.20
+Focus: 
+
+	*SDK:	
+		+Added pm_thirdpersonZ:  used to lock enable and disable the camera moving vertically (along the z axis). player.cpp, syscvar.cpp, syscvar.h
+		+Charge Attack added.  Charge attack counter added.  player.cpp, player.h
+	*Player Updates:
+		+Charge attack added:  similar to the dash attack except the player can do them in air, and 2 in a row.
+			*This will be expanded in future builds.
+	*Weapons player:
+	*Enemies:
+	*Other:
+		+Added target_camera_z_lock:  stops the camera from moving vertically
+		+Added target_camera_z_unlock:  re enables the camera moving vertically
+		+HQ_utilities script updated with camera z lock/unlock
+	*GUI:
+		+Changed Stamina gauge to charge attack gauge.  Size adjusted.
+	*Maps:
+
+************************************************************************************************
+
 Build: 0.8.35
 04.03.20
 Focus: 
