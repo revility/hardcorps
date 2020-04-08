@@ -8427,7 +8427,7 @@ void idPlayer::Think( void ) {
 				lastChargeTime = gameLocal.time;	//added here to reset the time of when to check if we need another or else it will spam it.
 			} else {
 				spawnArgs.Set( "charge_amount", "1" );
-				gameLocal.Printf(" c0 + 1 ");
+				//gameLocal.Printf(" c0 + 1 ");
 				lastChargeTime = gameLocal.time;
 			}
 		}
