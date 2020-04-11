@@ -339,6 +339,7 @@ public:
 	int						weapon_fists;
 
 	int						waitForDamage;	//rev 2018	
+	bool					noDamage;	//rev 2020	
 
 //rev 2018 start
 	int						touchofdeathx;		//player def key.  used in player script to change animations.
@@ -352,6 +353,7 @@ public:
 	int						lastDmgTime;
 	int						lastChargeTime;	//rev 2020 charge
 	int						chargeAmount;	//rev 2020 charge
+	int						chargeDir;		//rev 2020 charge
 	int						deathClearContentsTime;
 	bool					doingDeathSkin;
 	int						lastArmorPulse;		// lastDmgTime if we had armor at time of hit

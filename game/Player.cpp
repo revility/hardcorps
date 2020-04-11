@@ -1233,6 +1233,7 @@ idPlayer::idPlayer() {
 	godmode					= false;
 	
 	waitForDamage			= 1;	//rev 2018
+	noDamage				= 0;	//rev 2020
 	//ivan start
 	animMoveNoGravity		= false; 
 	animMoveType			= ANIMMOVE_NONE;
@@ -1272,6 +1273,7 @@ idPlayer::idPlayer() {
 	lastDmgTime				= 0;
 	lastChargeTime			= 0;	//rev 2020 charge checks the time difference since we last charge attacked or added to the charge attack gauge
 	chargeAmount			= 0;	//rev 2020 charge maximum amount of times we can charge
+	chargeDir				= 0;	//rev 2020 direction to charge, 1 up, 2 upward, 3 forward, 4 downward, 5 down
 	deathClearContentsTime	= 0;
 	lastArmorPulse			= -10000;
 	stamina					= 0.0f;
@@ -1615,12 +1617,14 @@ void idPlayer::Init( void ) {
 
 	lastDmgTime				= 0;
 	lastChargeTime			= 0;	//rev 2020 charge
+	lastChargeTime			= 0;	//rev 2020 charge
 	lastArmorPulse			= -10000;
 	lastHeartAdjust			= 0;
 	lastHeartBeat			= 0;
 	heartInfo.Init( 0, 0, 0, 0 );
 
 	chargeAmount			= spawnArgs.GetInt( "charge_amount", "2" );	//rev 2020 charge
+	chargeDir				= 0;	//rev 2020 charge
 	/* //un noted change from original sdk
 	bobCycle				= 0;
 	bobFrac					= 0.0f;
@@ -5794,7 +5798,7 @@ idPlayer::Collide
 */
 bool idPlayer::Collide( const trace_t &collision, const idVec3 &velocity ) {
 	idEntity *other;
-
+	
 	if ( gameLocal.isClient ) {
 		return false;
 	}
@@ -5809,16 +5813,15 @@ bool idPlayer::Collide( const trace_t &collision, const idVec3 &velocity ) {
 		touchofdeathx = other->spawnArgs.GetInt( "touchofdeath" );
 		if ( touchofdeathx > 0 ) {
 		Damage( NULL, NULL, vec3_origin, "damage_touchofdeath", 1.0f, 0 );					
-			}
-			//}
+		}
 	}
-//rev 2018 end
 //REV 2020 END
 	if ( other ) {
+		
 		other->Signal( SIG_TOUCH );
 		if ( !spectating ) {
 			if ( other->RespondsTo( EV_Touch ) ) {
-				other->ProcessEvent( &EV_Touch, this, &collision );
+				other->ProcessEvent( &EV_Touch, this, &collision );					
 			}
 		} else {
 			if ( other->RespondsTo( EV_SpectatorTouch ) ) {
@@ -7960,6 +7963,7 @@ void idPlayer::Move( void ) {
 	physicsObj.SetFwInverted( fw_inverted );
 
 	waitForDamage  = spawnArgs.GetInt( "waitfordamage" ); //rev 2020 used for pass through enemies during invulnerability
+	noDamage  = spawnArgs.GetBool( "nodamage" ); //rev 2020 used for pass through enemies
 			
 	//ivan start
 	if ( animMoveNoGravity ){
@@ -8010,6 +8014,10 @@ void idPlayer::Move( void ) {
 	physicsObj.SetContents( CONTENTS_CORPSE );
 	physicsObj.SetMovementType( PM_NORMAL );
 		}
+	else if ( noDamage ) {
+	physicsObj.SetContents( CONTENTS_CORPSE );
+	physicsObj.SetMovementType( PM_NORMAL );
+		}
 //rev 2020 end
 	
 	else {
@@ -8025,6 +8033,9 @@ void idPlayer::Move( void ) {
 	
 //rev 2020	allow the player to pass through enemies when invulnerability is active.  also prevents standing on heads.
 		else if ( waitForDamage > 0 ) {
+			physicsObj.SetClipMask( MASK_DEADSOLID );
+		}
+		else if ( noDamage ) {
 			physicsObj.SetClipMask( MASK_DEADSOLID );
 		}
 //rev 2020	end
@@ -8301,7 +8312,23 @@ idPlayer::SetChargeMoveState
 ==============
 */
 void idPlayer::SetChargeMoveState( void ) {
-	const function_t *newstate = GetScriptFunction( "ChargeMove" );
+	//const function_t *newstate = GetScriptFunction( "ChargeMoveF" );	
+	const function_t *newstate;	
+	if (chargeDir == 1){
+		newstate = GetScriptFunction( "ChargeMoveU" );		
+	}
+	else if (chargeDir == 2){
+		newstate = GetScriptFunction( "ChargeMoveUf" );		
+	}
+	else if (chargeDir == 3){
+		newstate = GetScriptFunction( "ChargeMoveF" );		
+	}
+	else if (chargeDir == 4){
+		newstate = GetScriptFunction( "ChargeMoveDf" );		
+	}
+	else if (chargeDir == 5){
+		newstate = GetScriptFunction( "ChargeMoveD" );		
+	}
 	
 	if ( newstate ) {
 		lastChargeTime = gameLocal.time;	// start the clock to possibly give charges if not at maximum
@@ -8433,13 +8460,37 @@ void idPlayer::Think( void ) {
 		}
 	}	
 
-	//if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) && (chargeAmount > 0 ) ){ 
 	if ( chargeAmount > 0 ) {
-		if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) ){ 
-			//gameLocal.Printf(" charging now! ");
+//Set the direction to charge in. 1 up, 2 upward, 3 forward, 4 downward, 5 down
+//charge attacking forward MUST come after the others or it might over ride upward/downward charge attacks
+		if( ( usercmd.buttons & BUTTON_5 ) && ( usercmd.buttons & BUTTON_6 ) && ( !usercmd.forwardmove ) ){ 
+			chargeDir = 1;
 			SetChargeMoveState();
 		}
-	}		
+		else if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) && ( usercmd.buttons & BUTTON_6 ) ){ 
+			chargeDir = 2;
+			SetChargeMoveState();
+		}
+
+		if( !AI_ONGROUND	) {		//only do downward, and down when in the air	
+			if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) && ( usercmd.buttons & BUTTON_7 ) ){ 
+				chargeDir = 4;
+				SetChargeMoveState();
+			}
+			
+			else if( ( usercmd.buttons & BUTTON_5 ) && ( usercmd.buttons & BUTTON_7 ) && ( !usercmd.forwardmove ) ){ 
+				chargeDir = 5;
+				SetChargeMoveState();
+			}
+		}
+		if( ( usercmd.forwardmove ) && ( usercmd.buttons & BUTTON_5 ) ){ 
+			chargeDir = 3;
+			SetChargeMoveState();
+		}		
+		else { 
+			chargeDir = 0; //reset it just incase
+		}
+	}
 //REV 2020 CHARGE ATTACK END	
 	
 	//onground and ready --> do stuff
@@ -8996,12 +9047,16 @@ void idPlayer::CalcDamagePoints( idEntity *inflictor, idEntity *attacker, const 
 										//damage = 0;
 									//}
 									//ivan end
-			//Rev 2018 no damage for a brief amount of time after being hit
-			waitForDamage  = spawnArgs.GetInt( "waitfordamage" );
-			if ( waitForDamage > 0 ) {
-				damage = 0;
-			}																					
-									
+									//Rev 2018 no damage for a brief amount of time after being hit
+									waitForDamage  = spawnArgs.GetInt( "waitfordamage" );
+									if ( waitForDamage > 0 ) {
+										damage = 0;
+									}
+									//rev 2020
+									noDamage  = spawnArgs.GetInt( "nodamage" );
+									if ( noDamage ) {
+										damage = 0;
+									}									
 
 									// inform the attacker that they hit someone
 									attacker->DamageFeedback( this, inflictor, damage );
@@ -9176,7 +9231,8 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
   // at the end of the frame
   //if ( health > 0 ) {
 	waitForDamage  = spawnArgs.GetInt( "waitfordamage" );	//rev 2020 no dmg effect on screen when invulnerability is on
-	if (( health > 0 ) && ( waitForDamage < 1 )) {
+	noDamage  = spawnArgs.GetBool( "nodamage" );	//rev 2020 no dmg effect on screen when invulnerability is on
+	if (( health > 0 ) && ( waitForDamage < 1 || noDamage )) {	//rev 2020 updated
   //if ( health > 0 ) {
 	  playerView.DamageImpulse( localDamageVector, &damageDef->dict );
   }
