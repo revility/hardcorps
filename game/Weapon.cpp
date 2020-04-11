@@ -452,6 +452,7 @@ void idWeapon::Save( idSaveGame *savefile ) const {
 
 	savefile->WriteBool( allowDrop );
 	savefile->WriteObject( projectileEnt );
+	savefile->WriteObject( lastMeleeEnt ); //ivan //rev 2020 code fixes
 
 	// New----------------------------------------------
 #ifdef _DENTONMOD
@@ -679,6 +680,7 @@ void idWeapon::Restore( idRestoreGame *savefile ) {
 
 	savefile->ReadBool( allowDrop );
 	savefile->ReadObject( reinterpret_cast<idClass *&>( projectileEnt ) );
+	savefile->ReadObject( reinterpret_cast<idClass *&>( lastMeleeEnt ) ); //ivan //rev 2020 code fixes
 
 #ifdef _DENTONMOD
 
