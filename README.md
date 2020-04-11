@@ -21,6 +21,8 @@ List of updated features:
 
 +noaim key for enemies.  When set to 1, enemies and bots will only shoot straight ahead in the direction of the player and not aim directly at them.  Very common side scrollers.  Ducking is now much more useful & dependable to avoid enemy fire.
 
++Always crouch key added to enemy soldiers.  When set to 1, they will crouch and stay that way.  0 to turn it off, 1 for a fifty chance they will stand or crouch.
+
 +Player invulnerability after taking damage and knock up.  After taking damage a script is called.  The script itself uses the new waitfordamage key to enable and disable the player taking damage for a brief period of time.  sdk is used to call the scripts and timer to turn off.  The player is also knocked up a bit. The knock up is done using the imported Rivensin full body animation system.
 This system is very similar to classic platformer games such as Castlevania and Ninja Gaiden.  Visual fx is controlled in the player's script and def.
 
