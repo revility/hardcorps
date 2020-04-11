@@ -10,6 +10,42 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.37
+04.11.20
+Focus: 
+
+	*SDK:	
+		+Added checks for the new nodamage key.  disables the player taking damage and allows passing through enemies when on. player.cpp, player.h
+		+Charge attacks can be done in multiple directions.  player.cpp, player.h
+	*Player Updates:
+		+Charge attack no longer uses slide damage, has it's own
+		-reduced knockback, radius and push of charge damage
+		+added nodamage key to def file
+		+Added DamageOff and DamageOn to player script.  called in dash forward animation at start and end of animation.
+		+Player now glows when charge attacking
+		+Added new sliding sound fx
+		+Added new Charge Attack player skin fx
+		+Added New charge attack sound fx
+		+Increased the wait time after charge attacks from 0.2 to 0.3 more stable.
+		+Faster sliding animation added
+		+Player now glows when sliding
+		+sliding uses dash charges.
+		-removed charge and slide damage from player def.  no longer needed
+		-Slide and charge attack moves no longer use radius damage system
+		+Slide and charge attack now use kick damage system ported from Rivensin...
+			+More reliable
+			+Impact damage effects unlike radius damage.
+		+Charge attacks can be done in 5 directions.  script and def updated.
+		+Charge directional animations added. mostly placeholder.
+	*Weapons player:
+	*Enemies:
+	*GUI:
+	*Maps:
+	*Other:
+		+Imported blue explosion and related materials and effects from Rivensin.
+
+************************************************************************************************
+
 Build: 0.8.36
 04.07.20
 Focus: 
