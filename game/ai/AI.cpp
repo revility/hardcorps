@@ -909,10 +909,10 @@ void idAI::Spawn( void ) {
 			//physicsObj.SetContents( CONTENTS_BODY );
 			if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
 				physicsObj.SetContents( CONTENTS_CORPSE );	//the monster can pass through other monsters
-				gameLocal.Printf( "corpse" );
+				//gameLocal.Printf( "corpse" );
 			} else {
 				physicsObj.SetContents( CONTENTS_BODY );
-				gameLocal.Printf( "body" );
+				//gameLocal.Printf( "body" );
 			}
 //Rev 2020 End
 		}
