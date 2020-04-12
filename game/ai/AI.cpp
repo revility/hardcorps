@@ -900,28 +900,23 @@ void idAI::Spawn( void ) {
 
 	if ( spawnArgs.GetBool( "big_monster" ) ) {
 		physicsObj.SetContents( 0 );
-		//physicsObj.SetClipMask( MASK_MONSTERSOLID & ~CONTENTS_BODY );
-//rev 2020 allow enemies to pass through each other if on same team team pass key is on...
-		if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
-			physicsObj.SetClipMask( MASK_DEADSOLID & ~CONTENTS_BODY );
-		} else {
-			physicsObj.SetClipMask( MASK_MONSTERSOLID & ~CONTENTS_BODY );	
-		}
-//rev 2020 end
+		physicsObj.SetClipMask( MASK_MONSTERSOLID & ~CONTENTS_BODY );
 	} else {
 		if ( use_combat_bbox ) {
 			physicsObj.SetContents( CONTENTS_BODY|CONTENTS_SOLID );
 		} else {
-			physicsObj.SetContents( CONTENTS_BODY );
+//Rev 2020 allow enemies to pass through each other if team_non_solid is true			
+			//physicsObj.SetContents( CONTENTS_BODY );
+			if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
+				physicsObj.SetContents( CONTENTS_CORPSE );	//the monster can pass through other monsters
+				gameLocal.Printf( "corpse" );
+			} else {
+				physicsObj.SetContents( CONTENTS_BODY );
+				gameLocal.Printf( "body" );
+			}
+//Rev 2020 End
 		}
-		//physicsObj.SetClipMask( MASK_MONSTERSOLID );
-//rev 2020 allow enemies to pass through each other if on same team team pass key is on...
-		if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
-			physicsObj.SetClipMask( MASK_DEADSOLID );
-		} else {
-			physicsObj.SetClipMask( MASK_MONSTERSOLID );	
-		}
-//rev 2020 end
+		physicsObj.SetClipMask( MASK_MONSTERSOLID );
 	}
 
 	// move up to make sure the monster is at least an epsilon above the floor
