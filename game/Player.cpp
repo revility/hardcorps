@@ -4186,7 +4186,13 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 				break;
 							   }
 			case ADRENALINE: {
-				stamina = 100.0f;
+//rev 2020 give the player full charge attack amount when picking up adrenaline instead of stamina
+				//stamina = 100.0f;	
+				def = gameLocal.FindEntityDef( "powerup_adrenaline", false );
+				if ( def ) {
+					spawnArgs.Set( "charge_amount", "2" );
+				}
+//rev 2020 end
 				break;
 							 }
 			case MEGAHEALTH: {
