@@ -8016,7 +8016,7 @@ void idPlayer::Move( void ) {
 	//ivan en
 
 //rev 2020		allow the player to pass through enemies when invulnerability is active.  also prevents standing on heads.	
-	else if ( waitForDamage > 0 ) {
+	else if ( waitForDamage == 1 ) {
 	physicsObj.SetContents( CONTENTS_CORPSE );
 	physicsObj.SetMovementType( PM_NORMAL );
 		}
@@ -8025,7 +8025,6 @@ void idPlayer::Move( void ) {
 	physicsObj.SetMovementType( PM_NORMAL );
 		}
 //rev 2020 end
-	
 	else {
 		physicsObj.SetContents( CONTENTS_BODY );
 		physicsObj.SetMovementType( PM_NORMAL );
@@ -8033,20 +8032,10 @@ void idPlayer::Move( void ) {
 
 	if ( spectating ) {
 		physicsObj.SetClipMask( MASK_DEADSOLID );
-	} else if ( health <= 0 ) {
+	//} else if ( health <= 0 ) {
+	} else if ( health <= 0 || noDamage  || waitForDamage == 1 ) {
 		physicsObj.SetClipMask( MASK_DEADSOLID );
-	} 
-	
-//rev 2020	allow the player to pass through enemies when invulnerability is active.  also prevents standing on heads.
-		else if ( waitForDamage > 0 ) {
-			physicsObj.SetClipMask( MASK_DEADSOLID );
-		}
-		else if ( noDamage ) {
-			physicsObj.SetClipMask( MASK_DEADSOLID );
-		}
-//rev 2020	end
-	
-	else {
+	} else {
 		physicsObj.SetClipMask( MASK_PLAYERSOLID );
 	}
 
