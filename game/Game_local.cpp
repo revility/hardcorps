@@ -3801,6 +3801,50 @@ void idGameLocal::KillBox( idEntity *ent, bool catch_teleport ) {
 }
 
 /*
+=================
+idGameLocal::HurtBox
+Check if something is on over lapping the player and cause damage to the player
+=================
+*/
+void idGameLocal::HurtBox( idEntity *ent ) {
+	int			i;
+	int			num;
+	idEntity *	hit;
+	idClipModel *cm;
+	idClipModel *clipModels[ MAX_GENTITIES ];
+	idPhysics	*phys;
+
+	phys = ent->GetPhysics();
+	if ( !phys->GetNumClipModels() ) {
+		return;
+	}
+
+	num = clip.ClipModelsTouchingBounds( phys->GetAbsBounds(), phys->GetClipMask(), clipModels, MAX_GENTITIES );
+	for ( i = 0; i < num; i++ ) {
+		cm = clipModels[ i ];
+
+		// don't check render entities
+		if ( cm->IsRenderModel() ) {
+			continue;
+		}
+
+		hit = cm->GetEntity();
+		if ( ( hit == ent ) || !hit->fl.takedamage ) {
+			continue;
+		}
+
+		if ( !phys->ClipContents( cm ) ) {
+			continue;
+		}
+
+		// nail it
+		if ( hit->IsType( idPlayer::Type ) ) {
+			hit->Damage( NULL, NULL, vec3_origin, "damage_touchofdeath", 1.0f, 0 );
+		}
+	}
+}
+
+/*
 ================
 idGameLocal::RequirementMet
 ================

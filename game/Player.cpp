@@ -2169,10 +2169,13 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	inventory.Save( savefile );
 	weapon.Save( savefile );
 
-	
+/*	
+//Rev 2020 Note... the restore part was not added in... thus the game would crash.  Thanks DG!
+//Rev 2020 Note:  Currently not using multiple huds.  Maybe in the future.
 	//savefile->WriteUserInterface( hud, false ); // DG: don't save HUD, just create it like in Spawn()
 	savefile->WriteString( "" ); // DG: write empty string which is handled as "HUD is NULL" by Restore() for backwards-compat
-
+*/
+	savefile->WriteUserInterface( hud, false );
 	savefile->WriteUserInterface( objectiveSystem, false );
 	savefile->WriteBool( objectiveSystemOpen );
 
@@ -2412,13 +2415,12 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( lastCheckPoint ); 
 	savefile->WriteInt( interactFlag );
 	savefile->WriteInt( interactShownWeaponNum );
-	//interactShownWeaponName not saved
+//interactShownWeaponName not saved
 	savefile->WriteBool( skipMouseUpd ); 
 
-	//ivan start - kick
+//ivan start - kick
 	savefile->WriteString( kickDefName );
-
-	//kickDef is not saved! -> it'll be reastored thanks to kickDefName 
+//kickDef is not saved! -> it'll be reastored thanks to kickDefName 
 	savefile->WriteObject( lastKickedEnt ); 
 	savefile->WriteInt( nextKickFx );
 	savefile->WriteInt( nextKickSnd );
@@ -2748,20 +2750,6 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 
 	//ivan start
 	savefile->ReadInt( health_lost );
-
-	//ivan start - kick
-	savefile->ReadString( kickDefName );
-	kickDef = gameLocal.FindEntityDef( kickDefName, false );
-	savefile->ReadObject( reinterpret_cast<idClass *&>( lastKickedEnt ) ); //ivan
-	savefile->ReadInt( nextKickFx );
-	savefile->ReadInt( nextKickSnd );
-	savefile->ReadBool( kickEnabled );
-	savefile->ReadFloat( kickDmgMultiplier );
-	savefile->ReadFloat( kickDistance );
-	savefile->ReadBounds( kickBox ); 
-	savefile->ReadJoint( fromJointKick );
-	savefile->ReadJoint( toJointKick );
-
 	savefile->ReadInt( currentSlot );
 	savefile->ReadFloat( viewPos );
 	savefile->ReadVec3( oldCameraPos );	
@@ -2797,9 +2785,23 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( lastCheckPoint );
 	savefile->ReadInt( interactFlag );
 	savefile->ReadInt( interactShownWeaponNum );
-	//interactShownWeaponName not saved
+//interactShownWeaponName not saved
 	//interactShownWeaponName = "";
-	savefile->ReadBool( skipMouseUpd ); 
+	savefile->ReadBool( skipMouseUpd );
+
+//Rev 2020 moved below to match save game file order. prevents crash.  Thanks DG
+	//ivan start - kick
+	savefile->ReadString( kickDefName );
+	kickDef = gameLocal.FindEntityDef( kickDefName, false );
+	savefile->ReadObject( reinterpret_cast<idClass *&>( lastKickedEnt ) ); //ivan
+	savefile->ReadInt( nextKickFx );
+	savefile->ReadInt( nextKickSnd );
+	savefile->ReadBool( kickEnabled );
+	savefile->ReadFloat( kickDmgMultiplier );
+	savefile->ReadFloat( kickDistance );
+	savefile->ReadBounds( kickBox ); 
+	savefile->ReadJoint( fromJointKick );
+	savefile->ReadJoint( toJointKick );	
 
 #ifdef AUTOUPD_RESPAWN_POS
 	savefile->ReadInt( nextRespPosTime ); 
@@ -8361,14 +8363,12 @@ void idPlayer::Think( void ) {
 		return;
 	}
 	*/
-
+	
 // rev 2020 check the last time we were damaged, if too long, run a script to enable damage again.
 		waitForDamage  = spawnArgs.GetInt( "waitfordamage" );
 		if (( gameLocal.time > lastDmgTime + 1500 ) && ( waitForDamage > 0 ) ) {	//check wait for damage or the slide move will not work
 			SetState( "BlinkOff" ); 
 			UpdateScript();
-			
-
 		}
 		
 	// grab out usercmd
