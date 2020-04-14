@@ -1231,6 +1231,8 @@ void idAI::Think( void ) {
 	UpdateIsOnScreen(); //NOTE: my "isOnScreen" value is useful also to other entities.
 	//ivan end
 
+	gameLocal.HurtBox( this );	//rev 2020 hurt the player when on top of enemies	
+	
 	UpdateMuzzleFlash();
 	UpdateAnimation();
 	UpdateParticles();
@@ -4101,10 +4103,14 @@ void idAI::UpdateIsOnScreen( void ) {
 		return;
 	}
 	idPlayer *player = gameLocal.GetLocalPlayer();
-	if ( !player ) { 
+
+//Rev 2020 save game crash fix from DG.  check needed to stop crash.
+	// WAS: if ( !player ) {
+	if( player == NULL || player->GetRenderView() == NULL ) {		
 		isOnScreen = false; //no player, no camera
 		return;
 	}
+//Rev 2020 End
 	const idVec3 &myPos = physicsObj.GetOrigin();
 	const idVec3 &cameraPos = player->GetRenderView()->vieworg;
 	idVec3 delta;
