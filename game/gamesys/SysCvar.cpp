@@ -286,7 +286,7 @@ idCVar pm_thirdPerson(				"pm_thirdPerson",			"1",			CVAR_GAME | CVAR_NETWORKSYN
 idCVar pm_thirdPersonDeath(			"pm_thirdPersonDeath",		"0",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_BOOL, "enables third person view when player dies" ); // un noted changes from original sdk
 idCVar pm_modelView(				"pm_modelView",				"0",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER, "draws camera from POV of player model (1 = always, 2 = when dead)", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> ); // un noted changes from original sdk
 idCVar pm_airTics(					"pm_air",					"35000",		CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER, "how long in milliseconds the player can go without air before he starts taking damage" ); //ivan -was "1800"
-idCVar pm_character(				"pm_character",				"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "Change Player character. 1 = Scarlet. 0 = Doom Marine");
+idCVar pm_character(				"pm_character",				"0",			CVAR_GAME | CVAR_BOOL, "Change Player character. 1 = Scarlet. 0 = Doom Marine");
 
 idCVar g_showPlayerShadow(			"g_showPlayerShadow",		"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables shadow of player model" ); // un noted changes from original sdk
 idCVar g_showHud(					"g_showHud",				"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "" );
