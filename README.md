@@ -7,6 +7,8 @@ List of updated features:
 
 +Instant aim change when using "Contra", keyboard/controller, controls.  Removes the lag when changing angles. Massive improvement to firing.
 
++Multiple character select.  Different characters can be selected via the cvar pm_character.  Player def includes the full info.  characters can have different stats including health, armor, speed, jump height, starting weapon, etc.
+
 +Instant melee weapon attack.  Each character has a melee weapon they can fire instantly instead of being forced to select them.  Most of the changes are in the soft code per weapon.  Pressing the bound impulse key will go straight to the attack and then back to previous weapon.  This makes melee weapons much more useful.  Scarlet Uses a sword, Doom Marine uses the chainsaw gauntlet.
 
 +Replaced ROE bloom with Denton's HDR lighting system.  Note that the needed shaders and material file can be found in the Rivensin mod.  This is not the same HDR lighting system found in the Denton mod.  It has been modified and improved.  This includes incorporating rebb's improved ambient lighting.
