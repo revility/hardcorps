@@ -10,6 +10,38 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.38
+04.16.20
+Focus: 
+
+	*SDK (Note Uploaded*):
+		+Player is hurt when over lapping enemies.  gamelocal.cpp, gamelocal.h ai.cpp search hurtbox
+		+Save game crash fixes. player.cpp, AI.cpp
+		-Selected player no longer pernamently archived. syscvar.cpp
+	*Player Updates:
+		+updated Def file with directional damage for charge attacks.
+		+Charge attacks now use different damage files per direction.  3 total.. ups, forward, downs
+		+Fixed Charge attack not hitting when directly below something
+		+Fixed Charge attack not hitting sooner when dive kicking down
+		+Slide attack now has a new kick damage def.  Improves hit detection.
+		+Slide attack wait times reduced from 0.3 wait to 0.2 wait
+		-removed all waits and checks for Charge attack... they can now be be done much faster, and less clumsy to use.
+	*Weapons player:
+	*Enemies:
+		+Fixed monster soldier sound error/warning message in console for mate down.
+	*GUI:
+		*Main Menu:
+			-removed character select from game options.
+			+Added character select to new game menu with character pics to choose from.
+			+Fixed white patch on the bottom of the mars planet texture for the main menu model
+			+Updated splash screen screen image.
+			+Fixed sideways grenade icon in explosives icon in HUD.
+	*Maps:
+	*Other:
+		+New model for adrenaline. Red glowing sphere. Imported from Rivensin
+
+************************************************************************************************
+
 Build: 0.8.37
 04.11.20
 Focus: 
