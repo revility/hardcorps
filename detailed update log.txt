@@ -11,10 +11,10 @@ NOTES ON THE PAK FILES:
 ************************************************************************************************
 
 Build: 0.8.38
-04.16.20
+04.17.20
 Focus: 
 
-	*SDK (Note Uploaded*):
+	*SDK:
 		+Player is hurt when over lapping enemies.  gamelocal.cpp, gamelocal.h ai.cpp search hurtbox
 		+Save game crash fixes. player.cpp, AI.cpp
 		-Selected player no longer pernamently archived. syscvar.cpp
@@ -37,6 +37,7 @@ Focus:
 			+Updated splash screen screen image.
 			+Fixed sideways grenade icon in explosives icon in HUD.
 	*Maps:
+		+Updated layout of test platforms map.
 	*Other:
 		+New model for adrenaline. Red glowing sphere. Imported from Rivensin
 
