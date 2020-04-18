@@ -3804,6 +3804,7 @@ void idGameLocal::KillBox( idEntity *ent, bool catch_teleport ) {
 =================
 idGameLocal::HurtBox
 Check if something is on over lapping the player and cause damage to the player
+//rev 2020 added
 =================
 */
 void idGameLocal::HurtBox( idEntity *ent ) {
