@@ -908,7 +908,7 @@ void idAI::Spawn( void ) {
 //Rev 2020 allow enemies to pass through each other if team_non_solid is true			
 			//physicsObj.SetContents( CONTENTS_BODY );
 			if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
-				physicsObj.SetContents( CONTENTS_BODY );	//the monster can pass through other monsters but player still detects touch of death
+				physicsObj.SetContents( CONTENTS_CORPSE );	//the monster can pass through other monsters but player still detects touch of death
 				//gameLocal.Printf( "corpse" );
 			} else {
 				physicsObj.SetContents( CONTENTS_BODY );
