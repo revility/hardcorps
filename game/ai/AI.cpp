@@ -1231,7 +1231,10 @@ void idAI::Think( void ) {
 	UpdateIsOnScreen(); //NOTE: my "isOnScreen" value is useful also to other entities.
 	//ivan end
 
-	gameLocal.HurtBox( this );	//rev 2020 hurt the player when on top of enemies	
+//rev 2020 hurt the player when on top of enemies
+	if( spawnArgs.GetInt( "touchofdeath", "1") ){
+		gameLocal.HurtBox( this );		
+	}
 	
 	UpdateMuzzleFlash();
 	UpdateAnimation();
