@@ -1231,7 +1231,7 @@ void idAI::Think( void ) {
 	UpdateIsOnScreen(); //NOTE: my "isOnScreen" value is useful also to other entities.
 	//ivan end
 
-//rev 2020 hurt the player when on top of enemies
+//rev 2020 hurt the player when overlapping enemies
 	if( spawnArgs.GetInt( "touchofdeath", "1") ){
 		gameLocal.HurtBox( this );		
 	}
@@ -5073,7 +5073,14 @@ void idAI::Show( void ) {
 		physicsObj.SetContents( 0 );
 	} else if ( use_combat_bbox ) {
 		physicsObj.SetContents( CONTENTS_BODY|CONTENTS_SOLID );
-	} else {
+	} 
+//rev 2020
+	if( ( spawnArgs.GetInt( "team", "1") ) && spawnArgs.GetBool( "team_non_solid", "1") ){
+		physicsObj.SetContents( CONTENTS_CORPSE );	//the monster can pass through other monsters but player still detects touch of death
+		//gameLocal.Printf( "corpse" );
+	}
+//rev 2020 end	
+	else {
 		physicsObj.SetContents( CONTENTS_BODY );
 	}
 	physicsObj.GetClipModel()->Link( gameLocal.clip );
