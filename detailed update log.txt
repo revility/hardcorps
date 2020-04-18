@@ -10,7 +10,7 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
-Build: 0.8.38
+Build: 0.8.39
 04.17.20
 Focus: 
 
@@ -40,6 +40,28 @@ Focus:
 		+Updated layout of test platforms map.
 	*Other:
 		+New model for adrenaline. Red glowing sphere. Imported from Rivensin
+
+************************************************************************************************
+
+Build: 0.8.38
+04.12.20 
+
+	*SDK:	
+		+Reverted monsters passing through other for now.  AI.cpp
+			*fixes a bug with them falling through jump platforms and passing through monster clips.
+		+Adrenaline now give the player max charge attack amounts instead of stamina. player.cpp
+		+Increased the time amount for adding charge attacks from 1500 to 2000
+	*Player Updates:
+		-remove jump grunting sounds
+		+updated all charge attack animations
+		+Added missing skin info for Scarlet... caused load jitter
+		+Increased charge attack damage from 100 to 120.
+	*Weapons player:
+	*Enemies:
+		+Fixed monster soldier sound error/warning message in console for mate down.
+	*GUI:
+	*Maps:
+	*Other:
 
 ************************************************************************************************
 
