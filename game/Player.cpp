@@ -1004,6 +1004,11 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 }
 
 //ivan start
+/*
+===============
+idInventory::GetSlotByWeap
+===============
+*/
 int idInventory::GetSlotByWeap( int i ){
 	int	w;
 	for( w = 0; w < NUM_SLOTS; w++ ) { //if already in
@@ -1014,6 +1019,11 @@ int idInventory::GetSlotByWeap( int i ){
 	return -1;
 }
 
+/*
+===============
+idInventory::FindFreeSlot
+===============
+*/
 int idInventory::FindFreeSlot( void ){
 	int	w;
 	for( w = 0; w < NUM_SLOTS; w++ ) { //if a free slot
@@ -1024,6 +1034,11 @@ int idInventory::FindFreeSlot( void ){
 	return -1;
 }
 
+/*
+===============
+idInventory::AssignWeapToSlot
+===============
+*/
 void idInventory::AssignWeapToSlot( int w, int slot ){
 	weaponSlot[slot] = w;
 	weaponPulse = false; //will trigger UpdateHudWeapon();
@@ -1848,6 +1863,7 @@ void idPlayer::Init( void ) {
 	pm_thirdPersonHeight.ClearModified();
 
 	if( !hq2QuickRespawning ){ //don't reset this if it's a quick respawn
+		cvarSystem->SetCVarBool( "pm_thirdPersonZ", false );	//rev 2020 reset the cvar if we are not respawning.
 		health_lost	= 0;
 	}
 	save_walk_dir			= false;
@@ -5816,13 +5832,18 @@ bool idPlayer::Collide( const trace_t &collision, const idVec3 &velocity ) {
 //REV 2020 UPDATED.  JUST CHECK WHAT WERE TOUCHING.  The groundent check is not needed.
 //rev 2018 start damage the player when touching enemies
 	//idEntity *groundEnt = physicsObj.GetGroundEntity();
-	if ( other->IsType( idAI::Type ) ) {	//we need to double check this in order to make sure the pain animation will play when it does occur
+
+//Rev 2020 update 2: commented out.
+//the AI now checks if over lapping the player and calls the hurtbox to happen.  Thus we don't need this anymore.
+/*	
+	if ( other->IsType( idAI::Type ) ) {	
 		//if ( other && other->IsType( idAI::Type )  ) {
 		touchofdeathx = other->spawnArgs.GetInt( "touchofdeath" );
 		if ( touchofdeathx > 0 ) {
 		Damage( NULL, NULL, vec3_origin, "damage_touchofdeath", 1.0f, 0 );					
 		}
 	}
+*/	
 //REV 2020 END
 	if ( other ) {
 		
