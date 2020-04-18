@@ -1271,7 +1271,14 @@ void idAI::LinkScriptVariables( void ) {
 	AI_MOVE_DONE.LinkTo(		scriptObject, "AI_MOVE_DONE" );
 	AI_ONGROUND.LinkTo(			scriptObject, "AI_ONGROUND" );
 	AI_ACTIVATED.LinkTo(		scriptObject, "AI_ACTIVATED" );
-	AI_FORWARD.LinkTo(			scriptObject, "AI_FORWARD" );
+//Rev 2020 disable the enemy from moving via a key...  hacky but it works.
+	//AI_FORWARD.LinkTo(			scriptObject, "AI_FORWARD" );
+	if( spawnArgs.GetInt( "disable_moving", "1") ){
+		AI_FORWARD.LinkTo(			scriptObject, "AI_MOVE_DONE" );
+	} else {
+		AI_FORWARD.LinkTo(			scriptObject, "AI_FORWARD" );		
+	}
+//Rev 2020 end
 	AI_JUMP.LinkTo(				scriptObject, "AI_JUMP" );
 	AI_BLOCKED.LinkTo(			scriptObject, "AI_BLOCKED" );
 	AI_DEST_UNREACHABLE.LinkTo( scriptObject, "AI_DEST_UNREACHABLE" );
