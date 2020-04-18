@@ -8476,7 +8476,7 @@ void idPlayer::Think( void ) {
 		}
 	}	
 
-	if ( chargeAmount > 0 ) {
+	if ( chargeAmount > 0 && !force_torso_override && ( forcedMovState == FORCEDMOVE_STATE_DISABLED ) ) {
 //Set the direction to charge in. 1 up, 2 upward, 3 forward, 4 downward, 5 down
 //charge attacking forward MUST come after the others or it might over ride upward/downward charge attacks
 		if( ( usercmd.buttons & BUTTON_5 ) && ( usercmd.buttons & BUTTON_6 ) && ( !usercmd.forwardmove ) ){ 
