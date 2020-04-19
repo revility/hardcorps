@@ -546,11 +546,9 @@ void idDamagable::Spawn( void ) {
 		//The entity still needs to take damage.  So we need to make sure projectiles & Charge attack can hurt it.
 		//Note that the model has no physics basically and can float in the air.  This is intentional.
 		GetPhysics()->SetContents( CONTENTS_PROJECTILE|CONTENTS_RENDERMODEL );
-		gameLocal.Printf(" not solid 2 actors ");
 	} else {
 		//Monsters & Player can pass through corpses.  Corpses can still take damage & detect collision.  That is why we keep using it.
 		GetPhysics()->SetContents( CONTENTS_SOLID );
-		gameLocal.Printf(" solid actors ");
 	}	
 //Rev 2020 end
 
