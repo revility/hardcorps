@@ -10,9 +10,38 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.40
+04.19.20
+
+	*SDK:
+		+Enemies may once again pass through each other.  Hurtbox might have fixed the original issue.  AI.cpp
+		+Enemy contents now properly update now when a hidden enemy is shown.  AI.cpp
+		+Minor comment changes in Player.cpp
+		+pm_thirdpersonZ resets upon spawn.  player.cpp
+		+AI will not move when disable_moving key is true/1. AI.cpp  cheap hack, but it works.
+		+idDamagable entities use the new key "solid_to_actors to check if actors can pass through it. Changes the contents on spawn.  Misc.cpp
+	*Player Updates:
+		+Game crash fix:  added AI_DEAD check in playCustomAnimMoveThread to prevent crash
+		+Material: boots now have glowing pieces similar to gauntlet.
+	*Weapons player:
+		+Fixed advocate bow parts still being on pick up model.  they are now removed.
+	*Enemies:
+		+Added keys to the main enemy def files to make sure team non solid, touch of death and team 1 are always set by default.
+		+Added disable_moving key to the main enemy def files. 0 by default
+	*GUI:
+		*Main Menu:
+			+Re ordered map selection
+			+Added missing image for concrete jungle
+			+Add test platforms map to selection.
+	*Maps:
+	*Other:
+		+Damageable items have a new key: solid_to_actors.  1 is default (turned off.  If set to 0, actors can pass through it.
+			*This is useful for old school item holders seen in game like ninja Gaiden and Castlevania
+
+************************************************************************************************
+
 Build: 0.8.39
-04.17.20
-Focus: 
+04.17.20 
 
 	*SDK:
 		+Player is hurt when over lapping enemies.  gamelocal.cpp, gamelocal.h ai.cpp search hurtbox
