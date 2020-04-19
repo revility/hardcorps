@@ -521,7 +521,9 @@ idDamagable::Spawn
 */
 void idDamagable::Spawn( void ) {
 	idStr broken;
-
+	bool actorSolid;	//Rev 2020
+	
+	actorSolid = spawnArgs.GetBool( "solid_to_actors");	//Rev 2020
 	health = spawnArgs.GetInt( "health", "5" );
 	spawnArgs.GetInt( "count", "1", count );
 	nextTriggerTime = 0;
@@ -538,7 +540,19 @@ void idDamagable::Spawn( void ) {
 	}
 
 	fl.takedamage = true;
-	GetPhysics()->SetContents( CONTENTS_SOLID );
+//Rev 2020 Start. Allow actors to pass through breakables.  Can be used for item holders as seen in many 2d games	
+	//	GetPhysics()->SetContents( CONTENTS_SOLID );
+	if( !actorSolid ){
+		//The entity still needs to take damage.  So we need to make sure projectiles & Charge attack can hurt it.
+		//Note that the model has no physics basically and can float in the air.  This is intentional.
+		GetPhysics()->SetContents( CONTENTS_PROJECTILE|CONTENTS_RENDERMODEL );
+		gameLocal.Printf(" not solid 2 actors ");
+	} else {
+		//Monsters & Player can pass through corpses.  Corpses can still take damage & detect collision.  That is why we keep using it.
+		GetPhysics()->SetContents( CONTENTS_SOLID );
+		gameLocal.Printf(" solid actors ");
+	}	
+//Rev 2020 end
 
 	//ivan start
 	particleModelDefHandle = -1;
