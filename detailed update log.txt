@@ -10,6 +10,23 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.41
+04.19.20
+
+	*SDK:
+		+AI.cpp removed disable_moving check from.  Bugged out large monsters.
+	*Player Updates:
+	*Weapons player:
+	*Enemies:
+		+Monster_player_base:  fixed duplicate entry console warning for no aim editor var.
+	*GUI:
+	*Maps:
+		+Wasted Hate:  Double jump turned on in script file
+		+Wasted Hate:  Removed broken location info entities.  Fixes console warnings.
+	*Other:
+
+************************************************************************************************
+
 Build: 0.8.40
 04.19.20
 
