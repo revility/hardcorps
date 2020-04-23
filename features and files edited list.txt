@@ -18,6 +18,12 @@ Feature/Files edited list.
 -Sliding attack now uses the same recharge system as charge attacks.
 	-Player.cpp
 	
+-Player Character select:  Through changing a cvar, different players can be used... inherit from the main just the original D3 does.
+	-game_local.cpp
+	-sysCvar.cpp
+	-sysCvar.h
+	*Check the player.def file.  player_base is the parent.  children are player_doommarine and player_scarlet.
+	
 -Player invulnerable to damage for a brief amount of time, knock back and flashing skin, and player passes through enemies during no damage time.
 	-Player.cpp
 	-Player.h
