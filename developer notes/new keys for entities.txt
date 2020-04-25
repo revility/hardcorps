@@ -1,31 +1,34 @@
-THIS IS A LIST OF THE NEW KEYS ADDED TO DEF FILES IN HARD CORPS.  THIS LIST IS USEFUL FOR MAP AUTHORS
+THIS IS A LIST OF THE NEW KEYS ADDED TO DEF FILES IN HARD CORPS.  THIS LIST IS USEFUL FOR MAP AUTHORS.  SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 
 *MONSTER_SOLDIER_*
-	+ALWAYSCROUCH 0/1/2			set to 2 to always attack crouch. 1 for 50/50 chance and 0 for never.
+	+ALWAYSCROUCH 		0/1/2		set to 2 to always attack crouch. 1 for 50/50 chance and 0 for never.
 	
 *MONSTERS (ALL OF THEM)
-	+NOAIM 1/0					Enemies will only shoot straight ahead when turned on.  On by default for many enemies.
-	+DISABLE_MOVING 1/0			Disable the monster from moving
-	+NOMOVE			1/0			Disable the monster from moving.  Buggy when using on bots.
-	+TEAM_NON_SOLID 1/0			enabled by default for most enemies.  Enemies may clip through each other.
-	+TOUCHOFDEATH 	1/0			enabled by default for most enemies.  Damage the player touching him.
+	+NOAIM 			1/0		Enemies will only shoot straight ahead when turned on.  On by default for many enemies.
+	+DISABLE_MOVING         1/0		Disable the monster from moving
+	+NOMOVE			1/0		Disable the monster from moving.  Buggy when using on bots.
+	+TEAM_NON_SOLID 	1/0		enabled by default for most enemies.  Enemies may clip through each other.
+	+TOUCHOFDEATH 		1/0		enabled by default for most enemies.  Damage the player touching him.
 	+SCORE 			INTEGER		How many points to give the player when killed
-	+NOSTATS 		1/0			whether or not to add them to the enemies list during the level complete stats screen.
-	+ISXLOCKED		1/0			if the monster is locked to the 0 x position.
-	+UPDXLOCK					Enable and disable the enemy being locked to 0 x position.
+	+NOSTATS 		1/0		whether or not to add them to the enemies list during the level complete stats screen.
+	+ISXLOCKED		1/0		if the monster is locked to the 0 x position.
+	+UPDXLOCK		1/0		Enable and disable the enemy being locked to 0 x position.
 
 *FUNC_STATIC
-	+PLATFORM 1/0				Enable to allow bullets to pass through the object... also checked by triggers to allow jumping through.
-	+PLATFORM_CANT_HIDE			Enable to allow the player to pass through when triggered instead of hiding.
+	+PLATFORM 		1/0		Enable to allow bullets to pass through the object... 
+						also checked by triggers to allow jumping through.
+	+PLATFORM_CANT_HIDE	1/0		Enable to allow the player to pass through when triggered instead of hiding.
 	*IMPORTANT NOTE*			it is advised to use the new func_platform_jumpthrough instead.
 	
 *TRIGGER_MULTIPLE/TRIGGER_ONCE
-	+JUMPTHROUGH 1/0			When enabled, and targeting a func_static with the jumpthrough key on, the static will change it's state to allow the player to pass through it.
+	+JUMPTHROUGH 		1/0		When enabled, and targeting a func_static with the jumpthrough key on, 
+						the static will change it's state to allow the player to pass through it.
 	*IMPORTANT NOTE*			It is advised to just use the new trigger_jumpdown entity instead.
 
 *FUNC_DAMAGABLE AND ALL CHILDREN
-	+SOLID_TO_ACTORS 1/0		If the damagable object is solid to actors.
+	+SOLID_TO_ACTORS 	1/0		If the damagable object is solid to actors.
 	
 *FUNC_DOOR
-	+EXPAND_BOUNDS				Expand or decrease the default size of the collision box used to trigger doors opening/closing.
+	+EXPAND_BOUNDS		INTEGER		Expand or decrease the default size of the collision box used to 
+						trigger doors opening/closing.
 
