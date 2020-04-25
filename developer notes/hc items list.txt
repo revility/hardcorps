@@ -3,6 +3,7 @@ HARD CORPS FULL WEAPONS/ITEMS LIST
 CURRENT LIST OF ALL AMMO TYPES,  ITEMS, POWER UPS AND WEAPONS FOR THE GAME
 
 AMMO TYPES:
+	*Ammo types have been reduced for Hard Corps*
 	Ammo_bullets
 	Ammo_shells
 	Ammo_explosives
@@ -11,7 +12,7 @@ AMMO TYPES:
 ITEMS
 	Armor Security
 	Armor Shard
-	Armor Boots: 			Double Jump boots
+	Armor Boots: 				Double Jump boots
 	Medkit small
 	Medkit large
 	Backpack
@@ -26,8 +27,8 @@ ITEMS
 	key steel
 	
 POWER UPS:
-	Mega sphere: 200 health
-	Adrenaline: fills charge attack gauge
+	Mega sphere: 				200 health
+	Adrenaline: 				fills charge attack gauge
 	
 WEAPONS:
 	MELEE
