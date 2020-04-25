@@ -92,6 +92,7 @@ RIVENSIN CODE INJECTIONS:::::::::::::::::::::::::::::::::::::::::
 	-Player melee "kick" damage system. 
 	-Player Motion Trails for melee weapons.
 	*Any files in the git repo not listed above are associated when one of the above injections from Rivensin.
+	*Many of the injections are interconnected to each other such as automelee and motion trails.
 
 
 
