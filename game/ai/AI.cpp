@@ -395,6 +395,7 @@ idAI::idAI() {
 	fireMode			= 0;
 	noPush				= false;
 
+	disableMoving		= false;	//rev 2020  disable the actor from moving via a key in spawn arguments
 	/*
 	modelCallBackDone	= false; 
 	renderEntity.callback = idAI::ModelCallback;
@@ -814,6 +815,8 @@ void idAI::Spawn( void ) {
 
 	animator.RemoveOriginOffset( true );
 
+	disableMoving  = spawnArgs.GetBool( "disable_moving" );		//rev 2020 used to disable the enemy from moving
+	
 	// create combat collision hull for exact collision detection
 	SetCombatModel();
 
@@ -1730,9 +1733,21 @@ bool idAI::DirectMoveToPosition( const idVec3 &pos ) {
 	move.moveStatus		= MOVE_STATUS_MOVING;
 	move.startTime		= gameLocal.time;
 	move.speed			= fly_speed;
+
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	if ( move.moveType == MOVETYPE_FLY ) {
 		idVec3 dir = pos - physicsObj.GetOrigin();
@@ -1835,9 +1850,20 @@ bool idAI::MoveToEnemy( void ) {
 	move.goalEntity		= enemyEnt;
 	move.speed			= fly_speed;
 	move.moveStatus		= MOVE_STATUS_MOVING;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -1906,9 +1932,20 @@ bool idAI::MoveToEntity( idEntity *ent ) {
 	move.goalEntityOrigin	= ent->GetPhysics()->GetOrigin();
 	move.moveStatus			= MOVE_STATUS_MOVING;
 	move.speed				= fly_speed;
-	AI_MOVE_DONE			= false;
-	AI_DEST_UNREACHABLE		= false;
-	AI_FORWARD				= true;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
+	AI_MOVE_DONE		= false;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -1963,9 +2000,20 @@ bool idAI::MoveOutOfRange( idEntity *ent, float range ) {
 	move.range			= range;
 	move.speed			= fly_speed;
 	move.startTime		= gameLocal.time;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -2015,9 +2063,20 @@ bool idAI::MoveToAttackPosition( idEntity *ent, int attack_anim ) {
 	move.speed			= fly_speed;
 	move.startTime		= gameLocal.time;
 	move.anim			= attack_anim;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -2063,9 +2122,20 @@ bool idAI::MoveToPosition( const idVec3 &pos ) {
 	move.moveStatus		= MOVE_STATUS_MOVING;
 	move.startTime		= gameLocal.time;
 	move.speed			= fly_speed;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -2112,9 +2182,20 @@ bool idAI::MoveToCover( idEntity *entity, const idVec3 &hideFromPos ) {
 	move.moveStatus		= MOVE_STATUS_MOVING;
 	move.startTime		= gameLocal.time;
 	move.speed			= fly_speed;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_DEST_UNREACHABLE = false;
+	//AI_FORWARD			= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_DEST_UNREACHABLE = false;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
 	AI_DEST_UNREACHABLE = false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
@@ -2174,8 +2255,17 @@ bool idAI::WanderAround( void ) {
 	move.moveStatus		= MOVE_STATUS_MOVING;
 	move.startTime		= gameLocal.time;
 	move.speed			= fly_speed;
+//rev 2020 disable moving
+	//AI_MOVE_DONE		= false;
+	//AI_FORWARD		= true;		
+	if (disableMoving){
+	AI_MOVE_DONE		= true;
+	AI_FORWARD			= false;		
+	} else {
 	AI_MOVE_DONE		= false;
-	AI_FORWARD			= true;
+	AI_FORWARD			= true;		
+	}
+//rev 2020 end
 
 	return true;
 }
