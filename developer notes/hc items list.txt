@@ -31,7 +31,7 @@ POWER UPS:
 	
 WEAPONS:
 	MELEE
-		Chainsaw Gauntlet:  Doom Marine Only
+		Chainsaw Gauntlet:  		Doom Marine Only
 		Ruin blade:			Scarlet only
 		Pick Axe
 		Chain Saw
