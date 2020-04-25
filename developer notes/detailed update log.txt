@@ -10,6 +10,27 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.42
+04.25.20
+
+	*SDK:
+		+Bool to disable the enemies from moving at all added.  disableMoving. AI.cpp & AI.h
+	*Player Updates:
+		+Doom helmet face plate now glows.
+	*Weapons player:
+	*Enemies:
+		+Added spawn key to enable and disable the enemies from moving. "disable_moving"
+		+monster_soldier_sniper_* disabled moving by default
+		+monster_soldier_sniper (machinegun) fire less bullets 2-4 now.
+		+monster_solider_grenade disabled moving by default
+		+ai_monster_demon_player_base.script now checks the "disable_moving" key to prevent moving backwards if turned on.
+	*GUI:
+	*Maps:
+	*Other:
+		+Small tweaks to the Trigger_jumpup def file to make it work.
+
+************************************************************************************************
+
 Build: 0.8.41
 04.19.20
 
