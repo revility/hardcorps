@@ -1,0 +1,61 @@
+HARD CORPS FULL WEAPONS/ITEMS LIST
+
+CURRENT LIST OF ALL AMMO TYPES,  ITEMS, POWER UPS AND WEAPONS FOR THE GAME
+
+AMMO TYPES:
+	Ammo_bullets
+	Ammo_shells
+	Ammo_explosives
+	Ammo_cells
+	
+ITEMS
+	Armor Security
+	Armor Shard
+	Armor Boots: 			Double Jump boots
+	Medkit small
+	Medkit large
+	Backpack
+	Battery
+	key Blue
+	key yellow
+	key red
+	key generic
+	key aco
+	key diamond
+	key cross
+	key steel
+	
+POWER UPS:
+	Mega sphere: 200 health
+	Adrenaline: fills charge attack gauge
+	
+WEAPONS:
+	MELEE
+		Chainsaw Gauntlet:  Doom Marine Only
+		Ruin blade:			Scarlet only
+		Pick Axe
+		Chain Saw
+	AMMO_BULLETS
+		pistol
+		sub machine gun
+		machine gun
+		chain gun
+		Advocate:			Nail Gun
+	AMMO_SHELLS
+		shotgun
+		super shotgun
+		Onslaught			Nail Shotgun
+	AMMO_EXPLOSIVES
+		rocket launcher
+		grenade launcher
+		enforcer:			homing missle launcher
+	AMMO_CELLS
+		flame thrower
+		plasma rifle
+		BFG
+		Rail Gun
+		Lightning Gun
+
+	*Soul Cube currently Disabled*
+	
+
