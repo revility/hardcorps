@@ -1,0 +1,832 @@
+************************************************************************************************
+DOOM 3: HARD CORPS
+2019 UPDATE LOG
+FINAL BUILD: 1.0.00
+
+NOTES ON THE PAK FILES:
+	pak 1100 contains the original HQ assets merged with the 1.1 build pak assets
+	pak 1200 contains the 2018-2020 updated content.
+
+
+************************************************************************************************
+
+Build: 0.8.41
+04.19.20
+
+	*SDK:
+		+AI.cpp removed disable_moving check from.  Bugged out large monsters.
+	*Player Updates:
+	*Weapons player:
+	*Enemies:
+		+Monster_player_base:  fixed duplicate entry console warning for no aim editor var.
+	*GUI:
+	*Maps:
+		+Wasted Hate:  Double jump turned on in script file
+		+Wasted Hate:  Removed broken location info entities.  Fixes console warnings.
+	*Other:
+
+************************************************************************************************
+
+Build: 0.8.40
+04.19.20
+
+	*SDK:
+		+Enemies may once again pass through each other.  Hurtbox might have fixed the original issue.  AI.cpp
+		+Enemy contents now properly update now when a hidden enemy is shown.  AI.cpp
+		+Minor comment changes in Player.cpp
+		+pm_thirdpersonZ resets upon spawn.  player.cpp
+		+AI will not move when disable_moving key is true/1. AI.cpp  cheap hack, but it works.
+		+idDamagable entities use the new key "solid_to_actors to check if actors can pass through it. Changes the contents on spawn.  Misc.cpp
+	*Player Updates:
+		+Game crash fix:  added AI_DEAD check in playCustomAnimMoveThread to prevent crash
+		+Material: boots now have glowing pieces similar to gauntlet.
+	*Weapons player:
+		+Fixed advocate bow parts still being on pick up model.  they are now removed.
+	*Enemies:
+		+Added keys to the main enemy def files to make sure team non solid, touch of death and team 1 are always set by default.
+		+Added disable_moving key to the main enemy def files. 0 by default
+	*GUI:
+		*Main Menu:
+			+Re ordered map selection
+			+Added missing image for concrete jungle
+			+Add test platforms map to selection.
+	*Maps:
+	*Other:
+		+Damageable items have a new key: solid_to_actors.  1 is default (turned off.  If set to 0, actors can pass through it.
+			*This is useful for old school item holders seen in game like ninja Gaiden and Castlevania
+
+************************************************************************************************
+
+Build: 0.8.39
+04.17.20 
+
+	*SDK:
+		+Player is hurt when over lapping enemies.  gamelocal.cpp, gamelocal.h ai.cpp search hurtbox
+		+Save game crash fixes. player.cpp, AI.cpp
+		-Selected player no longer pernamently archived. syscvar.cpp
+	*Player Updates:
+		+updated Def file with directional damage for charge attacks.
+		+Charge attacks now use different damage files per direction.  3 total.. ups, forward, downs
+		+Fixed Charge attack not hitting when directly below something
+		+Fixed Charge attack not hitting sooner when dive kicking down
+		+Slide attack now has a new kick damage def.  Improves hit detection.
+		+Slide attack wait times reduced from 0.3 wait to 0.2 wait
+		-removed all waits and checks for Charge attack... they can now be be done much faster, and less clumsy to use.
+	*Weapons player:
+	*Enemies:
+		+Fixed monster soldier sound error/warning message in console for mate down.
+	*GUI:
+		*Main Menu:
+			-removed character select from game options.
+			+Added character select to new game menu with character pics to choose from.
+			+Fixed white patch on the bottom of the mars planet texture for the main menu model
+			+Updated splash screen screen image.
+			+Fixed sideways grenade icon in explosives icon in HUD.
+	*Maps:
+		+Updated layout of test platforms map.
+	*Other:
+		+New model for adrenaline. Red glowing sphere. Imported from Rivensin
+
+************************************************************************************************
+
+Build: 0.8.38
+04.12.20 
+
+	*SDK:	
+		+Reverted monsters passing through other for now.  AI.cpp
+			*fixes a bug with them falling through jump platforms and passing through monster clips.
+		+Adrenaline now give the player max charge attack amounts instead of stamina. player.cpp
+		+Increased the time amount for adding charge attacks from 1500 to 2000
+	*Player Updates:
+		-remove jump grunting sounds
+		+updated all charge attack animations
+		+Added missing skin info for Scarlet... caused load jitter
+		+Increased charge attack damage from 100 to 120.
+	*Weapons player:
+	*Enemies:
+		+Fixed monster soldier sound error/warning message in console for mate down.
+	*GUI:
+	*Maps:
+	*Other:
+
+************************************************************************************************
+
+Build: 0.8.37
+04.11.20
+Focus: 
+
+	*SDK:	
+		+Added checks for the new nodamage key.  disables the player taking damage and allows passing through enemies when on. player.cpp, player.h
+		+Charge attacks can be done in multiple directions.  player.cpp, player.h
+	*Player Updates:
+		+Charge attack no longer uses slide damage, has it's own
+		-reduced knockback, radius and push of charge damage
+		+added nodamage key to def file
+		+Added DamageOff and DamageOn to player script.  called in dash forward animation at start and end of animation.
+		+Player now glows when charge attacking
+		+Added new sliding sound fx
+		+Added new Charge Attack player skin fx
+		+Added New charge attack sound fx
+		+Increased the wait time after charge attacks from 0.2 to 0.3 more stable.
+		+Faster sliding animation added
+		+Player now glows when sliding
+		+sliding uses dash charges.
+		-removed charge and slide damage from player def.  no longer needed
+		-Slide and charge attack moves no longer use radius damage system
+		+Slide and charge attack now use kick damage system ported from Rivensin...
+			+More reliable
+			+Impact damage effects unlike radius damage.
+		+Charge attacks can be done in 5 directions.  script and def updated.
+		+Charge directional animations added. mostly placeholder.
+	*Weapons player:
+	*Enemies:
+	*GUI:
+	*Maps:
+	*Other:
+		+Imported blue explosion and related materials and effects from Rivensin.
+
+************************************************************************************************
+
+Build: 0.8.36
+04.07.20
+Focus: 
+
+	*SDK:	
+		+Added pm_thirdpersonZ:  used to lock enable and disable the camera moving vertically (along the z axis). player.cpp, syscvar.cpp, syscvar.h
+		+Charge Attack added.  Charge attack counter added.  player.cpp, player.h
+	*Player Updates:
+		+Charge attack added:  similar to the dash attack except the player can do them in air, and 2 in a row.
+			*This will be expanded in future builds.
+	*Weapons player:
+	*Enemies:
+	*Other:
+		+Added target_camera_z_lock:  stops the camera from moving vertically
+		+Added target_camera_z_unlock:  re enables the camera moving vertically
+		+HQ_utilities script updated with camera z lock/unlock
+	*GUI:
+		+Changed Stamina gauge to charge attack gauge.  Size adjusted.
+	*Maps:
+
+************************************************************************************************
+
+Build: 0.8.35
+04.03.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+Skin update:  Gauntlet is now always shown, only the chainsaw part hides when not used.
+		+Fixed player legs resetting animations when weapons were raised. "weapon_ready" is no longer checked in legs anims. player.script
+	*Weapons player:
+		+Revamped BFG.  Now functions similar to the Rivensin version, just faster firing.
+		+Onslaught changed from homing projectiles to regular projectiles.
+		+Nails projectile used on Onslaught and Advocate now glow blue.  Easier to see.
+	*Enemies:
+		+Monster soldier pistol/ai bots using pistol now drop small bullets clips instead instead of pistols... far more useful.
+		+Monster soldier/bot/etc....  various sounds updated to match closer to zsec pain/chatter and death sounds.
+	*Other:
+		+Uncapped frames no longer default setting. default.cfg
+		+Fixed ammo_explosives crashing to console due to giving old rocket ammo instead. ammo.def
+		+Changed models used for ammo bullet small and large
+		+Fixed ammo_cells_large using the incorrect model.
+		+Added bfg debris and other shell/casing models from Rivensin.
+		+Updated debris.def with bfg debris.
+	*GUI:
+		*Hud:
+			+Fixed missing shadow fx for Explosives ammo count
+			+Updated some weapon pick up names
+			+Updated all Large Weapon pick up icon images, text, colors and positions.
+	*Maps:
+
+************************************************************************************************
+Build: 0.8.34
+03.31.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+Increased shotgun fire fps to 36
+		+Increased shotgun DB reload fps to 48
+	*Weapons player:
+		+Chaingun: increased rate of fire by almost 50%
+		+Chaingun: lowered damage
+		+Sub MachineGun: increased rate of fire by almost 50%
+		+Sub MachineGun: lowered damage
+		+MachineGun: increased rate of fire by almost 50%
+		+MachineGun: lowered damage
+		+Shotgun: increased rate of fire by almost 50%
+		+Shotgun: lowered damage
+		+Increased shotgun world model fire fps to 36
+		+Shotgun: increased rate of fire by more than 50%
+		+Shotgun: lowered damage by 50%
+		+Increased shotgun world model fire fps to 48
+		+Plasma gun: increased projectiles from 2 back to 3
+	*Enemies:
+	*Other:
+		-Fire damage, typically caused by archvile attacks for example, time reduced from 8 to 2
+		-reduced the time of other damage fx types such as electro, and toxic.
+		+New loading screen image added
+
+************************************************************************************************
+Build: 0.8.33
+03.29.20
+Focus: 
+
+	*SDK:	
+		+Added the ability for the hud to display multiple ammo types. player.cpp  Vanilla D3 could only do the current weapon
+			*Ammo Def numbers are used to determine which ammo type amount is displayed
+	*Player Updates:
+		+pistol weapon18 fixed bullets ammo info 
+	*Weapons player:
+		+Ruin Blade no longer plays the equip sound when used
+		+Rockets no longer damage the player
+		+BFG now uses cell ammo.  amount used when fired adjusted
+	*Enemies:
+	*Other:
+	*GUI:
+		*Hud: revamped player stats area
+			+cleaned up code
+			-removed outdated and unused code
+			+improved health and armor number visibility
+			+Added new health and armor icons
+			+Added new weapon icons and imported ones from Rivensin
+			+Added new weapon icon border image
+			+adjusted weapon ammo info
+			+Added Ammo icons
+			+Now displays  all ammo types carried by the player at all times
+			+moved lives and score info
+			+Moved stamina bar to the top above lives and score.
+			+New stamina border and bar images
+			+Moved air gauge left
+			+Moved radio chatter to the bottom center
+			+Moved and adjusted boss health bar.  changed text
+			+Moved and adjust jet pack fuel bar
+			+Objective window and objective complete windows moved upward by a 100
+			+Increased the resolution of some of the images such as the stamina gauge, boss gauge, radio and air gauges
+	*Maps:
+
+************************************************************************************************
+Build: 0.8.32
+03.24.20
+Focus: 
+
+	*SDK:	
+		+reverted toggle melee weapon changes. player.cpp and syscmd.cpp
+	*Player Updates:
+		+Ruinblade now shares the same weapon0 slot as the CSG.  done via Scarlet's def file.
+			*Note that both characters share the same base... each character can have their own weapons or stats.
+				*However they should be weapons the other can not pick up or else it introduces many, many bugs.
+		-Removed inventory nails from player defs
+		+Scarlet now starts off with bullets instead of nails
+	*Weapons player:
+		+Advocate now uses bullets to make having it as a default weapon for Scarlet more usable.
+		+Onslaught now uses shells to make it more usable.
+	*Enemies:
+	*Other:
+		-Ammo: removed nails ammo types
+		-Ammo/items: removed nail pick ups
+	*GUI:
+	*Maps:
+
+************************************************************************************************
+
+Build: 0.8.31
+03.23.20
+Focus: 
+
+	*SDK:	
+		+Player no longer looses weapon upon death. player.cpp
+		+Fixed Ruin Blade weapon slot toggle not working.  player.cpp syscmd.cpp
+		+melee_snd_raise player key added.  used to disable weapon equip sounds after a melee attack
+	*Player Updates:
+		*commented out unused csg attack for new ones
+		+Player now instantly attacks when selecting the chainsaw gauntlet and reverts to previous weapon
+	*Weapons player:
+		+CSG invisible projectile size, speed and fuse adjusted.  smaller faster collision box.
+			*fixes the projectile going through objects when too close causing the player to miss.
+			*fixes the damage fx spawning too close to the player model
+		+CSG instant attack:  When pressing the csg key, the player will automatically attack and then revert to previous weapon.
+		+The above changes have been applied to the Ruin Blade
+		-Ruin Blade no longer does a charge attack as a result of the change.
+		+Increased CSG damage
+		+CSG flesh hitting sound updated
+		+Fixed all weapons playing the equip sound after swinging a melee weapon using the melee_snd_raise player key
+	*Enemies:
+		+Monster_soldier pistol max shots reduced from 6 to 3
+		+Monster_soldier shotgun max shots reduced from 3 to 2
+	*Other:
+		+Default controls updated:
+			-removed drop weapon key.  unused, not  needed, causes weapon slot bugs.
+			+changed f key to dash/button5
+			+changed mouse2 to melee attack key
+			+Keyboard/controller is now the default aiming method.
+	*GUI:
+		+Updating naming for various attack, dash and aim related options to better reflect what they do
+		-removed drop weapon key bind options
+		+replaced drop weapon key bind with dash key bind.
+		+Hud updated weapon pick up info
+		+Hud: added placeholder images and missing info for advocate, onslaught, ruinblade, CSG
+	*Maps:
+		*Wasted Hate:
+			-removed use of music_speakers from map. replaced with triggering standard speakers. Much more dependable.
+				*music_speakers system looses speaker info when the player dies is why.
+			+Cleaned up level script
+			+removed monster clip texture in boss room preventing the pinky from attacking the player and breaking ai routines.
+			-removed a couple obsolete triggers
+			-replaced pick axe with shotgun
+			+added more enemies
+
+************************************************************************************************
+
+Build: 0.8.30
+03.??.20
+Focus: 
+
+	*SDK:	
+	*Player Updates:
+		+increased fps of shotgun fire from 24 to 30
+	*Weapons player:
+		+shotgun now fires faster
+	*Enemies:
+	*Other:
+		+Skins: fixed typos in barrel skins
+	*Maps:
+		*Wasted Hate:
+			+Fixed console warning related to barrel skins
+			+fixed material _untitled error
+			+fixed broken ammo pick ups
+			+adjusted trigger position for many enemy triggers
+			+Added many more enemies... more than doubled the enemy count
+			+replaced flame thrower with security armor
+			+added a 2nd wall jump tip before the boss fight
+			-removed falling body in fourth area... scream was terrible.  Looked cheesy.
+			+adjusted script to make sure the old music stops before boss fight
+			-removed door triggers added in previous build... nolonger needed
+			+fixed expand_bounds key for secret wall door
+			+fixed ammo clip poisition in main shaft room
+			+fixed fat zombie facing direction in shaft room.
+			-removed or replaced bad item pick ups.
+			+replaced all zsec with monster_soldiers
+		*Playground
+			-removed old unused weapons and items
+			+Added updated weapons, new weapons and ammo pick ups.
+
+************************************************************************************************
+
+Build: 0.8.29
+03.15.20
+Focus: 
+
+	*SDK:
+		+Enemies can pass through each other if on the same team and key team_non_solid enabled.  AI.cpp
+		+New key for doors added: expand_bounds... increases the size to trigger it to open.  default is 200. mover.cpp		
+	*Player Updates:
+		+Fixed RuinBlade weapon weapon info set to 0 instead of 18
+		+Fixed frame numbers for pick axe and csg
+		+Fixed animation name "Fourth" for melee weapons mispelled from forth
+		+Updated default ammo values
+		+Updated max ammo values
+		+Updated a couple ammo gui names.
+	*Weapons player:
+		+Updated skeleton of pick axe to work with Ruinblade animations
+		+Updated Pick axe to new idle animation and motion trails.
+		+Pick axe now uses the fake projectile system like other melee weapons.
+			*This is much more dependable than using standard melee damage and melee collision detection.
+		+Fixed CSG and RuinBlade invisible projectile freezing ragdolls when killing enemies...  melee damage must be 1 not 0.
+		+Fixed RuinBlade missing melee info in def causing the game to crashes
+		+Updated RuinBlade and CSG to use the same style script as the pick axe... much cleaner and simple code.  Old versions archived
+		+Cleaned up pick axe script
+		-removed cross bow part of advocate
+		-Lowered charge time for Ruin Blade charge shot... now faster to fire.
+		-Lowered SMG rate of fire from 0.2 to 0.24
+		+Rocket launcher, enforcer and grenade launcher now share the new explosive ammo type
+		+Changed GUI Grenade Launcher names from Hand Grenades.
+	*Enemies:
+		+Minor improvements to enemy fov and chase after player
+		+New key team_non_solid added to monster default to allow monsters to pass through each other.
+	*Other:
+		+Door default speed increased from 100 to 200
+		+New key for doors added: expand_bounds... increases the size to trigger it to open.  default is 200. fun.def
+		+Fixed and cleaned up Ammo.def.  Removed unused ammo types and cleaned up file, adjusted models, amounts and more.
+		+Added explosive ammo type.  replaces rockets and grenades.  
+		+backback item: Fixed up and modified amounts of ammo, ammo types and more given
+	*Maps:
+		+Restored original Wasted Hate
+			+Added an extra large ammo clip before boss fight
+			-lowered boss health from 2200 to 1200.
+			+Fixed ragdoll not falling from ceiling when scream is heard.
+	
+
+************************************************************************************************
+
+Build: 0.8.28
+03.11.20
+Focus: 
+	*SDK:
+		+Entities now check if they are activating a jump through platform and will active the solid state properly for it. entity.cpp, entity h
+			*This is done via having the jumpthrough key set to 1 for the triggering entity and the platform key set to 1 on the target entity.
+		+Added new states for entities for platform targeting: jumpover and jumpunder.  Will adjust the contents accordingly. entity.cpp, entity h 
+		+Various updates to func static for jump through platfor support. misc.cpp
+		+Added new types of target entities: target_show_repeat and target_hide_repeat. target.cpp, target.half
+			*Unlike the default versions, these do not remove themselves after being used.  They constantly perform the hide or show.
+		+invulnerability after being damaged time now controlled in player.cpp instead of player script.  Fixes many bugs and more dependable.
+		+Player damage effects on screen no longer play when invulnerability is active
+		+Player can pass through enemies while invulnerability is active.
+		+Fixed player being able to stand on top of enemies whil invulnerability is active.
+		+Player now changes aim instantly when using contra aiming method. Player.cpp
+		+misc.cpp: updated platform hide/show to properly show the entity
+		+Target.cpp & target.h: added new entities: target_hide_repeat & target_show_repeat
+			*used to hide and show something such as a platform... unlike target_show they can repeat.
+	*Player Updates:
+		+Jumping animation updated.  Legs lift much higher.
+		+blink skins now precached to fix game freezing up briefly if loaded on the fly.
+		+Cleaned up repetative waitfordamage and skin change checks in player script.
+	*Weapons player:
+		+Chain gun reduced start up time in half
+		+Shotgun: Increased rate of fire
+		+Super shotgun: increased rate of fire
+	*Other:
+		+Added hq_target.def for new targets.
+	
+	
+************************************************************************************************
+
+Build: 0.8.26
+02.09.19
+Focus: 
+	*SDK:
+		+Added new cvar: pm_character.  changes the player character.
+		+Updated game_local.cpp for player character select
+		+func_static: if key platform is set to one, then hide show changes solid contents instead. misc.cpp updated.
+			*This removes the need of using multiple func_Static for platforms.
+	*Player Updates:
+		+Added 2nd playable character: Scarlet Rivensin!
+			+Starts off with the Ruin Blade and Advocate.
+		+Fixed dashing being ignored while custom animation is playing. Allowed instant dash aftewards.
+		+Added female player sounds where needed for Scarlet
+		+Added blinking skin and textures for Scarlet
+		+Disabled dashing and dodging/commented out code.  Not needed really because of slide move.
+	*Main Menu:
+		+Added character select under game options.
+	*Enemies:
+	*Effects:
+	*Weapons:
+		+RuinBlade can only be charged while the attack is held, not pressed
+		+Ruin Blade: Fixed position of charge shot model not matching projectile collision box
+		+Fixed Ruinblade damage causing ragdolls to be frozen
+		+Fixed Chainsaw Gauntlet damage causing ragdolls to be frozen
+	*Misc:
+		+Updated testplatforms map with new platform keys on func static platforms
+
+
+************************************************************************************************
+
+Build: 0.8.25
+02.02.19
+Focus: combo system and melee
+
+	*SDK:
+		+Added melee weapon motion trails
+		+Added Rivensin melee and combo systems
+		*Files updated: 
+			+game_local.cpp/h, misc.cpp/h, player.cpp/h
+			+trailgenerator.cpp/h, weapon.cpp/h, 
+			+physics_player.cpp/h, anim.h, anim_blend.cpp
+	*Player Updates:	
+		+Ported most of Rivensin's ruin blade attack and finishing move animations
+		+Ported Rivensin's kick animations. currently unused
+		+Added Dashing forward and backwards
+		+Fixed player being able to spam slide
+		+Slightly lowered viewhieght to correct launchfrombarrel 0 origin
+		+reduced bounding box size from 32 to 20.  stops the player from floating off platform edges.
+		+Updated Gauntlet animation with motion trails, etc.
+	*Main Menu:
+	*Enemies:
+	*Effects:
+		+Added motion trail beam materials and textures
+	*Weapons:
+		+Updated RuinBlade.  Functions similar to Rivensin Version.
+		+Ruinblade light glow now works
+		+updated sword wave projectile models and images
+		+Sword wave projectile now faces the proper direction when fired
+		+Added temporary sounds for when sword is charged and firing projectile.
+		+melee is no longer used.  dummy code in place for it...
+		+Ruinblade now fires an invisible projectile when fired for more consistant damage
+		+Ruin Blade can now reflect or destroy projectiles thanks to the fake projectile system.
+		+Updated Gauntlet def & script to match the updated ruin blade melee/projectile system
+		+lowered Gauntlet Damage to lower than ruinblade. 
+	*Misc:
+		+Added kick & punch damage defs
+		+Build numbers revamped.
+
+
+************************************************************************************************
+
+Build: 1.1.22
+01.30.19
+Focus: Misc fixes
+
+	*SDK:
+	*Player Updates:	
+	*Main Menu:
+	*Enemies:
+		+Monster player base: fixed gibs dropping 3 legs and 1 arm instead of 2 and 2.
+	*Effects:
+	*Weapons:
+		+BFG projectile speed increased from 250 to 500
+		+RuinBlade now uses it's own script.
+		+RuinBlade increased rate of fire from 0.45 to 0.40
+		+RuinBlade now launches a short range projectile instead of melee for damage
+		+RuinBlade: Charge shot added.  Holding down the attack button for x seconds releases a faster, but weak projectile.
+	*Misc:
+		+Fixd HQ Flesh Debris models.  models did not include full file path
+		+Gibs: Added missing collision boxes to 4 gib models.
+		+Doom_main.script: Cleaned up formatting.
+
+************************************************************************************************
+
+Build: 1.1.21
+01.18.19
+Focus: Misc fixes
+
+	*SDK:
+		+Eject brass not working fixed. weapon.cpp updated
+	*Player Updates:	
+	*Main Menu:
+	*Enemies:
+		+Zsec, commando chain gun, monster player weapons and monster soldier bullets changed to white.
+		+Increased walking and running speed/fps for many enemies from 24 to 32.
+		-lowered monster player health from 70 to 30 to match zsec
+		-lowered trite and tick health from 10 to 5.
+		+Increased Cacodemon flying speed from 175 to 225.
+		+Increased lost soul flying speed to 200
+		+Increased pain elemental flying speed to 200
+		+enabled noaim for imps.
+		+Changed soldier_mach, bfg and rocket to soldier_sniper_* only soldiers with free aim
+		+Fixed console warnings for Archvile fireloop... wav files are not real.
+	*Effects:
+	*Weapons:
+		+Machine Gun, Shotgun and shotgun db now use red bullets
+		+Machine Gun: rate of fire changed from 0.12 to 0.10
+		+Sub Machine Gun rate of fire changed from .30 to 0.15
+	*Misc:
+		+Updated red bullets texture... now more red
+		+Added orange, yellow and white hqbullets
+		+Added 3 regular style key items from Rivensin.
+
+************************************************************************************************	
+
+Build: 1.1.20
+01.17.19
+Focus: Weapons
+
+	*SDK:
+	*Player Updates:
+		+Cleaned up formatting of player.def
+		+Player animations adjusted for new weapons
+		-reduced player invulnerability time from 2 seconds to 1.5
+		+Player no longer starts with the chainsaw
+		+Player now starts with the Chainsaw Gauntlet
+		+Added skins needed for chainsaw gauntlet
+		+Updated player script with skins related to chainsaw gauntlet
+		+Max ammo grenades increased to 100
+		+Max ammo rockets increased to 100
+		+Increased amount of ammo given when picking up many weapons.
+		+Adjusted ammo types used for many weapons.  
+			*Used Ammo types are bullets, shells, rockets, grenades, cells and bfg.
+			-Fire, laser, belt and clip nolonger used.  Ammo pick ups and player def keys still intact.
+			+Added ammo type nails
+		+Ported Advocate player animations from Rivensin
+		+Ported Onslaught player animations from Rivensin
+	*Guis:
+		+Updated Hud with updated weapon slots and chainsaw support
+	*Enemies:
+		+Zombie running fps increased from 24 to 32... this controls how fast they run
+	*Effects:
+		+Added sword flesh hit decals from Rivensin
+	*Weapons:
+		+NEW WEAPON: Ruin Blade Sword. longest range melee. weaker than a csg, stronger than the pick axe.
+		+NEW WEAPON ChainSaw Gauntlet.  shorter range than the pick axe, but more powerful.
+		+NEW WEAPON Advocate Nail Gun. Slower than a machine gun, but more powerful
+		+NEW WEAPON Onslaught Homing Nail Gun. fires 10 homing nails
+		+Railgun now uses riveter model
+		+Lightening Gun now uses recolored Grabber model
+		-WEAPON REMOVED: Removed Riveter.
+		+WEAPON CHANGED: Enforcer replaced with homing missle launcher and new model.
+		+Pick Axe: does 4 different swings instead of 2 now.
+		-Reduced pick axe damage from 50 to 25
+		+Chainsaw can now be dropped and picked up like all other weapons.
+		+Fixed typo in world_riveter.md5mesh model causing nodraw console warning
+		+Fixed lightening gun sound console warning. unused sound in def file.
+		+Fixed particle fx issues with rocket launcher. script called for unused laser site
+		-Reduced Chainsaw damage further. from 12 to 10.
+		+Cleaned up shotgun def file
+		+Shotgun script: now uses a key from the weapon def for number of projectiles to fire at once.
+	*Misc:
+		+Commented out all level scripts in doom main. Not needed and resource waste.
+		+Playground map: Replaced Riveter with Chainsaw.  Riveter no longer used.
+		-Removed unused ammo types.
+		+Added ammo nails pick ups
+		
+
+************************************************************************************************		
+
+Build: 1.1.15
+01.13.19
+Focus: New enemies and adjusted AI for playerbase & zsec
+
+	*SDK:
+	*Player Updates:	
+	*Main Menu:
+	*Enemies:
+		+monster player weapons: increased velocity of grenades
+		+monster player weapons: decreased velocity of machine gun bullets
+		+Player base: support to force the enemy to always alwayscrouch fire added for shotgun, plasma and machinegun
+		+Zsec: new key added.  "alwayscrouch" adjust the chance to crouch when firing.  set higher than 1 to force crouch. 0 to never crouch.
+		+Added monster_solider sub machine gun
+		+Added Baron of Hell from Rivensin
+		+Added Pain Elemental from Rivensin
+		+Commando tenticle: adjusted run distance, attack distanc and lowerd fov wait time
+		+Commando chaing gun: increased run distance. reduced fovwaittime
+		+Updated clasic Imp textures with the ones more recent from Rivensin
+	*Effects:
+	*Weapons:
+	*Misc:
+		+Cleaned up formatting of monster_player_base.def
+
+************************************************************************************************		
+		
+Build: 1.1.14
+01.11.19
+Focus: Enemy soliders & enemy shoot only straight ahead key
+
+	*SDK:
+		+Player.cpp: Player now aims downward when using contra style aiming while running as intended.
+		+Game local.cpp increased projectile distance by 80
+		+AI_bot.cpp: added new key check to make the enemy shoot only straight ahead. key is "noaim".
+		+AI.cpp: added new key check to make the enemy shoot only straight ahead. key is "noaim".
+	*Player Updates:	
+	*Main Menu:
+		+Added build number under game options
+		+removed backgrounds for unused control option slots
+		+Updated descriptions for movement controls
+		+Added Crouch bind.
+		+Updated build number
+	*Enemies:
+		+Enabled gibbing for monster_player_* updated def and script files.
+		*Added monster_soldiers:
+			+inherits off of monster_player_security
+			+includes new colored skins
+			+Different heads for each kind
+			+Includes Shield soldier, but this one inherits off zsec instead
+			+Added all main weapon types.
+			*These should be used instead of zsec from now on.
+			+Adjusted enemy default max & min looks
+			+added noaim key to monster_player_base.  off by default
+	*Effects:
+	*Weapons:
+		-Reverted projectile fuse for most weapons back to AutoCameraFuse
+	*Misc:
+		+Added grid 256 & 512 textures for use while blocking out maps
+		+Default config: toggle crouch on by default.
+
+************************************************************************************************
+
+Build: 1.1.13
+01.06.19
+Focus: Jump through platforms
+
+	*SDK:
+	*Player Updates:	
+		+player script: player will no longer slide when when readytofall key is active
+	*Main Menu:
+	*Enemies:
+	*Effects:
+	*Weapons:
+	*Misc:
+	*Jump through platforms system added!
+		+Bullet pass material added:  blocks everything but projectiles.  replaced previous jump through material
+		+Player & bullet pass material added:  Blocks monsters, ikclip, moveables.  not the player or projectiles
+		+hq2_util.script: added pushupplayer & rdy2fall.  Both are used above and inside jump through platforms
+		+Added Testbox2 map.  This map contains examples and script for creating jump through platforms.
+		+Added trigger_jumpup: trigger_multiple which is already set to call moving the player upwards
+		+Added trigger_jumpdown: trigger_multiple which is already set to call moving the player downwards
+		+New editor textures for trigger_jumpup & trigger_jumpdown
+		+Added hq/testplatforms map.  Test out platforms created with func_statics, decals and world objects.
+
+************************************************************************************************
+
+Build: 1.1.12
+01.05.19
+
+	*SDK:
+	*Player Updates:	
+		+player.def: readytofall key added.  for future use with jump through platforms
+	*Main Menu:
+	*Enemies:
+		+Imps now launch fireballs faster.  throwing animations fps increased from 24 to 32
+		-lowered base zombie health further. 30 to 20
+		-zombie base gibhealth reduced to 100
+		+Shotgun Zsec armor is blue
+		+pistol Zsec armor is red
+		+shield Zsec armor is red
+		+machinegun Zsec armor is green
+	*Effects:
+	*Weapons:
+		+Increased range of pistol projectile used for many weapons.
+		+Increased speed of pistol projectile used for many weapons from 800 to 900.
+		-lowered sub machine gun rate of fire from .2 to .3
+		-lowerd machine gun rate of fire from .1 to .15
+		+Increased shotgun rate of fire from 1.2 to 1
+		-decreased shotgun damage from 30 to 20
+		+Increased super shotgun rate of fire from 1.3 to 1
+		-decreased super shotgun damage from 30 to 20
+		-reduced weapon zoom amount from 50 to 70
+	*Misc:
+		+Updated some editor preview textures such as monster clip, player clip, etc.
+		+Added grid textures for map development.
+		
+************************************************************************************************
+
+Build: 1.1.11
+12.30.18
+
+	*SDK:
+	*Player Updates:	
+		+Added back in all weapon related idle, raise and lower player animations.
+		+New animations for pick axe added.  Uses some of the Rivensin sword animations for it.
+		+Fixed pain animation not playing while attacking.
+		+AI.cpp range used to check attack distance increased by 100.  enemies will attack much sooner now.
+		-Reduced slide damage from 25 to 10
+		+Fixed sliding causing the player to be pernamently immune to damage.
+		+slide move can not be done while player pain animation/state is active.
+	*Main Menu:
+		+Added system option to change image cache megs.
+		+Moved strech guis options to main part of system options
+		+Fixed choice text for strech guis
+		+Mars planet model material for menu reverted to original 6th venom texture.
+		+increased strength of normal map for mars planet model in main menu
+		+Adjusted levels of diffuse map for mars planet model.
+		+Changed image used for content borders in menu
+	*Enemies:
+		+Cacodemons skin color changed to red.  Eye colors changed to yellow
+		-Reduced health for zsec, zombies, imps, cherubs, trites, ticks, maggots, lost souls, & commandos
+	*Effects:
+	*Weapons:
+		+All weapons now have a zoomfov amount.  currently set to 50
+	*Misc:
+		+New crosshair sprite for mouse aiming.  Higher resolution as well.
+		+fixed tick sound shader console warning
+		+Fixed double barrel shotgun sound shader console warning
+		
+************************************************************************************************
+
+Build: 1.1.10
+12.27.18
+
+	*SDK:
+		+Ported to Dhewm 3 1.5.00
+		+Ported Rivensin's hdr lighting.  cvar.cpp & h updated.  playerview.cpp & h updated
+		+Player takes no damage when nodamage key is set to 1 via script.
+		+after being damaged, the player now calls the waitfordamage script
+			*Wait for damage script changes the player's skin temporary and makes them immune to damage.		
+		+Player is now damaged when standing on top of enemies with the touchofdeath key set to 1. player.cpp
+		+player is now damaged when colliding with enemies with the touchofdeath key set to 1. player.cpp
+			*Note: A check for standing or colliding is done to make sure the pain animation always plays.
+	*Player Updates:
+		+Added many player weapon animations from Rivensin
+		+Pistol is now fired and aimed with 2 hands
+		+Added updated textures from Rivensin for player model.  Improved textures
+		+Added Rivensin Doom player model.  Head is now attached to model and not a seperate entity.
+		+New player model has the chainsaw gauntlet attached. uses skins to show and hide.
+		+Player is now knocked back or up when recieving damage. 
+		+Player is immune to damage for 2 seconds after being hit
+		+Player script now checks if the player is dead before allowing fullbodyanimations to play.
+		+player script now resets the new nodamage key when spawning, exiting cinematics, etc.
+		+Player's textures now flash white while immune to damage
+			+Knockback03 animation added
+			+Void player pain now calls for fullbody animation
+				*Note: Player is immune to pain while playing full body animations via player.cpp
+			+Added waitfordamage key to def file.  enables and disables damage
+			+Added blinkon to player script. this controls the player model flashing and damage immunity time.			
+	*Main Menu:
+		+replaced bloom option with HDR lighting option
+		+Added option to uncap frame rate
+		+Added option to strech guis
+	*Enemies:
+		+Added touchofdeath key to base enemy def files.  when set to 1, an enemy will damage the player when touching them.
+		+Added Rivensin's improved textures for Archvile, mancubus, pinky, commando, revenant, and maggot
+	*Weapons:
+		+Added Rivensin's updated plasmagun, machinegun, and bfg weapon models with improved textures & effects.
+		+Added Rivensin's Q2 autoshotgun/grenade launcher model
+	*Misc:
+		+Ported Rivensin glprogs for improved HDR lighting and ambient lighting
+		+Ported Rivensin's postprocess.mtr for hdr lighting
+		+Added touchofdeath damage type to damage.def file
+		+Added Rivensin's D3 models for use.
+		+Fixed burstysquirt.prt duplicate particle console warning
+		+Fixed vanilla D3 shrapnel model missing clip textures.
+		+Replaced default burstysquirt particle with Rivensin's headshot blood particle fx
+		
+************************************************************************************************
+************************************************************************************************

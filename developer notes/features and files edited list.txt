@@ -1,0 +1,98 @@
+Feature/Files edited list.
+04.20.20
+
+-Touch of Death/HurtBox:  Player gets hurt if touching enemies enemies with the "touchOfDeath" key set to true
+	-Game_local.cpp
+	-Game_local.h
+	-AI/AI.cpp
+	*Game local contains the new hurt box event... damages the player when called.  This is checked in the ai.cpp think.
+	*This is almost identical to how the game detects Actors for telefragging.
+
+-Charge Attack system, Charge Gauge, no damage during charge attack, Player passes through enemies during charge attack
+	-Player.cpp
+	-Player.h
+	*Various input combinations will trigger different types of charge attack states in the player script.
+	*Charge attack timer to add charges is done in player.cpp
+	*Charge attacks are removed in the charge attack states in the player script.
+
+-Sliding attack now uses the same recharge system as charge attacks.
+	-Player.cpp
+	
+-Player Character select:  Through changing a cvar, different players can be used... inherit from the main just the original D3 does.
+	-game_local.cpp
+	-sysCvar.cpp
+	-sysCvar.h
+	*Check the player.def file.  player_base is the parent.  children are player_doommarine and player_scarlet.
+	
+-Player invulnerable to damage for a brief amount of time, knock back and flashing skin, and player passes through enemies during no damage time.
+	-Player.cpp
+	-Player.h
+	*When hurt, the player will always feel pain, trigger a full body knock back animation, flashing textures, during a brief period of time.
+	*Time period is set in player.cpp  The blinking skin called from the player script.
+	
+-Adrenaline power up fills up charge gauge instead of stamina
+	-Player.cpp
+	-Player.h
+	
+-Player keeps current weapon upon death/respawn.
+	-Player.cpp
+	
+-Instant aim change when using keyboard controls:  Direction to aim now happens instantly instead of the player slowly changing direction.
+	-Player.cpp
+	
+-No screen damage effects if player is invulnerable to damage
+	-Player.cpp
+	
+-Expand Door Bounds:  Doors open faster by default, default bounds to trigger doors increased.  Mapper can adjust the bounds size through keys.
+	-Mover.cpp
+	
+-Fix empty shells not ejecting from thirdperson model
+	-weapon.cpp
+	
+-Projectile distance increased for wide screen support.
+	-Game_local.cpp
+	
+-No Aim key for enemies.  Enemies will only shoot straight when true in their def files.
+	-ai/AI.cpp
+	-ai/ai_bot.cpp
+
+-Camera Z position lock.  pm_thirdpersonZ.  Camera will not follow the player vertically when true.
+	-Player.cpp
+	-gamesys/syscvar.cpp
+	-gamesys/syscvar.h
+	
+-Allow displaying multiple ammo types in hud
+	-Player.cpp
+
+-Enemies pass through each other if on the team 1, and team non solid key is true.
+	-AI/AI.cpp
+	
+-Increase enemy Fov
+	-AI/AI.cpp
+
+-Jump through platforms:
+	-Misc.cpp (key to change the contents to allow the pass through or not.
+	-Entity.h (Change how func_statics work when triggered and have the platform key set to true)
+	-Entity.cpp (Check above).   
+	*The entity that triggers the jump through action also has a key to check if allowing the player to jump down or jump up through the platform.
+	
+-Keep showing and keep hiding entities (unused)
+	-Target.cpp
+	-Target.h
+
+-IdDamageable: key to let player and monsters pass through. Good for item containers:
+	-misc.cpp
+	
+	
+RIVENSIN CODE INJECTIONS:::::::::::::::::::::::::::::::::::::::::
+
+	-HDR lighting
+	-Player Full body animation system.
+	-Player Automelee, melee damage system
+	-Player melee "kick" damage system. 
+	-Player Motion Trails for melee weapons.
+	*Any files in the git repo not listed above are associated when one of the above injections from Rivensin.
+
+
+
+
