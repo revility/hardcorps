@@ -30,48 +30,9 @@ Changes to weapon pick ups:
 		These versions spin, glow and bob in the air.  This makes it easier for the player to see.  Enemies also drop these versions.
 		Mappers should never use the moveable versions of any items, ammo or weapons in the game.  Everything should be consistant.
 		
-Full list of items in HQ2:
-	-item_medkit
-	-item_medkit_small
-	-item_armor_shard
-	-item_armor_security
-	-item_armor
-	-item_key_*keytype*
-	-item_pda
-	-item_backpack
-	-item_aircannister
-	-item_videocd
-	-item_jetpack
-		***You can remove the jetpack power up by triggering & calling the following script "stop_jetpack"***
+-item_jetpack
+	***You can remove the jetpack power up by triggering & calling the following script "stop_jetpack"***
 		
-Full list of Ammo pick ups:
-	-ammo_bullets_small (SMG ammo)
-	-ammo_bullets_large (SMG ammo)
-	-ammo_shells_small (shotgun/DB shotgun ammo)
-	-ammo_shells_large (shotgun/DB shotgun ammo)
-	-ammo_clip_small (machine gun ammo)
-	-ammo_clip_large (machine gun ammo)
-	-ammo_grenade_small (grenade launcher ammo)
-	-ammo_rockets_small (rocket launcher ammo)
-	-ammo_rockets_large (rocket launcher ammo)
-	-ammo_cells_small (plasma gun ammo)
-	-ammo_cells_large (plasma gun ammo)
-	-ammo_belt_small (Chain gun ammo)
-	-ammo_bfg_small (BFG ammo)
-		*You do not need to always add in ammo pick ups.  
-		It is usually better to just have a weapon pick up because of the duel weapon welding system*
+*You do not need to always add in ammo pick ups.  
+	It is usually better to just have a weapon pick up because of the duel weapon welding system*
 		
-Full list of weapons:
-	item_pistol (Jericho 950 hand gun)
-	item_submachinegun (SMG)
-	item_machinegun
-	item_shotgun
-	item_shotgun_double
-	item_chaingun
-	item_plasmagun
-	item_grenadelauncher
-	item_flamethrower
-	item_BFG
-	item_pickaxe
-	item_chainsaw
-	item_rocketlauncher
