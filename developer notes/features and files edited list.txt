@@ -8,6 +8,10 @@ Feature/Files edited list.
 	*Game local contains the new hurt box event... damages the player when called.  This is checked in the ai.cpp think.
 	*This is almost identical to how the game detects Actors for telefragging.
 
+-Disable actors moving via spawn key "disable_moving"
+	-AI/AI.cpp
+	-AI/AI.h
+
 -Charge Attack system, Charge Gauge, no damage during charge attack, Player passes through enemies during charge attack
 	-Player.cpp
 	-Player.h
@@ -87,10 +91,14 @@ Feature/Files edited list.
 RIVENSIN CODE INJECTIONS:::::::::::::::::::::::::::::::::::::::::
 
 	-HDR lighting
+		-Playerview.cpp
+		-syscvar.cpp
+		-syscvar.h
 	-Player Full body animation system.
 	-Player Automelee, melee damage system
 	-Player melee "kick" damage system. 
 	-Player Motion Trails for melee weapons.
+	
 	*Any files in the git repo not listed above are associated when one of the above injections from Rivensin.
 	*Many of the injections are interconnected to each other such as automelee and motion trails.
 
