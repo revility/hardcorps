@@ -10,6 +10,26 @@ NOTES ON THE PAK FILES:
 
 ************************************************************************************************
 
+Build: 0.8.43
+04.25.20
+
+	*SDK:
+	*Player Updates:
+		-reduced charge attack/slide kick push from 7 to 5
+	*Weapons player:
+	*Enemies:
+	*GUI:
+	*Maps:
+	*Other:
+		+Fixed back pack item crashing the game
+		+Fixed yellow key card item having now model
+		+Added missing Rivensin Key models and textures.
+		+Fixed Rivensin Key material causing the game to crash.
+		+Rivensin Keys now bob and spin.
+		+Added NEW HELL TEXTURE PACK
+
+************************************************************************************************
+
 Build: 0.8.42
 04.25.20
 
