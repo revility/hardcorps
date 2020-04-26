@@ -1,0 +1,40 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+TRIGGER NOTES
+******************************************************************************/
+
+HOW TO TRIGGER SECRETS IN YOUR MAPS:
+
+HQ2 supports finding secrets in maps.  Triggering secrets is very easy to do.
+Create a trigger once, and then target it to the new entity called "info_secret_found".
+When the player touches the trigger, the Secret found! dialogue will apear in the hud.  HQ2 automatically keeps tracks
+of the amount of secrets in maps for the end level stats screen.
+
+
+HOW TO TRIGGER END LEVEL STATS
+Once again, adding end levels stats into your maps is done via triggering new entities.
+Create a trigger_multiple in your map.  Have the trigger "call" the following script: "showStatsOnHud"
+
+
+HOW TO TRIGGER TIP BOXES.
+Create a trigger once or multiple in your map.  Have it target the target_tip entity.  Add in the key "text_tip"
+Fill in the text with what tip or info you want to display to the player.
+
+HOW TO TRIGGER RADIO CHATTER
+When playing D3, through out the game a small radio would apear in the bottom left hand corner and an audio file would be player.
+To add this into your levels; create a trigger_once.  Have it target the entity called "func_radiochatter"
+add in the following key to the func_radiochatter: snd_radiochatter.  Choose a sound shader to fill it in with and your ready to go.
+
+PROPER WAY TO TRIGGER DOORS
+Doors will automatically open themselves when the player is close to them if they are unlocked.  
+However, this slows down the gameplay and is a little bit annoying.  Always place a trigger_once or multiple in front of doors.
+Have the trigger target the door.  When the player touches the trigger, the door will automatically open.
+
+
+HOW TO LOCK DOORS:
+Locking and unlocking doors is done via the entity called target_lock.  It has only one key, locked.  Set this to 1 to lock a door.
+Set it to 0 to unlock a door.  In order for it to work one or more doors is make the target_lock entity target each door.  You can
+trigger the target_lock using variety of triggers, or even when a monster dies.  This is useful for mini boss battles, boss battels
+or if you don't want the player to go somewheres quite yet.  If you want to use a monster's death to trigger target_lock;
+Create a target on the given monster and point it to the target_lock.  Then have the target_lock target the door you want to open.

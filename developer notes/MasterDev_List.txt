@@ -1,0 +1,21 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+MAPPING NOTES
+******************************************************************************/
+
+How to use the New Music Control System:
+
+How to end your map and or load the next one:
+
+How to use the New interact key, interact items, and interact triggers
+
+Spawning Enemies Notes:
+
+How to use & abuse the new breakable objects system:
+
+How set up & complete objectives in your map
+
+New func plats
+
+new enemy key

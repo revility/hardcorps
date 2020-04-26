@@ -1,0 +1,16 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+USING THE NEW WATER TEXTURES
+******************************************************************************/
+
+Using the Dynamic X position  (DXP changing system:
+
+HQ2 features basic water.  This  type of water is mostly meant for decorational use and not for swimming in.
+The player's movement does slow down when inside the water.
+
+The path to the textures for the water are "textures/water_source/..."  You will find multiple types of liquids in this folder.
+All types of liquids in this folder function the same.
+
+To create water, first make a brush and texture it with the textures/common/nodrawsolid.  
+Then select the top face of the brush and apply one of the new water textures to it.  Thats it :)

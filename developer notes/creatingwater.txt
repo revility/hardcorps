@@ -1,0 +1,37 @@
+Water Source v1.0
+
+By Alex Jeffrey
+
+D3files: StupidFatZombie
+
+Email: Commando_45@hotmail.com  (MSN)
+	doomday@tpg.com.au 
+
+Info: A add a new water source in Doom 3, built your own map with waters, Enjoy…
+
+Install Instructions:
+Put WaterSource_1.0.pk4 into c:\doom 3\base folder
+
+Put Sample folder into c:\doom 3\base\maps folder
+
+Run DoomEdit to open up the map editor. To open my maps sample of waters sources.
+
+How to add waters in your own customs maps
+1)Run DoomEdit
+2)Load your customs map
+3)Create Brush around the pool and put nodraw texture all over block
+Make sure there’s no Gap on the floor otherwise they will not floating or sink too fast
+4)Go top of the pool brush
+
+5)Press Ctrl + Shift to top of pool brush and select texture texture\water Source and select water_clear
+
+6)You can Add light\fog in underwater (recommend)
+
+7)BSP
+
+8)Run the map in Doom 3.
+
+Happy mapper! ?
+
+
+

@@ -1,0 +1,20 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+MOVERS WITHOUT SCRIPTING
+******************************************************************************/
+
+Using func_mover_path: Your friend to making movers with out script.
+We have added a new entity in HQ2 which will help save the mapper a little more time.  Many 2d games feature moving platforms.
+Moving platforms have always been possible in Doom3, but they required scripting for best results.  You can now create movers
+without any scripting required, all that has to be done is target one entity to the next.  The old ones still excist, but there
+is no need for them now with a simpler system.
+
+Check the playground map for an example of how to set up the new movers.
+
+The new entities include:
+func_mover_path:  This is the actual mover entity.  There are various keys with descriptions the mapper can set up.
+target_mover_path:  These are the waypoints for the mover.  Have the func_mover_path target the first one.  
+Then have the target_mover_path target the next target_mover_path.  If you target the first target_mover_path to the last one,
+the movement will loop.  Ad as many target_mover_paths as you like to create complex movers.
+

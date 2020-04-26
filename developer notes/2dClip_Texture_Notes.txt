@@ -1,0 +1,22 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+2d Clip Texture Notes
+******************************************************************************/
+
+A new type of clip texture has been added to the game.  the 2d clip brush blocks the player, monsters, does aas and projectiles.
+This was done to help save the mapper a little bit more time.
+
+In HQ2, by default, all monsters & the player are lock to 0 x.  
+This prevents them from moving sideways, or physics from knocking them around.  
+You can turn this on and off for monsters by setting the key isXlocked to 1 or 0.
+Turning it off is useful if you want enemies in the background doing stuff; like zombies eating dead bodies or imps crawling up walls.
+
+additionally, we have also removed the ability for all enemies to sidestep.  This garuntees the enemy will always be in front of you.
+
+Just because the monsers and player are locked to the 0 x position, does not mean you do not need to create monster or player
+clips in your maps.  Player clips are needed in areas where the DXP system is in use.  Monsters need it to help their path finding
+or they will start do odd behaviors.
+
+Adding the textures/common/2d_clip into your maps is great for areas where the enemies and the player are around the same size.
+Now you only have to create 1 clip brush instead of 2.

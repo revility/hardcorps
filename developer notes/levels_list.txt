@@ -1,0 +1,92 @@
+Here is the list of levels for HQ2.  They are open to anyone to make.  I don't plan on starting on any of them until after ruiner is finished.
+
+A couple notes before we start the list:
+
+Secrets always contain one of the following:
+Weapons, this is the only way the player finds them!
+Armor pick ups
+Large med kits
+Large ammo pick ups.
+short cuts
+or secrect exits.
+
+This will help make it very rewarding to find secrects.  Being able to only find the weapons this way will boost that further.
+
+You'll notice that each little bit of level info also contains what weapons are found.  Weapons are listed twice because this gives the player a second chance to find them.
+Their second chance to find them could result from killing an enemy that carries it, or yet another secret.  Always remember never to put an enemy in a map which could drop a weapon before the player has a chance to find it first.
+The only weapon that breaks these rules is the machine Gun because once it is gained, the pace of the game is set.
+
+Bosses:
+Always remember to introduce your boss.  The music needs to change, and there needs to be some sort of intro.
+Because setting up cinematics can become a chore, we'll use a simple rule to help make it easier...
+[b] Only Bosses or mini bosses will spawn in via teleporting. [/b] 
+This will give the player a clear signal it is boss time.  The demon spawning, the size of the enemy, and the music changes will really help introduce them.
+A good example of a game which always gives you a clear indication of a boss fight is Mega Man.
+
+
+Another note on Bosses.  Some of these guys like the revenant are suitable for more than boss fights.  If you wish to use them in a level, just make sure it is after their boss level.
+
+[b] Chapter 1: Knee-deep in the dead [/b] 
+Note:  Like in the Original Doom, this is standard mars/ UAC base design.  No hell stuff.
+
+1.  Wasted Hate
+Level type:  waste disposal faciulty
+Boss:  Pinky/Bull Demon
+Weapons found:  Machine Gun, shotgun.
+Author: Revility
+
+2.  
+Level type:  Mars surface/Caves/Mines
+Boss:  Revenent
+Weapons found:  Shotgun, flame thrower
+Author: 
+
+3.
+Level type: Monarail (Train Ride)
+Boss: Pain Elemental
+Weapons found: Pistol/Mars Eagle
+Author: 
+
+[b] Chapter 2: Shores of Hell [/b]
+Note:  Like in the original doom game,  in this chapter the levels are starting to be consumed by hell.
+
+4.
+Level type: Power Plant/Enro Plant
+Boss:  Arch Vile
+Weapons found:  Flame Thrower, Grenade Launcher
+Author: 
+
+5.
+Level type:  Alpha Labs (medical)
+Boss: Vagary
+Weapons found:  Grenade Launcher, Chain Gun
+items found:  High Jump Boots
+Author: 
+
+6.
+Level type:  Delta Labs (Teleporters)
+Boss:  Hell knight
+Weapons found: Chain Gun, DB Shotgun
+Author: 
+
+[b]Chapter 3:  Inferno [/b]
+
+7. MT. Erebus
+Level type:  Hell - Outside
+Boss:  Mancubus
+Weapons found:  Plasma Rifle, DB Shotgun
+Items found: Jet pack
+Author: 
+
+8.  House of Pain
+Level type:  Hell castle
+Boss:  Gaurdian
+Weapons found:  Plasma Rifle, Rocket Launcher
+Author: 
+
+9  Limbo/Tower of Babel
+Level type:  Starts off organic hell, and then turns into a large tower
+Boss:  Cyber Demon
+Weapons found: Rocket Launcher, BFG
+Author: 
+

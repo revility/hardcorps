@@ -1,0 +1,86 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+DOOM3 ENGINE UPGRADES FOR HQ2
+******************************************************************************/
+
+	HQ2 features many upgrades and changes to Doom3.  Some of these were inherited from using the Denton mod source code.
+	Others were added in by the Atomic Armadillo team.  These effect both the gameplay, performance, audio, and visuals.
+	
+New features includes:
+	-Bloom Lighting with shift sensitivity.
+	-New system for damage FX on enemies.  Blood spurts now spray on models, and leave trails.  Blood spurts are also larger
+	-all muzzleflashes for the player's weapons now use a particle instead of a texture.
+	-skyboxes support
+	-Enemies no longer attack the player when off screen
+	-Duel weapon welding.  The player can only hold two weapons at a time plus the chainsaw.
+	-Double Jump and Jet pack items
+	-Missing thirdperson FX for many weapons.
+	-Smart camera system to track side scroller movement better
+	-improved physics and ragdolls.
+	-Enemies can be knocked around around from explosions
+	-Quick weapon switch button.  Default bind is "r"
+	-Music volume controls
+	-6th Venom's High Quality Main Menu
+	-Keyboard Aiming or mouse aiming
+	-Hud support in thirdperson view
+	-Enemy Health bar support in the hud.
+	-Enemies will no longer try to dodge because it is 2d gameplay
+	-Mappers can create movers with out scripting
+	-Removed Stamina system.  The player always runs
+	-New Tracer System
+	-New FX, sounds, surface types, damage decals and debris
+	-Ability to attach smokeParticles to any entity
+	-Unified impact FX
+	-Multiple projectiles for a weapon
+	-Multiple fire modes for weapons
+	-Alt Fire key for weapons (un-used)
+	-End level stats screen to keep track of enemies killed, play time, health used and secrets found
+	-Improved behavior of exploding and burning barrels and debris
+	- Fixed a D3XP bug where, weapon::Event_useAmmo(int) consumed ammo from inventory ammo as well as from ammoclip (V2.02 change). 
+	- g_debugdamage when set to 1, now dumps collision material information to console (see topic 8 below for details)
+	-Added support for skyportals
+	-Fixed a bug, where weapon would switch to plasmagun if soulcube not ready.
+	-Fixed axis of effect played upon projectile collision.
+	-Optimized calculations used to apply in idAnimatedEntity::AddLocalDamageEffect. 
+	-Fixed issue where an idExplodingbarrel's particle model tried to track it's physics origin. 
+	-ptimized the code, where idProjectile::think use to run physics even after the projectiles physics model freed.
+	-Now, def_debris and def_shrapnel keys in projectile defs actually work.
+	-Other minor changes. 
+	-New vis portal texture
+	-Water textures added
+	-Unlimited weapon support
+	-Improved Gibbing system.
+	-Material based wound size. 
+	-New sounds for projectile impacts
+	-New sounds and FX for many weapons
+	-Removed reloading
+	-New Main Menu supports level select
+	-Improvements to idDamagable class
+	-added missing sounds for ammo and item pick ups
+	-Zombies now run instead of walk.
+	-Flashlight has been totally removed
+	-Added a use/interact button
+	-Added un used code to make items glow
+	-Added Reb's Improved Ambient lighting
+	-The player's skin now be changed on the fly in single player.
+	-Improved heat haze mod
+	-Assigned appropriate bounce sounds for many physics objects. New barrel bounce sounds, now are more realistic
+	-New smoke and spark effects for tracer based weapons.
+	-New wound skins for chainsaw hurt and plasmaball hurt.
+	-improved articulated figures (ragdolls) for all monsters.
+	-New & better controls for burnaway and enemy auto-gibbing after death time.
+	-Fixed mass and density of many physics objects so that they react realistically to explosions and when shot by weapons.
+	-Locations based damages for all monsters except bosses.
+	-New surface sound shader tags.  The list is:
+		metal
+		stone
+		flesh
+		wood
+		cardboard
+		glass
+		plastic
+		ricochet
+		surftype10 (for Concrete)
+		surftype11 (for Sand)
+

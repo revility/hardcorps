@@ -1,0 +1,628 @@
+------------------------------------------------------------------------------------------------------------------------
+
+HARDQORE 2
+build 1.0.00 for Doom 3 1.3.1
+Changelog documentation.
+
+------------------------------------------------------------------------------------------------------------------------
+A Doom 3 mod by the Atomic Armadillo Team. 
+
+Team:
+Revility:  		Artist
+Ivan_the_B: 	Programmer
+Neurological: 	Musician
+
+official website address: http://www.hq.atomicarmadillo.com
+
+*************************************************************************************************************************
+*************************************************************************************************************************
+MOD DESCRIPTION:
+
+
+If you wish to use anything here in your projects, feel free to contact us at my forums:
+http://www.atomicarmadillo.com/forum
+
+Cheers & Enjoy!
+*************************************************************************************************************************
+*************************************************************************************************************************
+
+Build history and comments:
+
+------------------------------------------------------------------------------------------------------------------------
+Version 1.0.00 
+Date: 09.25.09
+
++Increased grenade launcher damage
++fixed some doors sliding through the walls in Wasted Hate map.
++Removed all locked doors and remover entities in map.  Player can now go back to previous rooms.
++New read me file finished.
++fixed music volume slider
++added the missing ammo types in item_backpack
++increased from 3 to 5 the default grenade ammo in the pickup and from 5 to 10 max ammo.
++Fixed a small bug for target tips that was happening when a second tip was turned on while 
+	the first one was still shown.
++Added a console printf for "give all" and "give weapons" that says to spawn weapons with 
+	the 'spawn' command. This is just to prevent someone from saying cheats are broken.
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.99 
+Date: 09.14.09
+
++build log and read me file are now two seperate files.
++fixed and updated muzzle flashes & FX on many weapons.
++DB shotgun laser site is not shown while reloading
++fixed many behaviors and sound problems of weapons when sliding.
++all damage multipliers on enemies set to 1.
++modified give all and give weapons cheats to work properly with the mod.
++added binds for dropping weapons in main menu
++updated default config with drop bind
++doubled the amount of ammo for shotgun pick ups
++increased the amount of ammo for flame thrower pick ups
++increased the amount of ammo for machine gun pick ups
++updated default config with arrow keys support.
++Wasted Hate Updates:
+	-Removed un-needed interact points
+	+added more weapons around the map.  Added the pick axe, flame thrower, and grenade launcher
+	-removed un-needed walls to stop sound clipping.
+	+exit room lights turn on after pinky has been defeated.
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.98 
+Date: 08.28.09
+
++Rail Gun Added.  Rail Gun = Red Laser Gun
+	+Revility note: Increased rate of fire.  Decreased power.  Decreased ammo max.
++sliding move for player added.  press down & jump to perform a slide.
+	while sliding a radius damage is fired every 0.1s (time can be changed in player.script). 
+	This damage is defined by "damage_slide" in player.def.
+	Revility note:  decreased damage from 50 to 25.  Added slide/pistol whip sound
++New sliding animation for player added.
++simplified version of Ruiner's full body animation simple added for sliding move.
++New main menu music added by Neurological. Remix of the Doom64 theme song
++New victory music added by Neurological.  Remix of the the Contra/Super C victory music.
+*Wasted Hate updates:
+	+Shortened Radio chatter even more before boss fight.
+	-removed barrel from waste disposal area.  Was causing performance problems.
+	+added a few more props at the start of the level.
+	+Fixed all clipping issues on door frames.
+	+added tip boxes about various things in the map to help the player.
+	+Player can no longer go back after entering the elevator shaft.
++tip boxes fixed. They now work properly.
++Improved and fixed up wall jumping..
++added material "itemInteractHighlightShell" for highlight shell used by default by the interact-type items. 
+	This is just to have a visual difference between things that require interartion and the ones that don't. 
+	This one is red.
++greatly improved the "idDamagable" class. Now we have full control on damage, chain reactions, 
+	"intermediate states" before the final break, debris for those "intermediate states"... 
+	and more (see the testmap!).
++barrels can now drop items, like idDamagables.
++added "func_damagable_exploding_empty" used as ancestor for others func_damagable_*, 
+	so that keys and their default values are declared only once.
++updated "idDamagable" room in the playground testmap.
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.97 
+Date: 08.23.09
+
++condensed pak files from 3 to 1.
++fixed flame throwers sounds
++added func_forcefield_hq2 entity.  Same as the standard one, but with more keys to customize it for other use.
++fixed pick axe pick up bugs.
++updated play ground map with more examples.
++added Ivan's "smart AI" system.  monster_player_*
++fix last digit of kills counter being cut off in mission complete screen.
++new loading screen image for playground map
+-lowered both medkits health amounts by 5.
++fixed a bug in idFuncSmoke (sometimes the jetpack smoke was shown when it should had not)
++item_armor_boots now calls start_double_jump()
++added wall jumping!
++added the "wallJump" key in player.def (which is the default setting, like "doubleJump")
++"wallJump" saved/restored across levels, like "doubleJump".
++added the following scriptEvent for idPlayer:
+	void   wallJumpEnabled( float on );
++added the following functions in hq2_util.script:
+	void start_double_jump()
+	void stop_double_jump()
+	void start_wall_jump()
+	void stop_wall_jump()
++added trigger_force_movement_* & func_teleporter_force_movement that force the player to walk 
+	toward their target (even on the same plane).
+*Wasted Hate Map updates:
+	+imps and zombies skip site animation
+	+added more items to make the map less difficult.
+	+added Final Elevator area description
+	+recompiled the map to fix some path finding bugs with the ai	
+	+removed turn floor decals.  Not needed anymore	
+	+removed ambient noise in pre boss room so the radio chatter is easier to hear
+	+added a new shorter of version of the radio messege before the boss fight.
+	+added some breakables to the map.
+*Added Breakable objects system.
+	*Entities list includes:
+		+func_damagable_exploding_base 1-3 -barrel sized explosion with medium sized debris
+		+func_damagable_exploding_med 1-4	-medium sized breaks with medium sized debris
+		+func_damagable_exploding_small 1-3	-small sized breaks with small sized debris
+		+func_damagable_exploding_large 1-3	-large sized breaks & explosions with large sized debris
+		+func_damagable_exploding_flesh 1-2	-medium gib and blood explosion
+		
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.96 (PATCH)
+Date: 08.07.09
+
++Mod name in mod select menu now says HardQore 2 instead of HardQore.
++The jetpack is now seen on the player when using it & includes particle FX.
+*Main Menu updates:
+	+re-ordered options & controls menus
+		*Game Options:
+			-Removed toggle run option. in_togglerun
+			-Removed auto weapon switch. ui_autoSwitch
+		*Controls Options:
+			-Removed previous weapon bind.  _impulse15
+			-Removed quick weapon switch bind. _impulse16
+*Hud Updates:
+	+fixed last digit of "time" in the stats box is being cut out
+	+centered background image for weapon slot boxes
+	+centered ammo info for weapon slot boxes
+	+centered all large weapon pick up images & moved them below the player.
+	+Fixed: Flame thrower weapon name fixed.  Was saying chainsaw instead of flame thrower.
+	+changed jetpack power bar from yellow to dark orange
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.95
+Date: 08.06.09
+
++Pick Axe weapon added
++Restored pushing & knock backs to grenade launcher & rocket launcher damage.  Rocket Jump Return!
++BUG FIXED: Picking up medkits now says med kit in Hud instead of Armor Shard.  *items.def wrong text string*
++Plasma gun now using spread2d firemode as default mode
++Bug Fix:  The default camera settings did not always set when running HQ2 for the First time.  player.def
++add in old school Unf! sound when pressing the use key
++added more dev documents
++added some of Ivan's pics for using the new features in dev documents.
+-Lowered Chainsaw damage from 15 to 12.
+*General Enemy updates:
+	+decreased speed of most enemy projectiles so the player can jump over them
+	+Imps & Hellknight fireballs now shoot straight
+*General Player Weapon Changes:
+	+New bullets sprites for Machine Gun, Shotgun, DB shotgun, ChainGun, pistol, and SMG
+	+Adjusted BBoxes of projectiles.  Fixes un-natural collisions
+	+Added more types of spread modes for projectiles:
+			"fireMode"                              "3" 
+			// 0 = DEFAULT: 3D spread
+			// 1 = 2D_STEP_SPREAD: Turrican-style 2D spread
+			// 2 = 2D_PARALLEL_SPREAD: Parallel projectiles. Spread is the offset.
+			// 3 = 2D_RANDOM_SPREAD: like default but 2D
++Zsec changes:
+	+machine gun zsec now fire only 4 bullets at a time
+	+time between attacks lengthen
+	+spread & amount of projectiles for Shotgun Zsec decreased
++Main Menu updates: 
+	+Removed all extra level images & Text.  They have been commented out of the code
+		*Files modified: newgame.pd, english_venom_menu.lang*
+	+Fixed crouch bind option not working.
+	+switched positions of aim up and mouse aim binds.  Makes more sense.
+*Hud Gui
+	+Revamp weapon icon boxes
+	+fix sub machine Gun Large icon being squashed
+	+added in proper icon & Name for Jericho 950 (Pistol)
+	+Tweaked up jet pack and boss bars
+	+Added Pick axe name and icons
+	+automatically shows new icons when on an interact trigger or movement point in the bottom right corner
+*Jet Pack updates:
+	+Finished model texture
+*SDK Updates
+		+player turning is now instant
+		+melee weapons now us a 3d hit box instead of a line.  This means they always hit the enemy
+		+Beefed up idDamagable keys and options.  Can now use models, throw debris, have explosion lights, and much more.
+		+weapons items are automatically picked up if we already have that weapon in a slot.
+		+new entities "func_plat_w_target" and "func_plat_autorevert" that extend the behaviour of vanilla func_plat.
+		+a new entity "func_proj_launcher" that fires the proj when triggered.
+		+"skip_sight" key to skip sight animation.
+		+freeCamera() and   forceCameraY( float ypos ) events for player now work and blend to the new pos.
+		+there are also new entities "target_camera_free" and "target_camera_forcey" to do the same things in the editor.
+		+Added the ability to change the player's skin on the fly like in Ruiner
+		+while noclip is on up/down change the player's X position.
+		+added the following new entities:
+			+func_spring_hq2
+			+func_plat_autorevert
+				+func_plat_w_target
+			+target_camera_free
+			+target_camera_forcey
+*Wasted Hate Map updates:
+	+Added new land scape for starting area		
+	+moved a few enemies and items around a bit
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.90
+Date: 07.18.09
+
++Added zombie eating sound loop
++added 2 more types of toxic waste textures under water types.
++removed intro.gui
++added double jump boots item model and entity.  item_armor_boots
++added jet pack WIP model.  Jet pack entity has been updated with the new model.  
+	*all versions of the model are located in models/hqprops/...
++doors.sndshd file modified.  Made all door sounds global.  Player should now hear most doors open, or close
++added blood spurting loop particle
++added PlayGround test map
++increased machine gun item pick up ammo from 30 to 50
++Zombies capable of running randomly, now run all the time.
++ammo pick up sounds are now global so the player can hear them.
++ammo pick up sounds for shells and clips now use a global shader instead of just a wav file
++added Loading screen for playground test map
++added wallrun animation for imp crawler
++Pinky monster update:  Made him more pink.
++added 6 glowing turn signal decals for use with the player moving around 3d space.
+	*textures are located under textures/hq2/...
++Added the pistol in the weapon list. Its icon on hud still has to be added.
+	+increased pistol damage from 14 to 15
+	+uses a new type of ammo, ammo_magnums.
++Zsecs drop bullets instead of pistols.
++Pistol Zsecs now use the old player pistol firing sound just like the shielf zsec do
+-Removed physics related tags for 2d clip.  Helps improve ragdolls
++added many more hqprops for quicker mapping
++Chapter 1 Boss music added
++added victory/map finished music chime place holder
++updated default.cfg file with new controls, and system settings
+	+changed the default reload (interact) key from r to e.  Most games use the e key for the use button.
+	+turned zoom toggling on by default. Default zoom settings bring the camera in to a range of 300
++added chain decal from Ruiner's newhell collection
++set sounds for almost all item picks to global so you can now always hear them being picked up.
+*Wasted Hate map updates:
+	+finished elevator shaft.
+	+finished all the main scripting
+	+added waste processing, waste storage, boss room and elevator exit
+	+moved and changed item pick ups
+	+added main objective for the level
+	+added a few scripted events, and tip boxes around the map
+	+added loading screen for Wasted Hate	
++Hud updates:
+	-removed all bottom right hand corner images.  No longer needed
+	+added images and info for weapon slots
+	+added jetpack fuel bar on top right corner
+	+added boss health bar on top right corner
+	+removed stamina bar on bottom left hand corner.  no longer needed.
+	+increased font text size, and changed screen position for secret found text
+	+When triggering secrets, an audio sound will be played with the text
+	+revamped stats screen text and graphics
++Mainmenu.gui/english_venom_menu.lang/v_mainmenu pd files updates:
+	+added interact, zoom, new chainsaw bind and new crouch controls
+	-Removed weapon list binds.  No longer needed
+	-Removed un-needed game options
+	-Disabled being able to select default doom3 levels.
+	+added playground test map to main menu level select
+SDK & gameplay changes:
+	+fire mode key added to weapons
+		0 = default
+		1 = spread2D (see the plasmagun)
+		2 = parallel spread (Spread defines the distance between them)
+	+improved jumping controls
+	+increased speed of weapon changing
+	+increased crouch speed
+	+changed aim down key to crouching when on ground
+	+enemies will not attack the player off screen
+	+added double jump ability
+		*It can be enabled/disabled via scripts:
+		*$player1.doubleJumpEnabled( 1 );
+		*It is enabled by default
+	+Player can now only carry 2 weapons at a time, plus the chainsaw
+	+removed flashlight
+	+chainsaw's new bind is _impulse0
+	+added interact button.  Default bind is r.  This was the old reload key
+	+added hq2/playground map to test out various new gameplay abilities.
+	+added the ability to move the player in and out of the background & foreground.
+	+added Interact triggers:
+		trigger_interact_once
+		trigger_interact_multiple
+		Triggers their targets when player presses the "interact" button while touching them.
+		"triggerFirst" key supported.
+	+added Bossbar: Use the script function "show_bosshealth( $bossname );"
+	+Added Jetpack: item_jetpack (it has the pda model for now)
+		You can stop it by calling "stop_jetpack" with a trigger or script.
+	+removed pm_thirdpersonup & go cvars
+	+Added Smooth camera system.  The camera smartly tracks the player's movements.
+			You can still lock/unlock it at a fixed Y position thanks to the functions (*not tested*):
+			setCameraFree();
+			setCameraFixedY( float ypos );
+			They (and all the other ones ) are defined in hq2_util.script
+			The old cvars are still there but useless. I'll remove them in the next update.
+	+added new iditem class "idItemInteract."  These items can be picked up with the interact key
+	+Spinning items are properly dropped even by enemies. Updated some defs for zsecs and others.
+	+Commented out dodge attacks for monsters so they don't even try to do them.
+	+Added the "func_mover_path": a func mover that follows a path along a chain of entities. 
+		The cool thing is that it do all by itself. No need of scripting it. 
+		It can also be started/stopped by triggering it and more... 
+		(see the updated play ground map, where I also used few "target_mover_path" to create a path.
+
+	
+	
+	
+***Dynamic x position changing notes***
+Player can dynamically change the X position: it's like there are different parallel horizontal planes on which 
+player and monsters can play.  When player touches the new trigger "trigger_interact_change_x_pos" and presses 
+the right aim up/down button, he is forced to walk to the new plane defined by the X position of the taget of 
+the trigger.  Well it's more complex than this, but try the testmap and you'll see. 
+
+When player is teleported its X position is automatically updated.
+func_teleporter_fx --> plays the fx (default one is defined in the def) each time player is teleported there. 
+func_teleporter_change_x_pos --> teleports the player, then it behaves like a  
+"trigger_interact_change_x_pos" (only difference: movement cannot be aborted).
+
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.80
+Date: 07.02.09
+	
+****First internal Beta build****
+*SDK:
+	+Turned stamina/running button into a walk backwards modifier
+	+added music volume controls
+	+added stats screen
+	+increased the bounding box size for all most all weapon projectiles
+	+added in x lock position for enemies
+	+added the key "isXlocked" for monsters (1 by default). If set to 0 (last key in the editor) the monster works as in vanilla D3. 
+	+item pulse: see key "nopulse" for items (0 by default). I had to comment out that key/val in many defs because it was set to 1.
+	+stopped player from moving along x axis.  If they get knocked sidways, they will be pushed back. player.cpp
+	+physics.cpp  stopped player from being pushed
+	+physics_player.cpp  stopped the player from loosing control when hit
+	+physics_player.cpp changed knockback value to 0
+	+added aim up, aim down and and angle keys.
+		*Note: Being able to shoot in angles is controlled via a new cvar. the cvar is g_mouselook
+	+fixed aim: the problem was that now distance from muzzle to cameraview is a lot more than before... and this was making the game acting differently in a particular case.
+	+fixed few things about controls/aiming styles... 
+	+in case g_mouselook is 1 and we are aiming very vey high/low, now the mouse movement is able to turn the player left/right. 
+		*Note: This makes aiming a lot easier when an enemy is almost perfectly above/below us.
++added hq2/test2d map to show how to set up music and a stats screen
++changed Doom's helmet visor from yellow to classic light/grey blue.
++increased the volume of many pick up items sounds.
++fixed plasma rifle light materials not having noshadows set on them.
+-removed pak555.pk4  This was an un-needed pak file
++Fixed: flashlight alt fire bug with shotgun.  There was suppose to be no flashlight attached
++Fixed: Removed zooming when holding down the alt fire key with the rocket launcher
++added invisible collision boxes to almost all enemies to improve hitting them.
++updated default config with aim up and aim down button binds.
++Fixed default rocket launcher bind not working. default config
+*Main Menu updates:
+	+added first level "Wasted Hate" to new game level select.
+	+added new binds for aiming up, aiming down, and toggling mouse aim
+	+removed, commented out, all un-needed controls
+	+re-ordered controls menu
+	+added all the missing bloom options
+	+added missing mouse sensitivity, and music volume controls under Game options page 2
+*Wasted Hate map updates:
+	+added new music system support
+	+added secret trigger for shotgun room
+	+added camera locking support
+	+Almost finished detailing elevator shaft
+	+Fixed railings in Main lobby area.
+	+moved health pack around to increase the difficulty
+	+fixed: GUI's above doors not displaying the proper names
+	+fixed: Added location name for elevator shaft section
+	
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.60
+Date: 06.20.09
+	
+	
+-flashlight skipped when scrolling through weapons.  Is this weapon even needed?	
++fixed Sub Machine Gun not launching projectiles from barrel properly
+-reduced amount of light given off from plasma rifle projectiles to help performance.
++fixed plasma rifle lights and muzzle flash not using the faster light materials
+-Reduced global burnaway time for all monsters from 20 to 5 to help performance
+-Reduced gibhealth for zombie base def from 200 to 100 to help performance
++fixed BFG Damage not working properly.
++added new skins for fuel barrel props.  colors include green, orange and black
++added faster lighting material for BFG's charging up light.
++SDK Updates: 
+	+disabled crouching changing the camera's height.  PLAYER.CPP, syscvar.cpp, syscvar.h
+	+added in cvar to stop the camera moving vertical. pm_thirdpersonup	
+	+added in cvar to stop the camera moving horizontal. pm_thirdpersongo	
+	+default pm_thirdpersonheight increased from 40 to 50
+	+default pm_thirdpersonrange increased from 300 to 350.
+	+stopped bobbing from causing the screen to move slightly while running & jumping & landing. player.cpp
+	+modified sliding and pushing of the player physics.  Tried to reduce it.
++added in 3 classic doom songs by Neurological
++added in a few guis for use in mapping
++added in a couple of props for mapping.  All of them are located under the HQprops folder
++fixed machine gun zsecs dropping the wrong weapon upon death
+
+TO DO:
++added first level of the mod: Wasted Hate by Revility
++Added updated version of Red Uk's map
++improved hitting enemies with projectiles.  Create collision boxes?
++modified AAS for all enemies.
++Main Menu updates:
+	+added red & rev's levels into level select screen
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.50
+Date: 05.30.09
+
+-remove showing clip count for weapons in hud.  done for all except DB shotgun
+*Pistol updates:
+	+pistol replaced with original D3 Sub Machine Gun.
+	+old pistol code and assets are still in the mod just incase.
+	+SMG uses pistol/bullet ammo
+	+SMG damage lowered from 9 to 5
+	+default weapon is now SMG, not fist.
+	+limited range of projectile to nearly the edge of the screen
+	+changed projectile beam to a model. the model is drawn more
+	+added item_submachine gun for weapon pick up use
+	+removed reloading from SMG
++limited range of projectiles to edge of screen for shotgun, DB shotgun, & machinegun.	
++many weapon idle animations for player model have been replaced with the aim animation.  This helps aiming greatly.
++limited range of projectiles to edge of screen for BFG, rocket launcher, plasmagun, chain gun & grenade launcher.	
++changed projectile beam/tracer to a model for the machine gun, shotgun & DB shotgun. the model is drawn further
++fixed console warning about duplicate lines in grenade launcher.def
+-removed unused and empty hq2items.def file
++modified player model's textures. changed textures and added gloves to give it a classic look
++replace player model's head with classic doom marine helmet
++DB shotgun range reduced more than regular shotgun. Power VS distance balance 
+*HUD updates:
+	-SubMachineGun icon added
+	+modified hud for chainsaw replacing the fist
+	+added ammo counter support for the flame thrower
+	+added new machine gun weapon icons
+	+added grenade launcher name into hud
+	+added flame thrower slot and name to hud
+	+pistol renamed sub machine gun
+	+added flame thrower icon
+Added laser sites to the following weapons:
+	+sub machine gun, machine gun, chain gun, BFG, grenade launcher
+	+plasma gun, rocket launcher, db shotgun, flame thrower, rail gun, shotgun
++New weapon added: Flame thrower.  Close quarter combat weapon
++added new ammo type for flame thrower: ammo_fire
++adjusted max ammo amounts the player can carry.
++adjusted ammo amounts weapon items have on them, and low ammo amounts
++back packs: added support for fire ammo
++removed various un-used movment binds from main menu options.
++updated default config with modified weapon slots and quick weapon switch button
++updated main menu with new weapons, movement binds, removed reloading, and added quick weapon switch
++rocket launcher, grenade launcher and BFG no longer hurt the player.
++added blue flames which shoot out of the side of the plasma gun's TP model.  This is same as the FP model
++Replaced fist with chainsaw
++raised cacodemon health
++raised archvile health
++Added Red_Uk's test map.  maps/hq2/Red1
++removed running, changed walk speed to running speed.  changed run animations to same as walking/jogging.
++raised pinky health
+-lowered chainsaw damage because it is now a starting weapon
++adjust thirdperson height to 50 from 40
+Enemy adjustments:
+	+shotgun zsec now drop new item_shotguns
+	+pistol & shielf zsec now drop bullets instead of pistols
+	+machinegun zsec now drop ammo clips instead of MG guns.
+	+Chaingun commandos drop new item_chainguns
+	+Sawyer zombies drop new item_chainsaw
+
+------------------------------------------------------------------------------------------------------------------------
+Version 0.9.00
+Date: 05.23.09
+
++when pressing forward, the player automatically faces that direction.
++when pressing backward, the player automatically faces that direction.
++adjusted thirdperson camera height, range, and angle for 2d gameplay.
++added in support for thirdperson hud.
++Added in custom default config file support to sdk.
++added in custom config which changes controls.
++added in increased imagecache megs to custom config.
++disabled mouse changing directions/turning.
++Mod has been built off of the Denton source code.
++removed cross hairs
++increased default jump height
++increased movement speeds
++SDK: reverted all physics back to vanilla D3 physics.  This helps stop the player/actors from getting knocked around.
++SDK: disabled the player getting knocked around while standing on top of an enemy
++SDK: Removed denton's useammo modification which made it for clips only.
++Removed knockback, push, and kicks from all types of damage.
++changed crouch view camera
++add in heat haze mod
++added collision box to player model.  Same size as spawn box in editor.  bound to origin joint
++add in ambient light fix mod
++removed falling damage for player
++modified crouch animations.  walk forward and backward.
++removed export fred type of code from weapon def files
++added tracers to shotgun, and double barrel shotgun
++set launchfrombarrel to 1 on all weapons
++increased default mouse sensitivity
++added in noshadows to muzzle flashes and enemy fireball attacks to increase performance
++add in better visportal editor preview
++added water material and textures
++item pick ups now float and bob in the air.  Items include armor, health, keys, pda, etc.
++ammo pick ups now float and bob in the air.  
+	*DEV NOTE: ammo pick ups names all start with ammo_*  These should ALWAYS be used for finding ammo.
++item pick ups for all weapons added.  These new items float and bob in the air.
+	*DEV NOTE: weapon pick up names are item_*.  These should ALWAYS be used for finding new guns.
++modified player model.  Removed parts not needed and shrunk down parts of mesh
++changed player model's armor color to dark grey
++adjusted machine gun, and pistol spread.  Set both to 0.
++Revility mod's old school imp skins added
++Hud updates:
+	+Ammo counter now shown for machine gun, grenades, chain gun, plasma gun and BFG.
++Revility mod's old school lost soul skin & model added
++added Revility mod's random running zombies in
++added in 2d clip brush which blocks player and monsters.  Textures/common/2dclip
+	*DEV NOTE:  This is useful for clipping an area where enemies (like Zsecs) & the player are the same size.
++All first person weapon textures are no longer drawn
++added 6th Venom's High Quality main menu replacement.
+	+replaced id tech 4 logo with Atomic Armadillo logo
+	+replaced id symbol on menu with AA symbol.  This activates the credits.
+	+replaced doom3 logo with HQ2 logo
+	+modified mars model, texture and material.
+	*BUG NOTE* credits menu will currently cause the new logo to get squashed
++SDK: Added launchfrombarrel fix by Ivan. Projectiles will correctly fire out of a weapon's barrel in thirdperson.
+	+Note:  A joint named barrel must be found on a weapon in order for it to work correctly.
++Pistol updates:
+	+revility mod firing sound added
+	-decreased denton's firing speed.  Closer to original.
+	+new thirdperson model added
+	+removed reloading
++Machinegun updates:
+	+revility mod firing sound added
+	+Z-Hunter machine gun model and textures added
+	+new idle animation for new TP Machine gun model.  Fixes barrel position.
+	+removed reloading
+	+new pick up model added to reflect new Thirdperson md5 model
++shotgun updates:
+	-decreased spread from 22 to 18
+	+revility mod fire and pump sounds added
+	+removed reloading
++Chain Gun updates
+	+changed TP chain gun model color from yellow to silver
+	+increased ammo clip amount from 60 to 99
+	+Added revility mod firing sound system
+	+Decreased damage and increased spread and increased speed
+	+Decreased warm up and down times
+	+increased thirdperson model size greatly.  Removed barrel surrprent and added new parts to body.
+	+new thirdperson model animations added. Fixes barrel & muzzle flash positions.
+	+added red laser site to TP model
+	+removed reloading
+	+new pick up model added to reflect new Thirdperson md5 model
+	+player model now does idle animation instead of fire.  improves aim greatly.
++Plasma Rifle updates
+	+increased glow amount from 8 to 260
+	+added revility mod firing sound
+	+Side vents on thirdperson model now glow.  Added glow texture to material
+	+Thirdperson model now gives off small light source
+	+removed reloading
++Grenade/Grenade Launcher updates:
+	+added Revility mod's Grenade Launcher
+	+updated GL code with denton enhancements
+	-removed revility flashlight code from GL's script
+	+intergrated Denton's grenade projectile visuals.
+	+removed reloading
+	+added new grenade launcher TP model
++rocket launcher updates:
+	-decreased amount of damage rockets do to player from .2 to .1
+	+removed reloading
++BFG Updates:
+	+added particles effects and lights when the BFG is charging it's attack for thirdperson model
+	+removed reloading.  Code had to be modified more than the other weapons for it to work.
+	
+------------------------------------------------------------------------------------------------------------------------
+
+*************************************************************************************************************************
+*************************************************************************************************************************
+KNOWN BUGS:
+
+Black or Missing Textures:
+If your using an ATI card, some textures may appear black on the new content.  This is a DDS file issue.  I have heard,
+but been able to confirm, that updating your ATI graphic card drivers will correct this issue.
+
+Any othe problems or issues, please post at my forums: 
+http://www.atomicarmadillo.com/forum
+
+*************************************************************************************************************************
+*************************************************************************************************************************
+
+Notes:
+
+------------------------------------------------------------------------------------------------------------------------
+
+The build number read as follows:
+example build; 0.1.23
+0 = public build. Very rare to exceed this number unless enough changes were there that it could almost be called a sequal.
+1 = milestone release.  Big changes happened in the build, or a ton of important ones. These builds should pretty solid at the time.  Its like we reached a development goal.
+2 = major build.  This is the typical build number.  A decent number of changes happened.
+3 = minor build.  This is a very small build addressing a few small problems or only a couple of major ones.
+
+------------------------------------------------------------------------------------------------------------------------

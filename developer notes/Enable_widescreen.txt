@@ -1,0 +1,12 @@
+Enabling widescreen support using the console in Doom3
+
+Note: Doom 3 does not have selectable widescreen resolutions available in the game menu. 
+If you are using a widescreen then you can correct this by right-clicking your Doom 3 shortcut 
+and under the Shortcut tab entering the following string into the target text field:
+
+"C:\Program Files\Doom 3\DOOM3.exe" +r_fullscreen 1 +r_mode -1 +r_customwidth 1280 +r_customheight 768 +vid_restart +g_fov 100
+
+This will prevent the screen from stretching. 
+If you did not install Doom 3 into the default program files directory then you 
+will need to change the above file path accordingly. You can also adjust the 1280 X 768 resolution to a 
+widescreen setting of your choice.

@@ -1,0 +1,30 @@
+DEV NOTES FOR HQ2
+
+/******************************************************************************
+DXP:  Using the Dynamic X position
+******************************************************************************/
+
+Using the Dynamic X position  (DXP changing system:
+
+HardQore 2 might be a sidescroller, but that does not mean it doesn't take advantage of its 3d environments.  
+Mappers can use this to move the player in and out of both the foreground and back ground.  It also allows the mapper to create
+side rooms for the player to explore.  This adds in a new layer of depth to the game.
+
+An example of using DXP can be found in the hq2/playground map.  
+The best way to understand and use it is to look at and play this map.
+
+How to up DXP in your maps:
+Using the system is very easy to do.  You create triggers where you want to player to move to and from.
+the new entity is called: trigger_interact_change_x_pos  Triggers are created at both ends where you want the player to go to & from.
+To set up the changing, simply target one trigger_interact_change_x_pos to another trigger_interact_change_x_pos.
+
+Entity Keys have been added to cancel out and letting monsters use the DXP also.
+
+Teleporters can also be used with this new system.  This is great for creating doors in the background you wish the player to enter.
+func_teleporter_fx --> plays the fx (default one is defined in the def) each time player is teleported there. 
+func_teleporter_change_x_pos --> teleports the player, then it behaves like a  "trigger_interact_change_x_pos" 
+(only difference: movement cannot be aborted).
+
+Additionally a new glowing decal texture has been added.  These can be used to let the player now they can turn in a map.
+They are located in textures/hq2/turnspot*
+However, these are not needed because the hud also tells the same info in the bottom right corner
