@@ -95,10 +95,16 @@ RIVENSIN CODE INJECTIONS:::::::::::::::::::::::::::::::::::::::::
 		-Playerview.cpp
 		-syscvar.cpp
 		-syscvar.h
-	-Player Full body animation system.
-	-Player Automelee, melee damage system
-	-Player melee "kick" damage system. 
-	-Player Motion Trails for melee weapons.
+	-Player Full body animation system, Player Automelee, kick damage system, Player Motion Trails for weapons.
+		+game_local.cpp & h 
+		+misc.cpp & h 
+		+player.cpp & h
+		+trailgenerator.cpp & h 
+		+weapon.cpp & h, 
+		+physics_player.cpp & h
+		+anim.h 
+		+anim_blend.cpp
+		*A few more files might in there for #includes
 	
 	*Any files in the git repo not listed above are associated when one of the above injections from Rivensin.
 	*Many of the injections are interconnected to each other such as automelee and motion trails.
