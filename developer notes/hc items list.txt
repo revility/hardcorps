@@ -4,10 +4,13 @@ CURRENT LIST OF ALL AMMO TYPES,  ITEMS, POWER UPS AND WEAPONS FOR THE GAME
 
 AMMO TYPES:
 	*Ammo types have been reduced for Hard Corps*
-	Ammo_bullets
-	Ammo_shells
+	Ammo_bullets_small
+	Ammo_bullets_large
+	Ammo_shells_small
+	Ammo_shells_large
 	Ammo_explosives
-	Ammo_cells
+	Ammo_cells_small
+	Ammo_cells_large
 	
 ITEMS
 	Armor Security
