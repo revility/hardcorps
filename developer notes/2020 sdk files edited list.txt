@@ -1,5 +1,6 @@
 Feature/Files edited list.
 04.20.20
+This is a list of all the sdk files modified from 2018 to 2020.
 
 -Touch of Death/HurtBox:  Player gets hurt if touching enemies enemies with the "touchOfDeath" key set to true
 	-Game_local.cpp
