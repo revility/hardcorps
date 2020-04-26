@@ -2,7 +2,7 @@ Here is the list of levels for HQ2.  They are open to anyone to make.  I don't p
 
 A couple notes before we start the list:
 
-Secrets always contain one of the following:
+Secrets could contain one of the following:
 Weapons, this is the only way the player finds them!
 Armor pick ups
 Large med kits
@@ -10,11 +10,9 @@ Large ammo pick ups.
 short cuts
 or secrect exits.
 
-This will help make it very rewarding to find secrects.  Being able to only find the weapons this way will boost that further.
-
 You'll notice that each little bit of level info also contains what weapons are found.  Weapons are listed twice because this gives the player a second chance to find them.
-Their second chance to find them could result from killing an enemy that carries it, or yet another secret.  Always remember never to put an enemy in a map which could drop a weapon before the player has a chance to find it first.
-The only weapon that breaks these rules is the machine Gun because once it is gained, the pace of the game is set.
+The second chance to find them could result from killing an enemy that carries it, or yet another secret.  Always remember never to put an enemy in a map which could drop a weapon before the player has a chance to find it first.
+The only weapon that breaks this rule is the machine Gun because once it is gained, the pace of the game is set.
 
 Bosses:
 Always remember to introduce your boss.  The music needs to change, and there needs to be some sort of intro.
