@@ -3344,11 +3344,11 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	int ammo_cells;
 	int ammo_bullets;
 	int ammo_shells;
-	ammo_exp = inventory.HasAmmo( 1, 1 );
+	ammo_exp = inventory.HasAmmo( 1, 1 );	//first number must match ammo.def value
 	ammo_souls = inventory.HasAmmo( 2, 1 );
-	ammo_cells = inventory.HasAmmo( 4, 1 );
-	ammo_bullets = inventory.HasAmmo( 5, 1 );
-	ammo_shells	= inventory.HasAmmo( 6, 1 );
+	ammo_cells = inventory.HasAmmo( 3, 1 );
+	ammo_bullets = inventory.HasAmmo( 4, 1 );
+	ammo_shells	= inventory.HasAmmo( 5, 1 );
 	
 	_hud->SetStateString( "player_ammo_bullets", va( "%i", ammo_bullets ) );
 	_hud->SetStateString( "player_ammo_shells", va( "%i", ammo_shells ) ); 
@@ -12220,7 +12220,7 @@ bool idPlayer::EvaluateKick( void ) {
 			//hitSound = kickDef->dict.GetString( PowerUpActive( BERSERK ) ? "snd_hit_berserk" : "snd_hit" );
 			ent->AddDamageEffect( tr, impulse, kickDef->dict.GetString( "classname" ) ); //play the sound from the entity hit!
 			//addDamageEffect already plays its own sound
-		} 
+		}
 		//case 2/3: (LOW priority entities) AND (can bleed) -> play the snd and the prt less frequently - (example: sword on LOW priority entities)
 		else if ( ent->spawnArgs.GetBool( "bleed", "1" )){ // Again, this is not done if 'bleed' key is set to '0'.
 			if (( gameLocal.time > nextKickFx )  ){ //this is usually the worldspawn... don't play too much snd and prt on it!
