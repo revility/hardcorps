@@ -9,6 +9,23 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.45
+05.14.20
+
+	*SDK:
+		+Fixed ammo gui strings caused by removing the BFG ammo type.  player.cpp
+	*Player Updates:
+		-Removed unused BFG ammo type from player.def
+	*Weapons player:
+	*Enemies:
+	*GUI:
+	*Maps:
+		+Started brush work for concrete jungle 
+	*Other:
+		+Added 2 more kinds of blood water source textures.
+
+************************************************************************************************
+
 Build: 0.8.44
 04.25.20
 
