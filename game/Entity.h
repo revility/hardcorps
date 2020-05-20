@@ -78,7 +78,10 @@ extern const idEventDef EV_SetSkin;
 extern const idEventDef EV_StartSoundShader;
 extern const idEventDef EV_StopSound;
 extern const idEventDef EV_CacheSoundShader;
-extern const idEventDef EV_Interact; //ivan
+//ivan start
+extern const idEventDef EV_Interact;
+extern const idEventDef EV_FadeSound;
+//ivan end
 
 #ifdef _WATER_PHYSICS //un noted change from original sdk
 extern const idEventDef EV_GetMass;

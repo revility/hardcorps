@@ -80,6 +80,7 @@ class idTypeInfo;
 class idThread;
 class idEditEntities;
 class idLocationEntity;
+class idSound; //ff1.3
 
 //============================================================================
 extern const int NUM_RENDER_PORTAL_BITS;
@@ -481,7 +482,10 @@ public:
 	bool					NeedRestart();
 	
 	//ivan start
-	void					UpdateSeeDistances( float distance ); 
+	void					UpdateSeeDistances( float distance );
+
+	void					StartMusic( idSound *newMusicEnt );
+	void					StopMusic( void );
 	//ivan end
 
 private:
@@ -536,6 +540,10 @@ private:
 
 	byte					lagometer[ LAGO_IMG_HEIGHT ][ LAGO_IMG_WIDTH ][ 4 ];
 
+	//ivan start
+	idEntityPtr<idSound>	musicEntity;
+	//ivan end
+
 	void					Clear( void );
 							// returns true if the entity shouldn't be spawned at all in this game type or difficulty level
 	bool					InhibitEntitySpawn( idDict &spawnArgs );
@@ -588,6 +596,10 @@ private:
 	void					UpdateLagometer( int aheadOfServer, int dupeUsercmds );
 
 	virtual void			GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
+
+	//ivan start
+	void					UpdateMusicVolume( void );
+	//ivan end
 };
 
 //============================================================================

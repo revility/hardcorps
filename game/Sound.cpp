@@ -40,12 +40,14 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 const idEventDef EV_Speaker_On( "On", NULL );
+const idEventDef EV_Speaker_OnNoParallel( "OnNoParallel", NULL ); //ivan
 const idEventDef EV_Speaker_Off( "Off", NULL );
 const idEventDef EV_Speaker_Timer( "<timer>", NULL );
 
 CLASS_DECLARATION( idEntity, idSound )
 	EVENT( EV_Activate,				idSound::Event_Trigger )
 	EVENT( EV_Speaker_On,			idSound::Event_On )
+	EVENT( EV_Speaker_OnNoParallel,	idSound::Event_OnNoParallel ) //ivan
 	EVENT( EV_Speaker_Off,			idSound::Event_Off )
 	EVENT( EV_Speaker_Timer,		idSound::Event_Timer )
 END_CLASS
@@ -280,6 +282,20 @@ void idSound::Event_On( void ) {
 	}
 	DoSound( true );
 }
+
+//ivan start
+/*
+================
+idSound::Event_OnNoParallel
+================
+*/
+void idSound::Event_OnNoParallel( void ) {
+	if ( !(refSound.referenceSound && refSound.referenceSound->CurrentlyPlaying() )) {
+		Event_On(); //play only if not already playing
+	}
+}
+
+//ivan end
 
 /*
 ================

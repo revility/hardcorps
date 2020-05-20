@@ -46,6 +46,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "WorldSpawn.h"
 #include "Misc.h"
 #include "Trigger.h"
+#include "Sound.h" //ivan
 
 #include "Game_local.h"
 
@@ -75,6 +76,12 @@ idCVar *					idCVar::staticVars = NULL;
 idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM, "force generic platform independent SIMD" );
 
 #endif // GAME_DLL
+
+//ivan start
+const float MIN_MUSIC_VOLUME			= -10.0f; //must match the min malue in mainmenu.gui
+const float DISABLED_MUSIC_VOLUME		= -60.0f;
+const int MUSIC_SOUND_CLASS				= 2; //0 = default, 1 = teleport snd
+//ivan end
 
 idRenderWorld *				gameRenderWorld = NULL;		// all drawing is done to this world
 idSoundWorld *				gameSoundWorld = NULL;		// all audio goes to this world
@@ -251,6 +258,7 @@ void idGameLocal::Clear( void ) {
 	enemies_killed_counter	= 0;
 	enemies_spawned_counter = 0;
 	projSeeDistance = 0.0f;
+	musicEntity = NULL;
 	//ivan end
 
 	memset( clientEntityStates, 0, sizeof( clientEntityStates ) );
@@ -611,6 +619,7 @@ void idGameLocal::SaveGame( idFile *f ) {
 	savegame.WriteInt( enemies_spawned_counter );
 	savegame.WriteInt( enemies_killed_counter );
 	savegame.WriteFloat( projSeeDistance );
+	musicEntity.Save( &savegame );
 	//ivan end
 
 	// spawnSpots
@@ -956,6 +965,7 @@ void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	enemies_killed_counter	= 0;
 	enemies_spawned_counter = 0;
 	projSeeDistance = 0.0f;
+	musicEntity = NULL;
 	//ivan end
 
 #ifdef  _PORTALSKY
@@ -1467,6 +1477,7 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 	savegame.ReadInt( enemies_spawned_counter );
 	savegame.ReadInt( enemies_killed_counter );
 	savegame.ReadFloat( projSeeDistance );
+	musicEntity.Restore( &savegame );
 	//ivan end
 
 	// spawnSpots
@@ -2353,6 +2364,9 @@ gameReturn_t idGameLocal::RunFrame( const usercmd_t *clientCmds ) {
 
 		// update our gravity vector if needed.
 		UpdateGravity();
+
+		//ivan - music volume
+		UpdateMusicVolume();
 
 		// create a merged pvs for all players
 		SetupPlayerPVS();
@@ -4813,6 +4827,61 @@ void idGameLocal::UpdateSeeDistances( float distance ) {
 	//note: the radius of the sphere is based on the camera distance, that is, the horizontal distance, which is bigger than the vertical one.
 	//projSeeDistance = distance; //was: * 1.4f; 
 	projSeeDistance = distance +80.0f; //was: * 1.4f; 
+}
+
+
+
+/*
+================
+idGameLocal::StartMusic
+================
+*/
+void idGameLocal::StartMusic( idSound *newMusicEnt ) {
+	idSound *oldMusicEnt = musicEntity.GetEntity();
+	if ( oldMusicEnt != newMusicEnt ) {
+		if ( oldMusicEnt ) {
+			oldMusicEnt->PostEventMS( &EV_Speaker_Off, 0 ); //turn off
+			gameLocal.Warning( "A music was already playing." );
+		}
+
+		if ( newMusicEnt ) {
+			newMusicEnt->CancelEvents( &EV_Speaker_Off );
+			newMusicEnt->PostEventMS( &EV_Speaker_OnNoParallel, 0 );
+			newMusicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, 0.0f, 0.0f ); //restore the volume in case it was fading out
+		}
+	}
+	musicEntity = newMusicEnt;
+}
+
+/*
+================
+idGameLocal::StopMusic
+================
+*/
+void idGameLocal::StopMusic( void ) {
+	idSound *musicEnt = musicEntity.GetEntity();
+	if ( musicEnt ) {
+		musicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, -60.0f, 20.0f );
+		musicEnt->PostEventSec( &EV_Speaker_Off, 20.0f );
+	}
+	musicEntity = NULL;
+}
+
+
+/*
+================
+idGameLocal::UpdateMusicVolume
+================
+*/
+void idGameLocal::UpdateMusicVolume( void ) {
+	if ( s_music_volume.IsModified() ) {
+		s_music_volume.ClearModified();
+		if ( s_music_volume.GetFloat() > MIN_MUSIC_VOLUME ) {
+			gameSoundWorld->FadeSoundClasses( MUSIC_SOUND_CLASS, s_music_volume.GetFloat(), 0.0f );
+		} else {
+			gameSoundWorld->FadeSoundClasses( MUSIC_SOUND_CLASS, DISABLED_MUSIC_VOLUME, 0.0f );
+		}
+	}
 }
 
 //ivan end
