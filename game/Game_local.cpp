@@ -80,6 +80,7 @@ idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM,
 //ivan start
 const float MIN_MUSIC_VOLUME			= -10.0f; //must match the min malue in mainmenu.gui
 const float DISABLED_MUSIC_VOLUME		= -60.0f;
+const float MUSIC_FADEOUT_SECONDS		= 20.0f;
 const int MUSIC_SOUND_CLASS				= 2; //0 = default, 1 = teleport snd
 //ivan end
 
@@ -4861,8 +4862,8 @@ idGameLocal::StopMusic
 void idGameLocal::StopMusic( void ) {
 	idSound *musicEnt = musicEntity.GetEntity();
 	if ( musicEnt ) {
-		musicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, -60.0f, 20.0f );
-		musicEnt->PostEventSec( &EV_Speaker_Off, 20.0f );
+		musicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, -60.0f, MUSIC_FADEOUT_SECONDS );
+		musicEnt->PostEventSec( &EV_Speaker_Off, MUSIC_FADEOUT_SECONDS );
 	}
 	musicEntity = NULL;
 }
