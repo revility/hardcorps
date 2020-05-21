@@ -1,0 +1,52 @@
+
+(BUGS) {
+	+Commandos stop attacking once off screen and then back on... will not run at player again.  Flagged as long range attack?
+	+Default music system does not save the current music entity after the player dies or respawns.
+	+Camera changes reset upon respawn.... check set camera height, and cameraforceY not working
+	+Melee weapons:  if the player dies while swinging, they will respawn in the melees weapon idle position and be stuck in it.
+	+Fix load/save game main menu overlapping
+	+Fix charge attack surface damage sounds
+	+Fix tracer missing tracer sound errors.
+}
+
+(FIXES) {
+	*Player animation fixes
+		+Fix nail gun aim up
+		+Fix nail gun aim down
+		+Fix nail gun aim
+		+Fix nail gun fire
+		+Fix msg/mg idle
+		+Fix msg/mg run
+		-Disable multiplayer button in menu
+}
+
+
+(ADD ONS) {
+	+Jill Valentine Playable character
+		+Bowie Knife melee weapon	
+	+Vanilla Doom Marine playable character
+		+CSG melee weapon
+}
+
+(FEATURES) {
+	+Default Ninga Gaiden and contra style item holders.  breakable with new fx and sounds.
+	+Add key to projectiles to make them destroy on impact with other projectiles... enemy bullets could use it.
+	+Add key to allow projectiles to pass through other projectiles and actors, etc.  "piercing"  needed for nails and melee attack
+}
+
+(GUI) {
+}
+
+(MAPS) {
+	(WASTED HATE ALPHA) {
+	DONE
+	}
+	(WASTED HATE VERSION 2) {
+
+	}
+	(PLAYGROUND) {
+	Check for bugs
+	}
+	(CONCRETE JUNGLE) {
+	}
+}
