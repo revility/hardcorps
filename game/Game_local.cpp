@@ -4830,26 +4830,16 @@ void idGameLocal::UpdateSeeDistances( float distance ) {
 	projSeeDistance = distance +80.0f; //was: * 1.4f; 
 }
 
-
-
 /*
 ================
-idGameLocal::StartMusic
+idGameLocal::SetMusicEntity
 ================
 */
-void idGameLocal::StartMusic( idSound *newMusicEnt ) {
-	idSound *oldMusicEnt = musicEntity.GetEntity();
-	if ( oldMusicEnt != newMusicEnt ) {
-		if ( oldMusicEnt ) {
-			oldMusicEnt->PostEventMS( &EV_Speaker_Off, 0 ); //turn off
-			gameLocal.Warning( "A music was already playing." );
-		}
-
-		if ( newMusicEnt ) {
-			newMusicEnt->CancelEvents( &EV_Speaker_Off );
-			newMusicEnt->PostEventMS( &EV_Speaker_OnNoParallel, 0 );
-			newMusicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, 0.0f, 0.0f ); //restore the volume in case it was fading out
-		}
+void idGameLocal::SetMusicEntity( idMusic *newMusicEnt ) {
+	idMusic *currentMusicEnt = musicEntity.GetEntity();
+	if ( currentMusicEnt && currentMusicEnt != newMusicEnt && currentMusicEnt->IsActive() ) {
+		currentMusicEnt->PostEventMS( &EV_Music_Stop, 0 ); //turn off immediately
+		Warning( "Music entity '%s' was already playing: stopped", currentMusicEnt->GetName() );
 	}
 	musicEntity = newMusicEnt;
 }
@@ -4860,14 +4850,13 @@ idGameLocal::StopMusic
 ================
 */
 void idGameLocal::StopMusic( void ) {
-	idSound *musicEnt = musicEntity.GetEntity();
-	if ( musicEnt ) {
-		musicEnt->PostEventMS( &EV_FadeSound, 0, SCHANNEL_ANY, -60.0f, MUSIC_FADEOUT_SECONDS );
-		musicEnt->PostEventSec( &EV_Speaker_Off, MUSIC_FADEOUT_SECONDS );
+	idMusic *currentMusicEnt = musicEntity.GetEntity();
+	if ( currentMusicEnt ) {
+		currentMusicEnt->PostEventMS( &EV_Music_FadeOut, 0 );
+	} else {
+		gameLocal.Warning("There's no music to stop!");
 	}
-	musicEntity = NULL;
 }
-
 
 /*
 ================

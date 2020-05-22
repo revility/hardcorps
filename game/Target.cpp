@@ -2139,3 +2139,26 @@ void idTarget_FadeSoundClass::Event_RestoreVolume() {
 	// restore volume
 	gameSoundWorld->FadeSoundClasses( 0, fadeDB, fadeTime );
 }
+
+//ivan start
+/*
+===============================================================================
+
+idTarget_StopMusic
+
+===============================================================================
+*/
+
+CLASS_DECLARATION( idTarget, idTarget_StopMusic )
+EVENT( EV_Activate,	idTarget_StopMusic::Event_Activate )
+END_CLASS
+
+/*
+================
+idTarget_EnableStamina::idTarget_StopMusic
+================
+*/
+void idTarget_StopMusic::Event_Activate( idEntity *activator ) {
+	gameLocal.StopMusic();
+}
+//ivan end

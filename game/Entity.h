@@ -80,7 +80,6 @@ extern const idEventDef EV_StopSound;
 extern const idEventDef EV_CacheSoundShader;
 //ivan start
 extern const idEventDef EV_Interact;
-extern const idEventDef EV_FadeSound;
 //ivan end
 
 #ifdef _WATER_PHYSICS //un noted change from original sdk

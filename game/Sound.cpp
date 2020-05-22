@@ -40,14 +40,12 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 const idEventDef EV_Speaker_On( "On", NULL );
-const idEventDef EV_Speaker_OnNoParallel( "OnNoParallel", NULL ); //ivan
 const idEventDef EV_Speaker_Off( "Off", NULL );
 const idEventDef EV_Speaker_Timer( "<timer>", NULL );
 
 CLASS_DECLARATION( idEntity, idSound )
 	EVENT( EV_Activate,				idSound::Event_Trigger )
 	EVENT( EV_Speaker_On,			idSound::Event_On )
-	EVENT( EV_Speaker_OnNoParallel,	idSound::Event_OnNoParallel ) //ivan
 	EVENT( EV_Speaker_Off,			idSound::Event_Off )
 	EVENT( EV_Speaker_Timer,		idSound::Event_Timer )
 END_CLASS
@@ -283,20 +281,6 @@ void idSound::Event_On( void ) {
 	DoSound( true );
 }
 
-//ivan start
-/*
-================
-idSound::Event_OnNoParallel
-================
-*/
-void idSound::Event_OnNoParallel( void ) {
-	if ( !(refSound.referenceSound && refSound.referenceSound->CurrentlyPlaying() )) {
-		Event_On(); //play only if not already playing
-	}
-}
-
-//ivan end
-
 /*
 ================
 idSound::Event_Off
@@ -318,3 +302,138 @@ idSound::ShowEditingDialog
 void idSound::ShowEditingDialog( void ) {
 	common->InitTool( EDITOR_SOUND, &spawnArgs );
 }
+
+
+//ivan start
+const idEventDef EV_Music_Start( "startMusic", NULL );
+const idEventDef EV_Music_Stop( "<stopMusic>", NULL );
+const idEventDef EV_Music_FadeOut( "<fadeOutMusic>", NULL );
+
+CLASS_DECLARATION( idEntity, idMusic )
+	EVENT( EV_Activate,					idMusic::Event_Trigger )
+	EVENT( EV_Music_Start,				idMusic::Event_Start )
+	EVENT( EV_Music_Stop,				idMusic::Event_Stop )
+	EVENT( EV_Music_FadeOut,			idMusic::Event_FadeOut )
+END_CLASS
+
+/*
+================
+idMusic::idMusic
+================
+*/
+idMusic::idMusic( void ) {
+	active = false;
+}
+
+/*
+================
+idMusic::Save
+================
+*/
+void idMusic::Save( idSaveGame *savefile ) const {
+	savefile->WriteBool( active );
+}
+
+/*
+================
+idMusic::Restore
+================
+*/
+void idMusic::Restore( idRestoreGame *savefile ) {
+	savefile->ReadBool( active );
+}
+
+/*
+================
+idMusic::Event_Trigger
+
+this will toggle the music on and off
+================
+*/
+void idMusic::Event_Trigger( idEntity *activator ) {
+	if ( active ) {
+		FadeOutMusic();
+	} else {
+		StartMusic();
+	}
+}
+
+/*
+================
+idMusic::Event_On
+================
+*/
+void idMusic::Event_Start( void ) {
+	StartMusic();
+}
+
+/*
+================
+idMusic::Event_Off
+================
+*/
+void idMusic::Event_Stop( void ) {
+	StopMusic();
+}
+
+/*
+================
+idMusic::Event_Fadeout
+================
+*/
+void idMusic::Event_FadeOut( void ) {
+	FadeOutMusic();
+}
+
+/*
+================
+idMusic::StartMusic
+================
+*/
+void idMusic::StartMusic( void ) {
+	CancelEvents( &EV_Music_Stop );
+
+	if ( !refSound.referenceSound || !refSound.referenceSound->CurrentlyPlaying() ) {
+		StartSoundShader( refSound.shader, SND_CHANNEL_ANY, refSound.parms.soundShaderFlags, false, NULL );
+	}
+	
+	if ( refSound.referenceSound ) {
+		refSound.referenceSound->FadeSound( SND_CHANNEL_ANY, 0.0f, 0.0f ); //just restore the volume in case it is fading out or already faded out
+		active = true;
+		gameLocal.SetMusicEntity( this );
+	} else {
+		gameLocal.Warning("Failed to start music entity '%s'", GetName() );
+	}
+}
+
+/*
+================
+idMusic::FadeMusic
+================
+*/
+void idMusic::FadeOutMusic( void ) {
+	if ( !refSound.referenceSound || !refSound.referenceSound->CurrentlyPlaying() ) {
+		return;
+	}
+
+	float fadeSeconds = spawnArgs.GetFloat( "fadeout", "20" );
+	if ( fadeSeconds <= 0.0f ) {
+		StopMusic();
+		return;
+	}
+	refSound.referenceSound->FadeSound( SND_CHANNEL_ANY, -60.0f, fadeSeconds );
+	PostEventSec( &EV_Music_Stop, fadeSeconds );
+	active = false;
+}
+
+/*
+================
+idMusic::StopMusic
+================
+*/
+void idMusic::StopMusic( void ) {
+	StopSound( SND_CHANNEL_ANY, false );
+	active = false;
+}
+
+//ivan end

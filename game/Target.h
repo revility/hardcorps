@@ -732,5 +732,20 @@ private:
 	void				Event_RestoreVolume();
 };
 
+//ivan start
+/*
+===============================================================================
+
+idTarget_StopMusic
+
+===============================================================================
+*/
+class idTarget_StopMusic : public idTarget {
+public:
+	CLASS_PROTOTYPE( idTarget_StopMusic );
+private:
+	void				Event_Activate( idEntity *activator );
+};
+//ivan end
 
 #endif /* !__GAME_TARGET_H__ */

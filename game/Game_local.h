@@ -80,7 +80,7 @@ class idTypeInfo;
 class idThread;
 class idEditEntities;
 class idLocationEntity;
-class idSound; //ff1.3
+class idMusic; //ff1.3
 
 //============================================================================
 extern const int NUM_RENDER_PORTAL_BITS;
@@ -484,7 +484,7 @@ public:
 	//ivan start
 	void					UpdateSeeDistances( float distance );
 
-	void					StartMusic( idSound *newMusicEnt );
+	void					SetMusicEntity( idMusic *newMusicEnt );
 	void					StopMusic( void );
 	//ivan end
 
@@ -541,7 +541,7 @@ private:
 	byte					lagometer[ LAGO_IMG_HEIGHT ][ LAGO_IMG_WIDTH ][ 4 ];
 
 	//ivan start
-	idEntityPtr<idSound>	musicEntity;
+	idEntityPtr<idMusic>	musicEntity;
 	//ivan end
 
 	void					Clear( void );

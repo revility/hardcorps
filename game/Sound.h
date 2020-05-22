@@ -32,8 +32,9 @@ If you have questions concerning this license or the applicable additional terms
 #include "Entity.h"
 
 //ff1.3 start
-extern const idEventDef EV_Speaker_OnNoParallel;
-extern const idEventDef EV_Speaker_Off;
+extern const idEventDef EV_Music_Start;
+extern const idEventDef EV_Music_Stop;
+extern const idEventDef EV_Music_FadeOut;
 //ff1.3 end
 
 /*
@@ -76,9 +77,43 @@ private:
 	void			Event_Trigger( idEntity *activator );
 	void			Event_Timer( void );
 	void			Event_On( void );
-	void			Event_OnNoParallel( void ); //ivan
 	void			Event_Off( void );
 	void			DoSound( bool play );
 };
+
+//ivan start
+
+/*
+===============================================================================
+
+  Music entity
+
+===============================================================================
+*/
+
+class idMusic : public idEntity {
+public:
+	CLASS_PROTOTYPE( idMusic );
+
+					idMusic( void );
+
+	void			Save( idSaveGame *savefile ) const;
+	void			Restore( idRestoreGame *savefile );
+
+	bool			IsActive( void ) { return active; };
+
+private:
+	bool			active; //false if not playing or fading out
+	
+	void			Event_Trigger( idEntity *activator );
+	void			Event_Start( void );
+	void			Event_Stop( void );
+	void			Event_FadeOut( void );
+
+	void			StartMusic( void );
+	void			StopMusic( void );
+	void			FadeOutMusic( void );
+};
+//ivan end
 
 #endif /* !__GAME_SOUND_H__ */
