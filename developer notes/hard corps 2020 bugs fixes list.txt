@@ -1,7 +1,6 @@
 
 (BUGS) {
 	+Commandos stop attacking once off screen and then back on... will not run at player again.  Flagged as long range attack?
-	+Default music system does not save the current music entity after the player dies or respawns.
 	+Camera changes reset upon respawn.... check set camera height, and cameraforceY not working
 	+Melee weapons:  if the player dies while swinging, they will respawn in the melees weapon idle position and be stuck in it.
 	+Fix load/save game main menu overlapping
