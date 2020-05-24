@@ -3,7 +3,6 @@
 	+Commandos stop attacking once off screen and then back on... will not run at player again.  Flagged as long range attack?
 	+Camera changes reset upon respawn.... check set camera height, and cameraforceY not working
 	+Melee weapons:  if the player dies while swinging, they will respawn in the melees weapon idle position and be stuck in it.
-	+Fix load/save game main menu overlapping
 	+Fix charge attack surface damage sounds
 }
 
@@ -15,7 +14,7 @@
 		+Fix nail gun fire
 		+Fix msg/mg idle
 		+Fix msg/mg run
-		-Disable multiplayer button in menu
+		+Update main menu credits
 }
 
 
