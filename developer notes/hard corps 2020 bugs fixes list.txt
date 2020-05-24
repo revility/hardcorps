@@ -5,7 +5,6 @@
 	+Melee weapons:  if the player dies while swinging, they will respawn in the melees weapon idle position and be stuck in it.
 	+Fix load/save game main menu overlapping
 	+Fix charge attack surface damage sounds
-	+Fix tracer missing tracer sound errors.
 }
 
 (FIXES) {
