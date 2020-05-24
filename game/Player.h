@@ -965,7 +965,7 @@ private:
 	void					AddWeaponToSlots( idStr weaponName, bool select );
 	void					AddWeaponToSlots( int weaponNum, bool select );
 	bool					SetCurrentSlot( int newslot );
-	void					SetupSlots( void );
+	void					SetupWeaponSlots( void );
 	void					Interact( void );
 	void					SetSlideMoveState( void );
 	void					SetChargeMoveState( void );	//Rev 2020 charge

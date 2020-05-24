@@ -1573,7 +1573,7 @@ void idPlayer::SetupWeaponEntity( void ) {
 }
 
 //ivan start
-void idPlayer::SetupSlots( void ){
+void idPlayer::SetupWeaponSlots( void ){
 	int i;
 	//add the weapons we already have to slots
 	for ( i = 0; i < MAX_WEAPONS; i++ ) {
@@ -1696,17 +1696,13 @@ void idPlayer::Init( bool quickRespawn ) { //ivan - quickRespawn added
 
 	SetupWeaponEntity();
 
-	//ivan start
-	if( quickRespawn ){
-		//gameLocal.Printf("quickRespawn - idealWeapon: %d\n",idealWeapon);
-	}else{
-	//ivan end -  don't setup slots again if it's a quick respawn
+	if( !quickRespawn ){ //ivan - don't setup weapon slots again if it's a quick respawn
 		currentWeapon = -1;
 		previousWeapon = -1;
 		quickWeapon	= -1; //new
 
 		//ivan start - setup slots - this has to be done after RestorePersistantInfo() so that weapons could be already assigned to slots
-		SetupSlots();
+		SetupWeaponSlots();
 		//ivan end
 	}
 
