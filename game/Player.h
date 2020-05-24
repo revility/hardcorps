@@ -423,7 +423,7 @@ public:
 	virtual void			Hide( void );
 	virtual void			Show( void );
 
-	void					Init( void );
+	void					Init( bool quickRespawn ); //ivan - quickRespawn added
 	void					PrepareForRestart( void );
 	virtual void			Restart( void );
 	void					LinkScriptVariables( void );
@@ -658,7 +658,7 @@ private:
 	int						currentSlot;
 	int						numLives;
 	int						score;
-	bool					hq2QuickRespawning;
+	//bool					hq2QuickRespawning;
 	idVec3					safeRespawnPos;
 	float					safeRespawnCameraDist;
 	float					safeRespawnCameraHeight;

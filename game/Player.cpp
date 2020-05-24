@@ -1499,7 +1499,6 @@ idPlayer::idPlayer() {
 	cposy					= 0;
 	coffx					= 0.0f;
 #endif
-	hq2QuickRespawning		= false;
 	numLives				= 0; //will be initialized later
 	score					= 0;
 	safeRespawnPos			= vec3_zero;
@@ -1602,7 +1601,7 @@ void idPlayer::SetupSlots( void ){
 idPlayer::Init
 ==============
 */
-void idPlayer::Init( void ) {
+void idPlayer::Init( bool quickRespawn ) { //ivan - quickRespawn added
 	const char			*value;
 	const idKeyValue	*kv;
 
@@ -1616,7 +1615,7 @@ void idPlayer::Init( void ) {
 	memset( &weaponZoom, 0, sizeof( weaponZoom ) ); // New
 #endif //_DENTONMOD_PLAYER_CPP
 
-	if( !hq2QuickRespawning ){ //ivan - don't reset this if it's a quick respawn: it's the valid weapon to select!
+	if( !quickRespawn ){ //ivan - don't reset this if it's a quick respawn: it's the valid weapon to select!
 		idealWeapon			= -1; 
 	}
 	currentWeapon			= -1;
@@ -1680,7 +1679,7 @@ void idPlayer::Init( void ) {
 	//ivan start
 	//was: RestorePersistantInfo();
 
-	if( hq2QuickRespawning ){ //don't restore persistant info if it's a quick respawn
+	if( quickRespawn ){ //don't restore persistant info if it's a quick respawn
 		health = spawnArgs.GetInt( "health", "100" );
 	}else{
 		RestorePersistantInfo();
@@ -1698,8 +1697,8 @@ void idPlayer::Init( void ) {
 	SetupWeaponEntity();
 
 	//ivan start
-	if( hq2QuickRespawning ){
-		//gameLocal.Printf("hq2QuickRespawning - idealWeapon: %d\n",idealWeapon);
+	if( quickRespawn ){
+		//gameLocal.Printf("quickRespawn - idealWeapon: %d\n",idealWeapon);
 	}else{
 	//ivan end -  don't setup slots again if it's a quick respawn
 		currentWeapon = -1;
@@ -1862,7 +1861,7 @@ void idPlayer::Init( void ) {
 	cvarSystem->SetCVarFloat( "pm_thirdPersonHeight", idealCameraHeight );
 	pm_thirdPersonHeight.ClearModified();
 
-	if( !hq2QuickRespawning ){ //don't reset this if it's a quick respawn
+	if( !quickRespawn ){ //don't reset this if it's a quick respawn
 		cvarSystem->SetCVarBool( "pm_thirdPersonZ", false );	//rev 2020 reset the cvar if we are not respawning.
 		health_lost	= 0;
 	}
@@ -1898,7 +1897,6 @@ void idPlayer::Init( void ) {
 	cposy					= 0; 
 	coffx					= 0.0f;
 #endif
-	//hq2QuickRespawning		= false; //turn it off if it was active
 	//ivan end
 }
 
@@ -1998,7 +1996,7 @@ void idPlayer::Spawn( void ) { //ivan note: this is only done the first time pla
 	}
 
 	if ( gameLocal.isMultiplayer ) {
-		Init();
+		Init( false );
 		Hide();	// properly hidden if starting as a spectator
 		if ( !gameLocal.isClient ) {
 			// set yourself ready to spawn. idMultiplayerGame will decide when/if appropriate and call SpawnFromSpawnSpot
@@ -2459,7 +2457,6 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	float					old_viewAngles_yaw;
 	bool					fw_toggled;
 	bool					fw_inverted;
-	bool					hq2QuickRespawning;
 	//bool					skipMouseUpd;
 	*/
 
@@ -2830,7 +2827,6 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	old_viewAngles_yaw	= 0.0f;
 	fw_toggled			= false;
 	fw_inverted			= false;
-	hq2QuickRespawning	= false;
 	//skipMouseUpd		= false;
 
 #ifdef SHOW_MOVING_CROSSHAIR
@@ -2877,7 +2873,7 @@ void idPlayer::Restart( void ) {
 
 	// client needs to setup the animation script object again
 	if ( gameLocal.isClient ) {
-		Init();
+		Init( false );
 	} else {
 		// choose a random spot and prepare the point of view in case player is left spectating
 		assert( spectating );
@@ -2982,9 +2978,8 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 	assert( !gameLocal.isClient );
 
 	respawning = true;
-	hq2QuickRespawning = quickRespawn; //ivan
 
-	Init();
+	Init( quickRespawn );
 
 	fl.noknockback = false;
 
@@ -3060,7 +3055,7 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 		AI_TELEPORT = true;
 	} else {
 		//ivan start
-		if( hq2QuickRespawning ){
+		if( quickRespawn ){
 			idEntityFx::StartFx( spawnArgs.GetString( "fx_spawn" ), &spawn_origin, NULL, this, false );
 		}
 		//ivan end
@@ -3102,7 +3097,6 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 	
 	Think();
 
-	hq2QuickRespawning	= false; //ivan - turn it off in case it was active
 	respawning			= false;
 	lastManOver			= false;
 	lastManPlayAgain	= false;
@@ -7378,7 +7372,7 @@ void idPlayer::Spectate( bool spectate ) {
 		// join the spectators
 		ClearPowerUps();
 		spectator = this->entityNumber;
-		Init();
+		Init( false );
 		StopRagdoll();
 		SetPhysics( &physicsObj );
 		physicsObj.DisableClip();
@@ -10815,7 +10809,7 @@ void idPlayer::ReadFromSnapshot( const idBitMsgDelta &msg ) {
 		}
 	} else if ( oldHealth <= 0 && health > 0 ) {
 		// respawn
-		Init();
+		Init( false );
 		StopRagdoll();
 		SetPhysics( &physicsObj );
 		physicsObj.EnableClip();
