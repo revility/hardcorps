@@ -9,6 +9,43 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.46
+05.24.20
+
+	*SDK:
+		+Revamped Music speaker system.  Fixes issues with it stopping.  
+			+Can now be set up purely in editor and more improvements.
+			+Updated: Game_Local.cpp, Game_local.h, Entity.h, sound.cpp, sound.h, target.cpp, target.h, script_thread.h, 
+	*Player Updates:
+		-Removed Music speaker related script
+	*Weapons player:
+	*Enemies:
+	*GUI:
+		+Added temporary guis for concrete jungle and test platforms maps.
+		+Main Menu: disabled and commented out updates button
+		+Main Menu: disabled and commented out multiplayer button
+	*Maps:
+		+Playground:  Boss fight now makes use of new music speaker system
+		*Concrete jungle:
+			+jump through platforms added in for most of the map
+			+Final section blocked out
+			+More brush work done
+			+Camera settings now triggered upon player spawn.
+	*Other:
+		+Doom Events and Fragging Free scripts updated for music system.
+		+Music Speaker def updated.
+		+Added missing dds files for water source images
+		+Fixed missing sound errors related to projectiles missing "snd_fly".  
+			*This is a requirement of anything denton mod based.
+			*The fix effected def files with a projectile entity in them and no snd_fly defined.
+			*This fixes one of the beep sounds often heard.
+		+Fix:  Fixed a beep sound heard when starting levels.  
+			*For some odd reason the game is looking for a sound file with the same name and file path as the map.
+			*Fake sound files added to hide the bug.  Same style as the snd_fly bug above.
+
+
+************************************************************************************************
+
 Build: 0.8.45
 05.14.20
 
