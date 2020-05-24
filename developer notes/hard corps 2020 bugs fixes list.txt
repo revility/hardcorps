@@ -36,14 +36,19 @@
 
 (MAPS) {
 	(WASTED HATE ALPHA) {
-	DONE
+	-Add new music speaker system
 	}
 	(WASTED HATE VERSION 2) {
-
+	-Update items and enemy spawns
+	-quadrupal the enemy count
+	-add a few 2d clips
+	-Update music system
+	-Fix info_location console errors
 	}
 	(PLAYGROUND) {
-	Check for bugs
+	-Fix boss fight crashing the game if you re enter the room
 	}
 	(CONCRETE JUNGLE) {
+	-Finish the map lol
 	}
 }
