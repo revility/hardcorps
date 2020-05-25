@@ -56,7 +56,6 @@ idTarget_PlayerUtils
 ===============================================================================
 */
 
-
 class idTarget_PlayerUtils : public idTarget {
 public:
 	CLASS_PROTOTYPE( idTarget_PlayerUtils );
@@ -64,37 +63,34 @@ public:
 private:
 	// actions - numbers must match the ones in hq2_targets.def! 
 	enum {
-		PU_ACTION_FREE_CAM	 = 0,
-		PU_ACTION_FORCE_CAM	 = 1,
-		PU_ACTION_DISTANCE	 = 2,
+		PU_ACTION_FREE_CAM	 = 0, //remove
+		PU_ACTION_FORCE_CAM	 = 1, //remove
+		PU_ACTION_DISTANCE	 = 2, //remove
 		PU_ACTION_UNLOCK_PL	 = 3,
 		PU_ACTION_LOCK_PL	 = 4,
 		PU_ACTION_ADDSCORE	 = 5,
-		PU_ACTION_CAM_HEIGHT = 6,
+		PU_ACTION_CAM_HEIGHT = 6, //remove
 		PU_ACTION_INFOTXT	 = 7
 	};
 
 	void				Event_Activate( idEntity *activator );
 };
 
-#if 0
 /*
 ===============================================================================
 
-idTarget_CheckPoint
+idTarget_Camera
 
 ===============================================================================
 */
 
-class idTarget_CheckPoint : public idTarget {
+class idTarget_Camera : public idTarget {
 public:
-	CLASS_PROTOTYPE( idTarget_CheckPoint );
+	CLASS_PROTOTYPE( idTarget_Camera );
 
 private:
 	void				Event_Activate( idEntity *activator );
 };
-#endif
-
 
 /*
 ===============================================================================

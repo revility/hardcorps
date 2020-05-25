@@ -111,8 +111,6 @@ const idEventDef EV_Player_SetHudParm( "setHudParm", "ss" );
 const idEventDef EV_Player_GetHudFloat( "getHudFloat", "s", 'f');
 const idEventDef EV_Player_ShowStats( "showStats" );
 const idEventDef EV_Player_DropWeapon( "<dropWeapon>", "d" );
-const idEventDef EV_Player_FreeCamera( "freeCamera" );
-const idEventDef EV_Player_ForceCameraY( "forceCameraY", "f" );
 const idEventDef EV_Player_DoubleJumpEnabled( "doubleJumpEnabled", "d" );
 const idEventDef EV_Player_WallJumpEnabled( "wallJumpEnabled", "d" );
 const idEventDef EV_Player_SetFullBodyAnimOn( "setFullBodyAnimOn", "ddd" ); //rev 2019 rivensin is ddd. HQ was d
@@ -168,8 +166,6 @@ EVENT( EV_Player_SetHudParm,			idPlayer::Event_SetHudParm)
 EVENT( EV_Player_GetHudFloat,			idPlayer::Event_GetHudFloat) 
 EVENT( EV_Player_ShowStats,				idPlayer::Event_ShowStats) 
 EVENT( EV_Player_DropWeapon,			idPlayer::Event_DropWeapon) 
-EVENT( EV_Player_FreeCamera,			idPlayer::Event_FreeCamera) 
-EVENT( EV_Player_ForceCameraY,			idPlayer::Event_ForceCameraY) 
 EVENT( EV_Player_DoubleJumpEnabled,		idPlayer::Event_DoubleJumpEnabled) 
 EVENT( EV_Player_WallJumpEnabled,		idPlayer::Event_WallJumpEnabled) 
 EVENT( EV_SetSkin,						idPlayer::Event_SetSkin ) //override idEntity::Event_SetSkin
@@ -1470,7 +1466,7 @@ idPlayer::idPlayer() {
 
 	//ivan start
 	health_lost				= 0;
-    oldCameraPos			= vec3_zero;
+	oldCameraPos			= vec3_zero;
 	fastXpos				= 0.0f;
 	isXlocked				= true;
 	blendModelYaw			= false;
@@ -1485,13 +1481,18 @@ idPlayer::idPlayer() {
 	skipCameraZblend		= true; //force instant update first frame
 	enableCameraYblend		= false;
 	enableCameraXblend		= false;
-	forceCameraY			= false;
+	cameraSettings.lockYaxis	= false;
+	cameraSettings.lockZaxis	= false;
+	cameraSettings.lockedYpos	= 0.0f;
+	cameraSettings.lockedZpos	= 0.0f;
+	cameraSettings.distance		= CAMERA_DEFAULT_DISTANCE;
+	cameraSettings.height		= CAMERA_DEFAULT_HEIGHT;
+	lastCheckPoint.entityNumber		= -1; //an non existing entityId
+	lastCheckPoint.spawnPos			= vec3_zero;
+	lastCheckPoint.cameraSettings	= cameraSettings;
 	inhibitInputTime		= 0;
 	inhibitAimCrouchTime	= 0;
 	updXlock				= true;
-	forcedCameraYpos		= 0.0f;
-	idealCameraDistance		= CAMERA_DEFAULT_DISTANCE;
-	idealCameraHeight		= CAMERA_DEFAULT_HEIGHT;
 	animBasedMovement		= false;
 #ifdef SHOW_MOVING_CROSSHAIR
 	reqDefaultCrossPos		= true;
@@ -1501,15 +1502,11 @@ idPlayer::idPlayer() {
 #endif
 	numLives				= 0; //will be initialized later
 	score					= 0;
-	safeRespawnPos			= vec3_zero;
-	safeRespawnCameraDist	= CAMERA_DEFAULT_DISTANCE;
-	safeRespawnCameraHeight	= CAMERA_DEFAULT_HEIGHT;
 #ifdef AUTOUPD_RESPAWN_POS
 	tempRespawnPos			= vec3_zero;
 	nextRespPosTime			= 0;
 #endif
 	skipMouseUpd			= false;
-	lastCheckPoint			= -1; //an non existing entityId
 	interactFlag			= 0;
 	interactShownWeaponNum	= 0;
 	//interactShownWeaponName	= "";
@@ -1852,13 +1849,9 @@ void idPlayer::Init( bool quickRespawn ) { //ivan - quickRespawn added
 	//ivan start
 
 	//fix: upd distance and height Cvars on start or respawn
-	cvarSystem->SetCVarFloat( "pm_thirdPersonRange", idealCameraDistance );
-	pm_thirdPersonRange.ClearModified(); 
-	cvarSystem->SetCVarFloat( "pm_thirdPersonHeight", idealCameraHeight );
-	pm_thirdPersonHeight.ClearModified();
+	UpdateCameraCvarsFromSettings();
 
 	if( !quickRespawn ){ //don't reset this if it's a quick respawn
-		cvarSystem->SetCVarBool( "pm_thirdPersonZ", false );	//rev 2020 reset the cvar if we are not respawning.
 		health_lost	= 0;
 	}
 	save_walk_dir			= false;
@@ -1881,11 +1874,12 @@ void idPlayer::Init( bool quickRespawn ) { //ivan - quickRespawn added
 	skipCameraZblend		= true; //force instant update first frame
 	enableCameraYblend		= false;
 	enableCameraXblend		= false;
-	forceCameraY			= false;
 	inhibitInputTime		= 0;
 	inhibitAimCrouchTime	= 0;
-	forcedCameraYpos		= 0.0f;
-	//idealCameraDistance		= CAMERA_DEFAULT_DISTANCE; //don't reset this.
+
+	//cameraSettings.lockYaxis	= false;
+	//cameraSettings.lockedYpos		= 0.0f;
+	//cameraSettings.distance		= CAMERA_DEFAULT_DISTANCE; //don't reset this.
 
 #ifdef SHOW_MOVING_CROSSHAIR
 	reqDefaultCrossPos		= true;
@@ -2412,17 +2406,23 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	savefile->WriteBool( enableCameraXblend ); 
 	savefile->WriteInt( inhibitInputTime ); 
 	savefile->WriteInt( inhibitAimCrouchTime ); 
-	savefile->WriteBool( forceCameraY ); 
-	savefile->WriteFloat( forcedCameraYpos );
-	savefile->WriteFloat( idealCameraDistance ); 
-	savefile->WriteFloat( idealCameraHeight ); 
+	savefile->WriteBool( cameraSettings.lockYaxis ); 
+	savefile->WriteBool( cameraSettings.lockZaxis ); 
+	savefile->WriteFloat( cameraSettings.lockedYpos );
+	savefile->WriteFloat( cameraSettings.lockedZpos );
+	savefile->WriteFloat( cameraSettings.distance ); 
+	savefile->WriteFloat( cameraSettings.height ); 
+	savefile->WriteInt( lastCheckPoint.entityNumber ); 
+	savefile->WriteVec3( lastCheckPoint.spawnPos );
+	savefile->WriteBool( lastCheckPoint.cameraSettings.lockYaxis );
+	savefile->WriteBool( lastCheckPoint.cameraSettings.lockZaxis ); 
+	savefile->WriteFloat( lastCheckPoint.cameraSettings.lockedYpos );
+	savefile->WriteFloat( lastCheckPoint.cameraSettings.lockedZpos );
+	savefile->WriteFloat( lastCheckPoint.cameraSettings.distance ); 
+	savefile->WriteFloat( lastCheckPoint.cameraSettings.height ); 
 	savefile->WriteBool( animBasedMovement ); 
 	savefile->WriteInt( numLives ); 
 	savefile->WriteInt( score ); 
-	savefile->WriteVec3( safeRespawnPos );
-	savefile->WriteFloat( safeRespawnCameraDist );
-	savefile->WriteFloat( safeRespawnCameraHeight );
-	savefile->WriteInt( lastCheckPoint ); 
 	savefile->WriteInt( interactFlag );
 	savefile->WriteInt( interactShownWeaponNum );
 //interactShownWeaponName not saved
@@ -2781,17 +2781,23 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadBool( enableCameraXblend );
 	savefile->ReadInt( inhibitInputTime );
 	savefile->ReadInt( inhibitAimCrouchTime );
-	savefile->ReadBool( forceCameraY ); 
-	savefile->ReadFloat( forcedCameraYpos );
-	savefile->ReadFloat( idealCameraDistance );
-	savefile->ReadFloat( idealCameraHeight );
+	savefile->ReadBool( cameraSettings.lockYaxis );
+	savefile->ReadBool( cameraSettings.lockZaxis ); 
+	savefile->ReadFloat( cameraSettings.lockedYpos );
+	savefile->ReadFloat( cameraSettings.lockedZpos );
+	savefile->ReadFloat( cameraSettings.distance );
+	savefile->ReadFloat( cameraSettings.height );
+	savefile->ReadInt( lastCheckPoint.entityNumber );
+	savefile->ReadVec3( lastCheckPoint.spawnPos );
+	savefile->ReadBool( lastCheckPoint.cameraSettings.lockYaxis );
+	savefile->ReadBool( lastCheckPoint.cameraSettings.lockZaxis );
+	savefile->ReadFloat( lastCheckPoint.cameraSettings.lockedYpos );
+	savefile->ReadFloat( lastCheckPoint.cameraSettings.lockedZpos );
+	savefile->ReadFloat( lastCheckPoint.cameraSettings.distance ); 
+	savefile->ReadFloat( lastCheckPoint.cameraSettings.height ); 
 	savefile->ReadBool( animBasedMovement ); 
 	savefile->ReadInt( numLives );
 	savefile->ReadInt( score );
-	savefile->ReadVec3( safeRespawnPos );
-	savefile->ReadFloat( safeRespawnCameraDist );
-	savefile->ReadFloat( safeRespawnCameraHeight );
-	savefile->ReadInt( lastCheckPoint );
 	savefile->ReadInt( interactFlag );
 	savefile->ReadInt( interactShownWeaponNum );
 //interactShownWeaponName not saved
@@ -2814,7 +2820,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 
 #ifdef AUTOUPD_RESPAWN_POS
 	savefile->ReadInt( nextRespPosTime ); 
-	tempRespawnPos		= safeRespawnPos; //was not saved
+	tempRespawnPos		= lastCheckPoint.spawnPos; //was not saved
 #endif
 	
 	//the following are not saved:
@@ -2834,11 +2840,8 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 
 	friendsCommonEnemy.Restore( savefile ); //smart AI
 
-	//fix: upd distance and height Cvars on reload
-	cvarSystem->SetCVarFloat( "pm_thirdPersonRange", idealCameraDistance );
-	pm_thirdPersonRange.ClearModified(); 
-	cvarSystem->SetCVarFloat( "pm_thirdPersonHeight", idealCameraHeight );
-	pm_thirdPersonHeight.ClearModified();
+	//fix: upd camera Cvars on reload
+	UpdateCameraCvarsFromSettings();
 	//ivan end
 }
 
@@ -2924,15 +2927,7 @@ void idPlayer::SelectInitialSpawnPoint( idVec3 &origin, idAngles &angles ) {
 		spawnArgs.Set( "spawn_skin", skin );
 	}
 
-	//ivan start
-	if( spot->spawnArgs.FindKey( "cameraDist" ) ){ 
-		idealCameraDistance = spot->spawnArgs.GetFloat( "cameraDist" );
-	}
-
-	if( spot->spawnArgs.FindKey( "cameraHeight" ) ){ 
-		idealCameraHeight = spot->spawnArgs.GetFloat( "cameraHeight" );
-	}
-	//ivan end
+	UpdateCameraSettingsFromEntity( spot ); //ivan
 
 	// activate the spawn locations targets
 	spot->PostEventMS( &EV_ActivateTargets, 0, this );
@@ -2956,6 +2951,18 @@ void idPlayer::SpawnFromSpawnSpot( void ) {
 	SelectInitialSpawnPoint( spawn_origin, spawn_angles );
 	SpawnToPoint( spawn_origin, spawn_angles );
 }
+
+//ivan start
+/*
+==============
+idPlayer::Hq2QuickRespawn
+==============
+*/
+void idPlayer::Hq2QuickRespawn( void ) {
+	cameraSettings = lastCheckPoint.cameraSettings;
+	SpawnToPoint( lastCheckPoint.spawnPos, ang_zero, true ); 
+}
+//ivan end
 
 /*
 ===========
@@ -2998,12 +3005,11 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 	if ( !spectating ) {
 		SetOrigin( spawn_origin );
 		//ivan start - make sure they are ok at map start
-		safeRespawnPos = spawn_origin;
+		lastCheckPoint.spawnPos = spawn_origin;
 #ifdef AUTOUPD_RESPAWN_POS
 		tempRespawnPos = spawn_origin;
 #endif
-		safeRespawnCameraDist = idealCameraDistance;
-		safeRespawnCameraHeight = idealCameraHeight;
+		lastCheckPoint.cameraSettings = cameraSettings;
 		//ivan end
 	} else {
 		spec_origin = spawn_origin;
@@ -3081,8 +3087,8 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 	//start locked at the same X pos.
 	fastXpos = spawn_origin.x; 
 
-	//update AI distances. Note: idealCameraDistance has been set by the initial Spawn point or by Hq2QuickRespawn()
-	gameLocal.UpdateSeeDistances( idealCameraDistance ); 
+	//update AI distances. Note: cameraSettings.distance has been set by the initial Spawn point or by Hq2QuickRespawn()
+	gameLocal.UpdateSeeDistances( cameraSettings.distance ); 
 	
 	//ivan end
 
@@ -5067,14 +5073,13 @@ void idPlayer::SetLock2D( bool on ){
 
 
 void idPlayer::SaveCheckPointPos( idEntity* checkEnt, bool useEntOrigin ){
-	if( checkEnt != NULL && lastCheckPoint != checkEnt->entityNumber ){ 
-		lastCheckPoint = checkEnt->entityNumber;
-		safeRespawnPos = useEntOrigin ? checkEnt->GetPhysics()->GetOrigin() : GetPhysics()->GetOrigin(); //save current pos
-		safeRespawnCameraDist = idealCameraDistance;
-		safeRespawnCameraHeight = idealCameraHeight;
+	if( checkEnt != NULL && lastCheckPoint.entityNumber != checkEnt->entityNumber ){ 
+		lastCheckPoint.entityNumber = checkEnt->entityNumber;
+		lastCheckPoint.spawnPos = useEntOrigin ? checkEnt->GetPhysics()->GetOrigin() : GetPhysics()->GetOrigin(); //save current pos
+		lastCheckPoint.cameraSettings = cameraSettings;
 		if( hud ){ 
 			ShowInfo( "Checkpoint!" );
-			//hud->HandleNamedEvent( "checkPoint" ); 
+			//hud->HandleNamedEvent( "lastCheckPoint" ); 
 		}
 		StartSound( "snd_checkPoint", SND_CHANNEL_ITEM, 0, false, NULL );
 	}
@@ -6380,7 +6385,7 @@ void idPlayer::UpdateAimFromCrosshair( void ) {
 	}
 	
 	//-- X offset (float, idPlayer::coffx ) -- (horizontal)
-	if( forceCameraY ){ //X offset is != 0 only when Y camera is fixed at a certain pos
+	if( cameraSettings.lockYaxis ){ //X offset is != 0 only when Y camera is fixed at a certain pos
 		coffx = (0.93f * (renderView->vieworg.y - firstPersonViewOrigin.y)); 
 	}else{
 		coffx = 0.0f;
@@ -6400,8 +6405,8 @@ void idPlayer::UpdateAimFromCrosshair( void ) {
 
 	//fix for distance != 350
 	/*
-	if( idealCameraDistance != 350.0f ){
-		temp = 350.0f/idealCameraDistance; 
+	if( cameraSettings.distance != 350.0f ){
+		temp = 350.0f/cameraSettings.distance; 
 		offsetY *= temp; 
 		coffx *= temp;
 	}*/
@@ -7623,19 +7628,6 @@ bool idPlayer::SkipCinematic( void ) {
 	return gameLocal.SkipCinematic();
 }
 
-//ivan start
-/*
-==============
-idPlayer::Hq2QuickRespawn
-==============
-*/
-void idPlayer::Hq2QuickRespawn( void ) {	
-	idealCameraDistance = safeRespawnCameraDist;
-	idealCameraHeight = safeRespawnCameraHeight;
-	SpawnToPoint( safeRespawnPos, ang_zero, true ); 
-}
-//ivan end
-
 /*
 ==============
 idPlayer::EvaluateControls
@@ -8396,19 +8388,32 @@ void idPlayer::Think( void ) {
 		UpdForcedMov();  //upd dir and destination 
 	}
 
-	//upd camera distance in case someone changed the Cvar
+	//upd camera distance in case someone or something changed the Cvar
 	if ( pm_thirdPersonRange.IsModified() ){ //this allows the user or scripts to update the distance thanks to the Cvar. 
 		//gameLocal.Printf("pm_thirdPersonRange.IsModified()\n");
-		UpdateCameraDistance( pm_thirdPersonRange.GetFloat() ); 
+		SetCameraDistance( pm_thirdPersonRange.GetFloat(), true );
 		pm_thirdPersonRange.ClearModified(); //remove the modified flag
 	}
 
-	//upd camera height in case someone changed the Cvar
+	//upd camera height in case someone or somethingchanged the Cvar
 	if ( pm_thirdPersonHeight.IsModified() ){ //this allows the user or scripts to update the distance thanks to the Cvar. 
 		//gameLocal.Printf("pm_thirdPersonHeight.IsModified()\n");
-		UpdateCameraHeight( pm_thirdPersonHeight.GetFloat() ); 	
+		SetCameraHeight( pm_thirdPersonHeight.GetFloat(), true );
 		pm_thirdPersonHeight.ClearModified(); //remove the modified flag
 	}
+
+	/*
+	if ( pm_thirdPersonZ.IsModified() ){ //this allows the user or scripts to update the distance thanks to the Cvar. 
+		gameLocal.Printf("pm_thirdPersonZ.IsModified()\n");
+		if ( pm_thirdPersonZ.GetBool() ) {
+			UnlockZCamera();
+		} else {
+			LockZCamera( renderView->vieworg.z );
+		}
+		pm_thirdPersonZ.ClearModified(); //remove the modified flag
+	}
+	*/
+	
 
 	//force/allow/disable inputs
 	if( inhibitInputTime > gameLocal.time ){ //used by teleport
@@ -8509,10 +8514,10 @@ void idPlayer::Think( void ) {
 
 			//respawn pos is the last known safe position which is at least 200 units far from player.
 			if( (GetPhysics()->GetOrigin() - tempRespawnPos ).LengthFast() > 200 ){
-				safeRespawnPos = tempRespawnPos;
+				lastCheckPoint.spawnPos = tempRespawnPos;
 				tempRespawnPos = GetPhysics()->GetOrigin();
-				//gameRenderWorld->DebugBounds( colorBlue, idBounds( vec3_origin ).Expand( 15.0f ) , safeRespawnPos, 5000 );
-				//gameLocal.Printf("safeRespawnPos upd: %s\n", safeRespawnPos.ToString() );
+				//gameRenderWorld->DebugBounds( colorBlue, idBounds( vec3_origin ).Expand( 15.0f ) , lastCheckPoint.spawnPos, 5000 );
+				//gameLocal.Printf("lastCheckPoint.spawnPos upd: %s\n", lastCheckPoint.spawnPos.ToString() );
 			}
 		}
 #endif
@@ -9366,13 +9371,7 @@ void idPlayer::Teleport( const idVec3 &origin, const idAngles &angles, idEntity 
 			reqDefaultCrossPos = true; //reset crosshair pos to default
 		}
 
-		if( destination->spawnArgs.FindKey( "cameraDist" ) ){ 
-			UpdateCameraDistance( destination->spawnArgs.GetFloat("cameraDist"), false ); 
-		}
-
-		if( destination->spawnArgs.FindKey( "cameraHeight" ) ){ 
-			UpdateCameraHeight( destination->spawnArgs.GetFloat("cameraHeight"), false ); 
-		}
+		UpdateCameraSettingsFromEntity( destination );
 	} //ivan
 
 	//ivan start - face the right direction
@@ -9727,8 +9726,8 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 
 	if( enableCameraYblend ){
 		//delta
-		if( forceCameraY ){
-			delta = forcedCameraYpos - oldCameraPos.y; //(ideal camera position) - (where camera is)
+		if( cameraSettings.lockYaxis ){
+			delta = cameraSettings.lockedYpos - oldCameraPos.y; //(ideal camera position) - (where camera is)
 		}else{
 			delta = view.y - oldCameraPos.y; //(ideal camera position) - (where camera is)
 		}
@@ -9758,17 +9757,23 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 			//gameLocal.Printf("stop Y blending\n");
 			enableCameraYblend = false;
 		}
-	}else if( forceCameraY ){ //forced pos, but no blend
-		view.y = forcedCameraYpos; 
+	}else if( cameraSettings.lockYaxis ){ //forced pos, but no blend
+		view.y = cameraSettings.lockedYpos; 
 	}
 
 	// --- Z pos --- (vertical)
 
-	delta = view.z - oldCameraPos.z; //(ideal camera position) - (where camera is)
-
-	if( skipCameraZblend ){ //no blend this frame: instant update
+	if ( skipCameraZblend ) { //no blend this frame: instant update
 		skipCameraZblend = false;
-	}else if( delta != 0.0f ){ //&& (gameLocal.time > 500)
+		if( cameraSettings.lockZaxis ){ //forced pos, but no blend
+			view.z = cameraSettings.lockedZpos; 
+		}
+	} else { //&& (gameLocal.time > 500)
+		if ( cameraSettings.lockZaxis ){ //Rev 2020 lock the z position of the camera so that it does not move. 
+			delta = cameraSettings.lockedZpos - oldCameraPos.z; //(ideal camera position) - (where camera is)
+		} else {
+			delta = view.z - oldCameraPos.z; //(ideal camera position) - (where camera is)
+		}
 		/*
 		if(delta > CAMERA_MAX_Z_DELTA_POS){ //don't let it run away UP
 			view.z = view.z - CAMERA_MAX_Z_DELTA_POS;
@@ -9779,28 +9784,25 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 			view.z = view.z - CAMERA_MAX_Z_DELTA_NEG;
 			gameLocal.Printf("don't run away down. delta: %f\n", delta);
 		}
-		else{ 
+		else 
 		*/
+
+		if ( delta != 0.0f ) {
 			//interpolate toward the ideal position
-			if( delta > 0 ){
+			if ( delta > 0 ) {
 				speed = delta / CAMERA_MAX_Z_DELTA_POS;
-			}else{ // < 0
+			} else { // < 0
 				speed = delta / CAMERA_MAX_Z_DELTA_NEG;	
 
 				//min negative speed
 				if( speed < CAMERA_MIN_Z_SPEED_NEG ){
 					speed = CAMERA_MIN_Z_SPEED_NEG;
 				}
-			}	
+			}
 
 			//new z pos
-//Rev 2020 lock the z position of the camera so that it does not move. 
-//use pm_thirdpersonheight to adjust Or use target_camera_z_locks to change the value in maps.
-		    if ( pm_thirdPersonZ.GetBool() ) {
-				view.z = height;
-			} else {
-				view.z = oldCameraPos.z + ( delta * speed * CAMERA_SENSIBILITY );
-			}
+			view.z = oldCameraPos.z + ( delta * speed * CAMERA_SENSIBILITY );
+		}
 	}
 
 	// --- X pos --- (distance)
@@ -9822,7 +9824,7 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 
 		//stop blending if near enough
 		if( delta < 1.0f && delta > -1.0f ){ 
-			gameLocal.Printf("stop X blending\n");
+			//gameLocal.Printf("stop X blending\n");
 			enableCameraXblend = false;
 		}
 	}
@@ -10020,7 +10022,7 @@ void idPlayer::CalculateRenderView( void ) {
 		} else {
 			
 			//ivan start
-			OffsetThirdPersonView( pm_thirdPersonAngle.GetFloat(), idealCameraDistance, idealCameraHeight, false ); //never clip
+			OffsetThirdPersonView( pm_thirdPersonAngle.GetFloat(), cameraSettings.distance, cameraSettings.height, false ); //never clip
 
 			/*
 			//was:
@@ -11487,88 +11489,144 @@ void idPlayer::Event_DropWeapon( int weapNum ) {
 
 /*
 ==============
-idPlayer::SetYCameraForced
+idPlayer::UpdateCameraCvarsFromSettings
 ==============
 */
-void idPlayer::SetYCameraForced( float ypos ){
-	if( !forceCameraY || ( forcedCameraYpos != ypos ) ){ //do this only if camera is free || new position
-		forceCameraY = true;
-		forcedCameraYpos = ypos; 
+void idPlayer::UpdateCameraCvarsFromSettings( void ) {
+	pm_thirdPersonRange.SetFloat( cameraSettings.distance );
+	pm_thirdPersonRange.ClearModified();
+	pm_thirdPersonHeight.SetFloat( cameraSettings.height );
+	pm_thirdPersonHeight.ClearModified();
+	//pm_thirdPersonZ.SetBool( !cameraSettings.lockZaxis );
+	//pm_thirdPersonZ.ClearModified();
+}
+
+
+/*
+==============
+idPlayer::UpdateCameraSettingsFromEntity
+Entity could be: spawnPoint, target, teleport, ...
+==============
+*/
+void idPlayer::UpdateCameraSettingsFromEntity( idEntity *ent ) {
+	float cameraDist, cameraHeight;
+	float cameraLockedYpos, cameraLockedZpos;
+	bool cameraLockedY, cameraLockedZ;
+
+	const idDict &dict = ent->spawnArgs;
+
+	if ( dict.GetFloat( "cameraDist", "0", cameraDist ) ) {
+		if ( cameraDist <= 0 ) {
+			cameraDist = CAMERA_DEFAULT_DISTANCE;
+		}
+		SetCameraDistance( cameraDist, dict.GetBool( "cameraDistBlend" ) );
+	}
+	if ( dict.GetFloat( "cameraHeight", "0", cameraHeight ) ) {
+		if ( cameraHeight <= 0 ) {
+			cameraHeight = CAMERA_DEFAULT_HEIGHT;
+		}
+		SetCameraHeight( cameraHeight, dict.GetBool( "cameraHeightBlend" ) );
+	}
+	if ( dict.GetBool( "cameraLockedY", "0", cameraLockedY ) ) { //horizontal
+		if ( cameraLockedY ) {
+			if ( !dict.GetFloat( "cameraLockedYpos", "0", cameraLockedYpos ) ) {
+				cameraLockedYpos = ent -> GetPhysics()->GetOrigin().y;
+			}
+			LockYCamera( cameraLockedYpos );
+		} else {
+			UnlockYCamera();
+		}
+	}
+	if ( dict.GetBool( "cameraLockedZ", "0", cameraLockedZ ) ) { //vertical
+		if ( cameraLockedZ ) {
+			if ( !dict.GetFloat( "cameraLockedZpos", "0", cameraLockedZpos ) ) {
+				cameraLockedZpos = ent -> GetPhysics()->GetOrigin().z;
+			}
+			LockZCamera( cameraLockedZpos );
+		} else {
+			UnlockZCamera();
+		}
+	}
+}
+
+/*
+==============
+idPlayer::LockYCamera
+==============
+*/
+void idPlayer::LockYCamera( float ypos ) {
+	if ( !cameraSettings.lockYaxis || ( cameraSettings.lockedYpos != ypos ) ) { //do this only if camera is free || new position
+		cameraSettings.lockYaxis = true;
+		cameraSettings.lockedYpos = ypos;
 		enableCameraYblend = true; //blend forced pos
 	}
 }
 
 /*
 ==============
-idPlayer::SetYCameraForced
+idPlayer::LockZCamera
 ==============
 */
-void idPlayer::SetYCameraFree( void ){
-	if( forceCameraY ){ //set it free only if it's currently not free
-		forceCameraY = false;
+void idPlayer::LockZCamera( float zpos ) {
+	if ( !cameraSettings.lockZaxis || ( cameraSettings.lockedZpos != zpos ) ) { //do this only if camera is free || new position
+		cameraSettings.lockZaxis = true;
+		cameraSettings.lockedZpos = zpos;
+		//blending is enabled by default for Z axis
+	}
+}
+
+/*
+==============
+idPlayer::UnlockYCamera
+==============
+*/
+void idPlayer::UnlockYCamera( void ) {
+	if ( cameraSettings.lockYaxis ) { //set it free only if it's currently not free
+		cameraSettings.lockYaxis = false;
 		enableCameraYblend = true; //blend to free pos
 	}
 }
 
+/*
+==============
+idPlayer::UnlockZCamera
+==============
+*/
+void idPlayer::UnlockZCamera( void ) {
+	if ( cameraSettings.lockZaxis ) { //set it free only if it's currently not free
+		cameraSettings.lockZaxis = false;
+		//blending is enabled by default for Z axis
+	}
+}
+
 
 /*
 ==============
-idPlayer::UpdateCameraDistance
+idPlayer::SetCameraDistance
 ==============
 */
-void idPlayer::UpdateCameraDistance( float distance, bool blend ){
-	//gameLocal.Printf("UpdateCameraDistance: distance %f\n", distance );
-	if( distance > 0.0f && idealCameraDistance != distance ){ 
-		idealCameraDistance = distance; 
+void idPlayer::SetCameraDistance( float distance, bool blend ){
+	//gameLocal.Printf("SetCameraDistance: distance %f\n", distance );
+	if( distance > 0.0f && cameraSettings.distance != distance ){ 
+		cameraSettings.distance = distance; 
 		enableCameraXblend = blend; //blend to new distance
 		gameLocal.UpdateSeeDistances( distance );
 	}
-	//else{ gameLocal.Printf("UpdateCameraDistance: upd ignored\n" ); }
+	//else{ gameLocal.Printf("SetCameraDistance: upd ignored\n" ); }
 }
 
 /*
 ==============
-idPlayer::UpdateCameraHeight
+idPlayer::SetCameraHeight
 ==============
 */
-void idPlayer::UpdateCameraHeight( float height, bool blend ){
-	//gameLocal.Printf("UpdateCameraHeight: height %f\n", height );
-	if( idealCameraHeight != height ){ 
-		idealCameraHeight = height; 
+void idPlayer::SetCameraHeight( float height, bool blend ){
+	//gameLocal.Printf("SetCameraHeight: height %f\n", height );
+	if( cameraSettings.height != height ){ 
+		cameraSettings.height = height; 
 		skipCameraZblend = !blend; //skip blending if blend is false
 	}
-	//else{ gameLocal.Printf("UpdateCameraHeight: upd ignored\n" ); }
-}
-
-//idealCameraHeight
-
-
-/*
-==============
-idPlayer::Event_FreeCamera
-==============
-*/
-void idPlayer::Event_FreeCamera( void ){
-	SetYCameraFree();
-	/*
-	forceCameraY = false;
-	forcedCameraYpos = 0.0f;
-	enableCameraYblend = true; //blend to free pos
-	*/
-}
-
-/*
-==============
-idPlayer::Event_ForceCameraY
-==============
-*/
-void idPlayer::Event_ForceCameraY( float ypos ){
-	SetYCameraForced( ypos );
-	/*
-	forceCameraY = true;
-	forcedCameraYpos = ypos;
-	enableCameraYblend = true; //blend to forced pos
-	*/
+	//else{ gameLocal.Printf("SetCameraHeight: upd ignored\n" ); }
 }
 
 /*

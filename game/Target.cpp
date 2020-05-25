@@ -69,7 +69,6 @@ CLASS_DECLARATION( idTarget, idTarget_PlayerUtils )
 	EVENT( EV_Activate, idTarget_PlayerUtils::Event_Activate )
 END_CLASS
 
-
 /*
 ================
 idTarget_PlayerUtils::Event_Activate
@@ -82,18 +81,6 @@ void idTarget_PlayerUtils::Event_Activate( idEntity *activator ) {
 		if( spawnArgs.GetInt( "actionId", "0", actionId ) ){
 			switch( actionId ) {
 				default :				
-				case PU_ACTION_FREE_CAM: {
-					player->SetYCameraFree();
-					break;
-				}
-				case PU_ACTION_FORCE_CAM: {
-					player->SetYCameraForced( GetPhysics()->GetOrigin().y );
-					break;
-				}
-				case PU_ACTION_DISTANCE: {
-					player->UpdateCameraDistance( spawnArgs.GetFloat( "cameraDist", "350" ), !spawnArgs.GetBool("noBlend") ); 
-					break;
-				}
 				case PU_ACTION_UNLOCK_PL: {
 					player->SetLock2D( false );
 					break;
@@ -106,10 +93,6 @@ void idTarget_PlayerUtils::Event_Activate( idEntity *activator ) {
 					player->AddScore( spawnArgs.GetInt("score", "0") );
 					break;
 				}	
-				case PU_ACTION_CAM_HEIGHT: {
-					player->UpdateCameraHeight( spawnArgs.GetFloat( "cameraHeight", "50" ), !spawnArgs.GetBool("noBlend") ); 
-					break;
-				}
 				case PU_ACTION_INFOTXT: {
 					const char *infoText = spawnArgs.GetString( "infoText" );
 					if ( *infoText != '\0' ) {
@@ -122,33 +105,31 @@ void idTarget_PlayerUtils::Event_Activate( idEntity *activator ) {
 	}
 }
 
-#if 0
 /*
 ===============================================================================
 
-idTarget_CheckPoint
+idTarget_Camera
 
 ===============================================================================
 */
 
-CLASS_DECLARATION( idTarget, idTarget_CheckPoint )
-	EVENT( EV_Activate, idTarget_CheckPoint::Event_Activate )
+CLASS_DECLARATION( idTarget, idTarget_Camera )
+	EVENT( EV_Activate, idTarget_Camera::Event_Activate )
 END_CLASS
 
+
 /*
 ================
-idTarget_CheckPoint::Event_Activate
+idTarget_Camera::Event_Activate
 ================
 */
-void idTarget_CheckPoint::Event_Activate( idEntity *activator ) {
-	
-	//is it a player?
-	if ( activator->IsType( idPlayer::Type ) ){
-		static_cast< idPlayer* >( activator )->SaveCheckPointPos();
+void idTarget_Camera::Event_Activate( idEntity *activator ) {
+	int actionId;
+	idPlayer *player = gameLocal.GetLocalPlayer();
+	if ( player ) {
+		player->UpdateCameraSettingsFromEntity( this );
 	}
 }
-#endif
-
 
 /*
 ===============================================================================

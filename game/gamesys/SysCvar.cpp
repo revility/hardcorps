@@ -386,7 +386,7 @@ idCVar g_mouselook(					"g_mouselook",					"1",			CVAR_GAME | CVAR_BOOL | CVAR_A
 //Ivan end
 
 //rev 2020
-idCVar pm_thirdPersonZ(				"pm_thirdPersonZ",				"0",			CVAR_GAME | CVAR_BOOL , "Allows the camera to follow the player vertically." );			//ivan: default 1
+//idCVar pm_thirdPersonZ(				"pm_thirdPersonZ",				"0",			CVAR_GAME | CVAR_BOOL , "Allows the camera to follow the player vertically." );			//ivan: default 1
 
 /*
 //Revility Start

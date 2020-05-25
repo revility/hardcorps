@@ -160,6 +160,21 @@ enum {
 	ANIMMOVE_PHYSICS,
 	ANIMMOVE_NUMTYPES //always the last one, not valid value
 };
+
+typedef struct {
+	bool	lockYaxis;	// Lock camera on the Y axis. Camera will not move left/right
+	bool	lockZaxis;	// Lock camera on the Z axis. Camera will not move up/down
+	float	lockedYpos;	// Y position of the camera. Used when lockYaxis is true
+	float	lockedZpos;	// Y position of the camera. Used when lockYaxis is true
+	float	distance;	// this usually equals pm_thirdPersonRange.
+	float	height;		// this usually equals pm_thirdPersonHeight.
+} CameraSettings_t;
+
+typedef struct {
+	int					entityNumber;
+	idVec3				spawnPos;
+	CameraSettings_t	cameraSettings;
+} CheckPointInfo_t;
 //ivan end
 
 typedef struct {
@@ -526,16 +541,19 @@ public:
 	void					AddWeaponInteract( int flags, int weaponNum ); //, const char * weaponName
 	bool					WeaponItemCanGiveAmmo( int weaponNum ); //idItem *item
 	int						GetWeaponNumByItem( idItem *item );
-	void					SetYCameraForced( float ypos );
-	void					SetYCameraFree( void );
-	void					UpdateCameraDistance( float distance, bool blend = true );
-	void					UpdateCameraHeight( float height, bool blend = true );
+	void					LockYCamera( float ypos );
+	void					LockZCamera( float zpos );
+	void					UnlockYCamera( void );
+	void					UnlockZCamera( void );
+	void					SetCameraDistance( float distance, bool blend );
+	void					SetCameraHeight( float height, bool blend );
+	void					UpdateCameraSettingsFromEntity( idEntity *eny );
 	void					DropNotSelectedWeapon( int weapNum );
 	void					AddLifes( int num ); 
 	void					AddScore( int num ); 
 	void					AddSecretFound( void ); 
 	void					SaveCheckPointPos( idEntity* checkEnt, bool useEntOrigin );
-	float					GetIdealCameraDistance( void );
+	//float					GetIdealCameraDistance( void );
 	void					SetLock2D( bool on );
 	void					SpawnAllWeapons( void ); //cheat fix
 	bool					SpawnInsteadOfGiving( const char *classname, int offsetYmult = 1, int offsetZmult = 0); //cheat fix
@@ -651,7 +669,6 @@ private:
 	//const char *			interactShownWeaponName;
 	int						interactShownWeaponNum;
 	int						interactFlag;
-	int						lastCheckPoint;
 	bool					skipMouseUpd;
 	int						health_lost;	//stat
 	//bool					allowPickupWeapons;	//can interact this frame
@@ -659,6 +676,7 @@ private:
 	int						numLives;
 	int						score;
 	//bool					hq2QuickRespawning;
+	CheckPointInfo_t		lastCheckPoint;
 	idVec3					safeRespawnPos;
 	float					safeRespawnCameraDist;
 	float					safeRespawnCameraHeight;
@@ -690,10 +708,13 @@ private:
 	bool					skipCameraZblend;	//skip blending next frame
 	bool					enableCameraYblend;	//start blending to the new pos
 	bool					enableCameraXblend;	//start blending to the new distance
+	CameraSettings_t		cameraSettings;
+	/*
 	bool					forceCameraY;
 	float					forcedCameraYpos;
 	float					idealCameraDistance; //this usually equals pm_thirdPersonRange. 
-	float					idealCameraHeight; //this usually equals pm_thirdPersonHeight. 
+	float					idealCameraHeight; //this usually equals pm_thirdPersonHeight.
+	*/
 	idVec3					oldCameraPos;
 
 	//forced movement
@@ -909,6 +930,8 @@ private:
 	void					UseVehicle( void );
 	
 	//ivan start
+	void					UpdateCameraCvarsFromSettings( void );
+
 	bool					EvaluateKick( void );
 	void					Event_StartKick( const char *meleeDefName, float dmgMult );
 	void					Event_StopKick( void ); 
@@ -945,8 +968,6 @@ private:
 	void					Event_GetHudFloat( const char *key);
 	void					Event_ShowStats( void );
 	void					Event_DropWeapon( int weapNum );
-	void					Event_FreeCamera( void );
-	void					Event_ForceCameraY( float ypos );
 	void					Event_DoubleJumpEnabled( int on );
 	void					Event_WallJumpEnabled( int on );
 	void					Event_SetSkin( const char *skinname );
@@ -1036,10 +1057,12 @@ ID_INLINE void idPlayer::SetSelfSmooth( bool b ) {
 	selfSmooth = b;
 }
 
+/*
 //ivan start
 ID_INLINE float idPlayer::GetIdealCameraDistance( void ) {
-	return idealCameraDistance;
+	return cameraSettings.distance;
 }
 //ivan end
+*/
 
 #endif /* !__GAME_PLAYER_H__ */
