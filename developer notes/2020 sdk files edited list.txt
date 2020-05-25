@@ -2,6 +2,16 @@ Feature/Files edited list.
 04.20.20
 This is a list of all the sdk files modified from 2018 to 2020.
 
+-Updated Music Speaker system.  Fixes previous issues, editor friendly and more.
+	-Game_Local.cpp
+	-Game_local.h
+	-Entity.h
+	-sound.cpp
+	-sound.h
+	-target.cpp
+	-target.h
+	-script_thread.h
+
 -Touch of Death/HurtBox:  Player gets hurt if touching enemies enemies with the "touchOfDeath" key set to true
 	-Game_local.cpp
 	-Game_local.h
