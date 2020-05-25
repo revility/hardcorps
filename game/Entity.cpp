@@ -3844,28 +3844,20 @@ void idEntity::ActivateTargets( idEntity *activator ) const {
 	idEntity	*ent;
 	int			i, j;
 
-	bool jumpthrough; //rev 2020  used to get the jumpthrough key from the trigger		
-	jumpthrough = spawnArgs.GetBool( "jumpthrough" ); //rev 2020  used to get the jumpthrough key from the trigger	
-	bool platform; //rev 2020 used to get the platform bool from targeted entity	
-
-
-	
 	for( i = 0; i < targets.Num(); i++ ) {
 		ent = targets[ i ].GetEntity();	
-		platform = ent->spawnArgs.GetBool( "platform" ); //rev 2020	get the platform bool from our targeted entity	
 		if ( !ent ) {
 			continue;
 		}
 //rev 2020 start	
 //this is what allows the player to move through static entities with the platform key
-		if (platform) {
-			if (jumpthrough){
+		if ( ent->spawnArgs.GetBool( "platform" ) ) { //get the platform bool from our targeted entity	
+			if ( spawnArgs.GetBool( "jumpthrough" ) ){ //used to get the jumpthrough key from the trigger
 				ent->PlatformOver();
-			}			
-			if (!jumpthrough){
+			} else {
 				ent->PlatformUnder();
-			}	
-		}		
+			}
+		}
 //rev 2020 end		
 		if ( ent->RespondsTo( EV_Activate ) || ent->HasSignal( SIG_TRIGGER ) ) {			
 			ent->Signal( SIG_TRIGGER );
