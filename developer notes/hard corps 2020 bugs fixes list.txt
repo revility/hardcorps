@@ -1,7 +1,6 @@
 
 (BUGS) {
 	+Commandos stop attacking once off screen and then back on... will not run at player again.  Flagged as long range attack?
-	+Camera changes reset upon respawn.... check set camera height, and cameraforceY not working
 	+Melee weapons:  if the player dies while swinging, they will respawn in the melees weapon idle position and be stuck in it.
 	+Fix charge attack surface damage sounds
 }
@@ -46,7 +45,6 @@
 	-Fix info_location console errors
 	}
 	(PLAYGROUND) {
-	-Fix boss fight crashing the game if you re enter the room
 	}
 	(CONCRETE JUNGLE) {
 	-Finish the map lol
