@@ -16,6 +16,11 @@
 		+Update main menu credits
 }
 
+(TUTORIALS) {
+	+Update camera changing tutorials
+	+Update music speaker tutorials.
+}
+
 
 (ADD ONS) {
 	+Jill Valentine Playable character
