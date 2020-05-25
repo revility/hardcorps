@@ -2,6 +2,12 @@ Feature/Files edited list.
 04.20.20
 This is a list of all the sdk files modified from 2018 to 2020.
 
+-Added Target_camera.  Replaces and merges old camera targets into one entity. 
+	-player.cpp 
+	-player.h
+	-target.cpp 
+	-target.h
+
 -Updated Music Speaker system.  Fixes previous issues, editor friendly and more.
 	-Game_Local.cpp
 	-Game_local.h
