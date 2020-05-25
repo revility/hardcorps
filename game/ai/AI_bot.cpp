@@ -397,10 +397,10 @@ idAI_Bot::Spawn
 void idAI_Bot::Spawn( void ) {
 	//gameLocal.Printf("idAI_Bot::Spawn\n");
 
+	LinkScriptVariables();
 	CreateWeapons();
 	SelectInitialWeapon();
 	ShowOnlyCurrentWeapon();
-	LinkScriptVariables();
 
 	//spawnArgs.GetFloat("attackNodesMaxDist", "0", attackNodesMaxDist );
 	spawnArgs.GetBool( "can_speak",				"0", canSpeak );
@@ -1353,14 +1353,14 @@ idProjectile *idAI_Bot::LaunchProjectile( const char *jointname, idEntity *targe
 
 	noAim  = spawnArgs.GetInt( "noaim" );	
 	if ( noAim > 0 ) {
-		if ( target = NULL ) {
+		if ( target != NULL ) {
 			tmp = target->GetPhysics()->GetAbsBounds().GetCenter() - muzzle;
 			tmp.Normalize();
 			axis = tmp.ToMat3();
 		} else {
 			axis = viewAxis;
-			}
-		}	
+		}
+	}
 	if ( noAim < 1 ) {
 		if ( target != NULL ) {
 			tmp = target->GetPhysics()->GetAbsBounds().GetCenter() - muzzle;
@@ -1368,8 +1368,8 @@ idProjectile *idAI_Bot::LaunchProjectile( const char *jointname, idEntity *targe
 			axis = tmp.ToMat3();
 		} else {
 			axis = viewAxis;
-			}
 		}
+	}
 		
 //rev 2019 noaim end
 
