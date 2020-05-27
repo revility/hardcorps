@@ -52,6 +52,13 @@
 	(PLAYGROUND) {
 	}
 	(CONCRETE JUNGLE) {
-	-Finish the map lol
+	-Finish brush work
+	-add props
+	-decals
+	-lighting
+	-optimize
+	-add enemies
+	-Add boss:  Revenant and commandos around the base door?
+	-import Rivensin's roof textures, torch props and more for use.
 	}
 }
