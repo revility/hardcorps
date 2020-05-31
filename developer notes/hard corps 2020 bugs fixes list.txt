@@ -13,8 +13,6 @@
 		+Fix msg/mg idle
 		+Fix msg/mg run
 		+Update main menu credits
-		+Fix new hell texture pack materials that have noselfshadow set but should not.
-		+Fix thirdperson weapon models not casting shadows.
 		+Fix charge attack surface damage sounds cutting off charge sound
 }
 
