@@ -9,6 +9,47 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.47 (Unreleased, notes updated as development progresses)
+05.??.20
+
+	*SDK:
+		+Enabled player weapons to cast shadows and self shadow.  weapons.cpp
+		+Added Target_camera.  Replaces and merges old camera targets into one entity. 
+		+Added new keys to teleport entity for setting the camera.
+		+Added new keys to player spawn entity for setting the camera by default for a level.
+			*player.cpp, player.h, target.cpp, target.h, syscvar.cpp
+		-Removed pm_thirdpersonz.  no longer needed thanks to new target_camera
+		+AI_bot.cpp: fix assert: LinkScriptVariables before assigning them
+		+Entity.cpp:  fix crash when entering the "pinky" room again in playground map.  related to jumpthrough and platform key checks on entities.
+	*Player Updates:
+	*Weapons player:
+		+updated all major weapon materials to allow self shadows and casting shadows.
+	*Enemies:
+	*GUI:
+
+	*Maps:
+		+Concrete Jungle:  
+			-removed obsolete camera targets at the start of the map.
+			+Removed a section that didn't match the original map layout.
+			+Expanded blood river size to where it should end like in the original layout.
+			+Made a couple more platforms over the expanded blood pool to match the original layout.
+			+Updated blood pool with proper materials
+		+Wasted Hate:
+	*Other:
+		+Added new textures/custom/water_blood.... material.
+		+New Hell texture materials:  fixed materials with noshadow set but should not have had it.
+		+default.cfg: s_playDefaultSound set to 0 to disable a beeping sound if a sound file is missing.
+		*Props:
+			+Added the following ruin props: demon statues, hanging skeletons, wooden torch, metal torches
+		*Textures:
+			+Added ruiner textures:  stain glass textures, stain glass frames.
+			+Added ruiner roof texture
+			+Added ruiner/red_uk wooden doors and wood window shutter textures.
+
+
+
+************************************************************************************************
+
 Build: 0.8.46
 05.24.20
 
