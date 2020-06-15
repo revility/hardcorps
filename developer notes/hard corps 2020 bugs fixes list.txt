@@ -13,12 +13,18 @@
 		+Fix msg/mg idle
 		+Fix msg/mg run
 		+Update main menu credits
-		+Fix charge attack surface damage sounds cutting off charge sound
+		+Fix and/or improve charge attack surface damage sounds
 }
 
 (TUTORIALS) {
 	+Update camera changing tutorials
 	+Update music speaker tutorials.
+}
+
+(ENGINE) {
+	+Update the Dhewm3 bundled with the builds to the latest version before release.
+	+Update the libraries included in the dhewm3 bundles before release to the current versions.
+	+If unlocked hz is finialized before release, update Hard Corps to support it.
 }
 
 
