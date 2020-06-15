@@ -36,6 +36,7 @@ Build: 0.8.47 (Unreleased, notes updated as development progresses)
 			+Updated blood pool with proper materials
 		+Wasted Hate:
 	*Other:
+		+Fixed many materials having their file paths end in .tga.tga instead of just .tga
 		+Added new textures/custom/water_blood.... material.
 		+New Hell texture materials:  fixed materials with noshadow set but should not have had it.
 		+default.cfg: s_playDefaultSound set to 0 to disable a beeping sound if a sound file is missing.
