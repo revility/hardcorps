@@ -9,8 +9,32 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
-Build: 0.8.47 (Unreleased, notes updated as development progresses)
-05.??.20
+Build: 0.8.49
+Started: 08.01.21 
+
+	*SDK:
+		+Updated Cmake file to match dhewm3 1.5.1 changes.
+	*Enemies:
+		+Fixed: monster soldier shield now drops ammo clips instead of pistols
+		+Fixed: pistol zsec now drops ammo clips instead of pistols
+
+
+************************************************************************************************
+
+Build: 0.8.48
+08.01.21 
+
+	*SDK:
+		+fixed no aim from not working for enemy soldiers (player bots). ai_bot.cpp
+	Other:
+		+fixed pak667.pk4 compression... was a winrar file instead of winzip
+
+
+************************************************************************************************
+
+Build: 0.8.47
+08.01.21 
+*started 05.25.20 (all changed files in this build are in pak667.  So much time has passed since the last build!)
 
 	*SDK:
 		+Enabled player weapons to cast shadows and self shadow.  weapons.cpp
