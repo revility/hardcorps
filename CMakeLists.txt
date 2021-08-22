@@ -73,17 +73,52 @@ if(cpu STREQUAL "powerpc")
 	set(cpu "ppc")
 elseif(cpu MATCHES "i.86")
 	set(cpu "x86")
+elseif(cpu MATCHES "[aA][mM][dD]64" OR cpu MATCHES "[xX]64")
+	set(cpu "x86_64")
 endif()
 
-if(MSVC AND CMAKE_CL_64)
-	set(cpu "amd64")
+# On Windows ${CMAKE_SYSTEM_PROCESSOR} is broken (always returns host CPU)
+# which has only been reported >7 years ago (https://cmake.org/pipermail/cmake-developers/2014-September/011405.html)
+# so obviously a fix is too much to ask. Here's the special case to make that wonderful platform work;
+# except if it's Windows for ARM(64) I guess, no idea how to detect that properly (I don't own such hardware).
+if(MSVC)
+	if(cpu MATCHES ".*[aA][rR][mM].*")
+		message(FATAL_ERROR "please fix this code to work for Windows on ARM and send a pull request")
+	endif()
+	if(CMAKE_CL_64)
+		set(cpu "x86_64")
+	else()
+		set(cpu "x86")
+	endif()
+elseif(DEFINED ENV{MINGW_CHOST})
+	# looks like it's broken in MinGW32 shells (or 32bit mingw-w64 shells) as well, this should help:
+	message(STATUS "MINGW_CHOST = $ENV{MINGW_CHOST}")
+	if($ENV{MINGW_CHOST} MATCHES "^i.86.*")
+		set(cpu "x86")
+	elseif($ENV{MINGW_CHOST} MATCHES "^x86_64.*")
+		set(cpu "x86_64")
+	else()
+		message(FATAL_ERROR "please fix this code to work for MINGW_CHOST = $ENV{MINGW_CHOST} and send a pull request!")
+	endif()
 endif()
+
+add_definitions(-DD3_ARCH="${cpu}" -DD3_SIZEOFPTR=${CMAKE_SIZEOF_VOID_P})
 
 # target os
 if(APPLE)
 	set(os "macosx")
 else()
 	string(TOLOWER "${CMAKE_SYSTEM_NAME}" os)
+endif()
+
+add_definitions(-DD3_OSTYPE="${os}")
+
+message(STATUS "Setting -DD3_ARCH=\"${cpu}\" -DD3_SIZEOFPTR=${CMAKE_SIZEOF_VOID_P} -DD3_OSTYPE=\"${os}\" ")
+
+if(cpu MATCHES ".*64.*" AND NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+	# tough luck if some CPU architecture has "64" in its name but uses 32bit pointers
+	message(SEND_ERROR "CMake thinks sizeof(void*) == 4, but the target CPU looks like a 64bit CPU!")
+	message(FATAL_ERROR "If you're building in a 32bit chroot on a 64bit host, switch to it with 'linux32 chroot' or at least call cmake with linux32 (or your OSs equivalent)!")
 endif()
 
 # build type
@@ -106,7 +141,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 		add_compile_options(-march=pentium3)
 	endif()
 
-	set(CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG -O1")
+	set(CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG -O0")
 	set(CMAKE_C_FLAGS_DEBUGALL "-g -ggdb -D_DEBUG")
 	set(CMAKE_C_FLAGS_PROFILE "-g -ggdb -D_DEBUG -O1 -fno-omit-frame-pointer")
 	set(CMAKE_C_FLAGS_RELEASE "-O2 -fno-unsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
@@ -131,6 +166,14 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 	add_compile_options(-Wno-switch)
 	add_compile_options(-Wno-strict-overflow)
 	add_compile_options(-Wno-format-security)
+	
+	if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8.0)
+		# ‘void* memset(void*, int, size_t)’ clearing an object of type ‘struct refSound_t’ with no trivial copy-assignment; use assignment or value-initialization instead
+		# ‘void* memcpy(void*, const void*, size_t)’ writing to an object of type ‘class idDrawVert’ with no trivial copy-assignment; use copy-assignment or copy-initialization instead
+		# etc - I don't care, all the cases I've checked were safe and I'm not gonna add (void*) casts in 1000 places
+		#       (that would make merging new mods painful)
+		add_compile_options(-Wno-class-memaccess)
+	endif()
 
 	CHECK_CXX_COMPILER_FLAG("-Woverloaded-virtual" cxx_has_Woverload_virtual)
 	if(cxx_has_Woverload_virtual)
@@ -146,6 +189,9 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 		if(cpu STREQUAL "x86_64")
 			add_compile_options(-arch x86_64 -mmacosx-version-min=10.6)
 			set(ldflags "${ldflags} -arch x86_64 -mmacosx-version-min=10.6")
+		elseif(cpu STREQUAL "arm64")
+			add_compile_options(-arch arm64 -mmacosx-version-min=11.0)
+			set(ldflags "${ldflags} -arch arm64 -mmacosx-version-min=11.0")
 		elseif(cpu STREQUAL "x86")
 			CHECK_CXX_COMPILER_FLAG("-arch i386" cxx_has_arch_i386)
 			if(cxx_has_arch_i386)
@@ -173,7 +219,10 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 		# set(sys_libs ${sys_libs} dl) FIXME: -ldl needed anyway?
 	endif()
 elseif(MSVC)
+	add_definitions(/MP) # parallel build (use all cores, or as many as configured in VS)
+
 	add_compile_options(/W4)
+	add_compile_options(/we4840) # treat as error when passing a class to a vararg-function (probably printf-like)
 	add_compile_options(/wd4100) # unreferenced formal parameter
 	add_compile_options(/wd4127) # conditional expression is constant
 	add_compile_options(/wd4244) # possible loss of data
@@ -222,6 +271,27 @@ if(NOT APPLE AND NOT WIN32)
 	message(STATUS "  Library directory: ${libdir}")
 	message(STATUS "  Data directory:    ${datadir}")
 endif()
+
+# I'm a bit sloppy with headers and just glob them in..
+# they're only handled in CMake at all so they turn up in Visual Studio solutions..
+
+# globs all the headers from ${PATHPREFIX}/ and adds them to ${SRCLIST}
+function(add_globbed_headers SRCLIST PATHPREFIX)
+	file(GLOB_RECURSE tmp_hdrs RELATIVE "${CMAKE_SOURCE_DIR}" "${PATHPREFIX}/*.h")
+	set(${SRCLIST} ${tmp_hdrs} ${${SRCLIST}} PARENT_SCOPE)
+endfunction()
+
+if(CMAKE_MAJOR_VERSION LESS 3 OR ( CMAKE_MAJOR_VERSION EQUAL 3 AND CMAKE_MINOR_VERSION LESS 8 ))
+	# cmake < 3.8 doesn't support source_group(TREE ...) so replace it with a dummy
+	# (it's only cosmetical anyway, to make source files show up properly in Visual Studio)
+	function(source_group)
+	endfunction()
+	message(STATUS "Using CMake < 3.8, doesn't support source_group(TREE ...), replacing it with a dummy")
+	message(STATUS "  (this is only relevants for IDEs, doesn't matter for just compiling dhewm3)")
+#else()
+#	message(STATUS "Using CMake >= 3.8, supports source_group(TREE ...)")
+endif()
+
 
 set(src_game
 	game/AF.cpp
@@ -296,6 +366,8 @@ set(src_game
 
 	${src_game_mod}
 )
+
+add_globbed_headers(src_game "game")
 
 set(src_d3xp
 	d3xp/AF.cpp
@@ -373,6 +445,8 @@ set(src_d3xp
 	${src_d3xp_mod}
 )
 
+add_globbed_headers(src_d3xp "d3xp")
+
 set(src_idlib
 	idlib/bv/Bounds.cpp
 	idlib/bv/Frustum.cpp
@@ -424,6 +498,18 @@ set(src_idlib
 	idlib/Heap.cpp
 )
 
+add_globbed_headers(src_idlib "idlib")
+# just add all the remaining headers (that have no corresponding .cpp in the SDK)
+# to idlib so they can be navigated there
+add_globbed_headers(src_idlib "cm")
+add_globbed_headers(src_idlib "framework")
+add_globbed_headers(src_idlib "renderer")
+add_globbed_headers(src_idlib "sound")
+add_globbed_headers(src_idlib "sys")
+add_globbed_headers(src_idlib "tools")
+add_globbed_headers(src_idlib "ui")
+
+
 include_directories(${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR})
 
@@ -441,6 +527,8 @@ else()
 	endif()
 endif()
 
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX neo FILES ${src_idlib})
+
 if(BASE)
 	if (AROS)
 		add_executable(base sys/aros/dll/dllglue.c ${src_game})
@@ -450,9 +538,12 @@ if(BASE)
 		# so mods can create cdoom.dll instead of base.dll from the code in game/
 		set_target_properties(base PROPERTIES OUTPUT_NAME "${BASE_NAME}")
 	endif()
+
+	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX neo FILES ${src_game})
+
 	set_target_properties(base PROPERTIES PREFIX "")
 	set_target_properties(base PROPERTIES COMPILE_DEFINITIONS "${BASE_DEFS}")
-	set_target_properties(base PROPERTIES COMPILE_FLAGS "-I${CMAKE_SOURCE_DIR}/game")
+	target_include_directories(base PRIVATE "${CMAKE_SOURCE_DIR}/game")
 	set_target_properties(base PROPERTIES LINK_FLAGS "${ldflags}")
 	set_target_properties(base PROPERTIES INSTALL_NAME_DIR "@executable_path")
 	if (AROS)
@@ -479,9 +570,12 @@ if(D3XP)
 		# so mods can create whatever.dll instead of d3xp.dll from the code in d3xp/
 		set_target_properties(d3xp PROPERTIES OUTPUT_NAME "${D3XP_NAME}")
 	endif()
+
+	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX neo FILES ${src_d3xp})
+
 	set_target_properties(d3xp PROPERTIES PREFIX "")
 	set_target_properties(d3xp PROPERTIES COMPILE_DEFINITIONS "${D3XP_DEFS}")
-	set_target_properties(d3xp PROPERTIES COMPILE_FLAGS "-I${CMAKE_SOURCE_DIR}/d3xp")
+	target_include_directories(d3xp PRIVATE "${CMAKE_SOURCE_DIR}/d3xp")
 	set_target_properties(d3xp PROPERTIES LINK_FLAGS "${ldflags}")
 	set_target_properties(d3xp PROPERTIES INSTALL_NAME_DIR "@executable_path")
 	if (AROS)
