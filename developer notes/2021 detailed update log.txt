@@ -9,6 +9,43 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.50
+Started: 09.29.21 
+
+	*SDK:
+		+Updated Cmake file to match dhewm3 1.5.1 changes.
+		+Enemy/Actor Projectiles will pass through other actors, but not the player with "friendly_fire" key set to 1. projectile.cpp
+		+"AI_cant_damage" key added.  Works on all entities.  Checks if AI's projectiles can damage it. projectile.cpp
+		+AI_bots no longer drop weapons upon death.  AI_bot.cpp
+	*Player Updates:
+		+Charge Attacks no longer make sounds when hitting most surfaces.  commented out in kick.def file.
+		+Cleaned up duplicate precache skins in player def.
+	*Enemies:
+		+Fixed: monster soldier shield now drops ammo clips instead of pistols
+		+Fixed: pistol zsec now drops ammo clips instead of pistols
+		+Fixed monster soldiers being incorrectly set to team 2 instead of team 0 which caused them to attack other enemies.
+		+Fixed monster soldiers not causing player damage and or starting the attack with players due to team setting.  monster_player_base.def
+		+Friendly_fire key set to 0 added for monster default and enemy soldiers.
+		+Monster soldiers no longer drop their weapons upon death.
+		+Monster soldiers now drop the type of ammo they used for their weapon.
+	*Other:
+		+Fixed description for how making objects non solid to actors... was written backwards. func.def
+		+Added item_container: new model, textures and sounds.
+			*Already set to drop items upon death.  Already to let actors/players clip through and preset to let enemy projectile do no damage.
+	*Guis: 
+		+Updated Build number in main menu options
+	Maps:
+		+Concrete Jungle:
+			+Added more details to map.
+			+Added soldier snipers
+			+Fixed a few lights
+			+adjusted 2d clip
+			+Added Cacodemons
+			+Added Imps
+			+Added Snipers
+			+Added zombies, etc.
+			
+************************************************************************************************
 Build: 0.8.49
 Started: 08.01.21 
 
