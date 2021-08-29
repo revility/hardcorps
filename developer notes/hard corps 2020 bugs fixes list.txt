@@ -36,9 +36,6 @@
 }
 
 (FEATURES) {
-	+Default Ninga Gaiden and contra style item holders.  breakable with new fx and sounds.
-	+Add key to projectiles to make them destroy on impact with other projectiles... enemy bullets could use it.
-	+Add key to allow projectiles to pass through other projectiles and actors, etc.  "piercing"  needed for nails and melee attack
 }
 
 (GUI) {
