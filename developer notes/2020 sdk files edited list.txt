@@ -1,6 +1,9 @@
 Feature/Files edited list.
-04.20.20
+08.28.21
 This is a list of all the sdk files modified from 2018 to 2020.
+
+-Added Friendly Fire.  Used to allow enemies to fire projectiles through each other and only hurt the player.
+	-projectile.cpp
 
 -Added Target_camera.  Replaces and merges old camera targets into one entity. 
 	-player.cpp 
