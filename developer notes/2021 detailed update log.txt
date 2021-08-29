@@ -10,7 +10,7 @@ NOTES ON THE PAK FILES:
 ************************************************************************************************
 
 Build: 0.8.50
-Started: 09.29.21 
+08.29.21 
 
 	*SDK:
 		+Updated Cmake file to match dhewm3 1.5.1 changes.
