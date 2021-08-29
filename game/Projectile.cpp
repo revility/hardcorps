@@ -865,6 +865,13 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity ) {
 		return true;
 	}
 
+//rev 2021 start.  Check if AI's projectiles can damage something.  Used for Item containers	
+	if ( owner.GetEntity()->IsType( idAI::Type ) && ent->spawnArgs.GetBool( "ai_cant_damage" ) ) {
+		PostEventMS( &EV_Remove, 0 );
+		return true;
+	}
+//rev 2021 end
+
 	// direction of projectile
 	dir = velocity;
 	dir.Normalize();
