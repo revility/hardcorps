@@ -34,3 +34,6 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+EXPAND_BOUNDS		INTEGER		Expand or decrease the default size of the collision box used to 
 						trigger doors opening/closing.
 
+*All entities
+	+AI_CANT_DAMAGE		1/0		Check if projectiles fired from AI (monsters, etc)  can damage the entity.
+
