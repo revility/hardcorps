@@ -14,6 +14,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+NOSTATS 		1/0		whether or not to add them to the enemies list during the level complete stats screen.
 	+ISXLOCKED		1/0		if the monster is locked to the 0 x position.
 	+UPDXLOCK		1/0		Enable and disable the enemy being locked to 0 x position.
+	+FRIENDLY_FIRE		1/0		Enable (0) and disable (1) the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
 
 *FUNC_STATIC
 	+PLATFORM 		1/0		Enable to allow bullets to pass through the object... 
