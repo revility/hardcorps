@@ -409,18 +409,9 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 		if ( spawnArgs.GetBool( "detonate_on_trigger" ) ) {
 			contents |= CONTENTS_TRIGGER;
 		}
-		if ( !spawnArgs.GetBool( "no_contents" ) ) {			
-//rev 2021 start actors can't hurt each other with friendly fire key set to 0  projectiles will pass through them.
-			if ( owner.GetEntity()->IsType( idAI::Type ) && !owner.GetEntity()->spawnArgs.GetBool( "friendly_fire" ) ) {
-					contents |= CONTENTS_PROJECTILE;
-					clipMask = (CONTENTS_MONSTERCLIP|CONTENTS_BODY);	
-		}else {
-				contents |= CONTENTS_PROJECTILE;
-				clipMask |= CONTENTS_PROJECTILE;			
-			}
-//rev 2021 end			
-			//contents |= CONTENTS_PROJECTILE;
-			//clipMask |= CONTENTS_PROJECTILE;
+		if ( !spawnArgs.GetBool( "no_contents" ) ) {
+			contents |= CONTENTS_PROJECTILE;
+			clipMask |= CONTENTS_PROJECTILE;
 		}
 	}
 
@@ -434,8 +425,19 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 	}
 	physicsObj.SetBouncyness( bounce );
 	physicsObj.SetGravity( gravVec * gravity );
-	physicsObj.SetContents( contents );
-	physicsObj.SetClipMask( clipMask );
+	
+//rev 2021 start enemies can't hurt each other
+	if ( owner.GetEntity()->IsType( idAI::Type ) && owner.GetEntity()->spawnArgs.GetBool( "friendly_fire" ) ) {
+		physicsObj.SetClipMask( CONTENTS_SOLID | CONTENTS_BODY);
+		UpdateVisuals();
+	} else {
+		physicsObj.SetContents( contents );
+		physicsObj.SetClipMask( clipMask );			
+	}
+	//physicsObj.SetContents( contents );
+	//physicsObj.SetClipMask( clipMask );	
+//rev 2021 end
+	
 	physicsObj.SetLinearVelocity( axis[ 2 ] * speed + pushVelocity );
 	physicsObj.SetAngularVelocity( angular_velocity.ToAngularVelocity() * axis );
 	physicsObj.SetOrigin( start );
