@@ -428,7 +428,7 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 	
 //rev 2021 start enemies can't hurt each other
 	if ( owner.GetEntity()->IsType( idAI::Type ) && owner.GetEntity()->spawnArgs.GetBool( "friendly_fire" ) ) {
-		physicsObj.SetClipMask( CONTENTS_SOLID | CONTENTS_BODY);
+		physicsObj.SetClipMask( CONTENTS_SOLID | CONTENTS_BODY | CONTENTS_PROJECTILE);
 		UpdateVisuals();
 	} else {
 		physicsObj.SetContents( contents );
