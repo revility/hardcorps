@@ -45,16 +45,6 @@
 }
 
 (MAPS) {
-	(WASTED HATE ALPHA) {
-	-Add new music speaker system
-	}
-	(WASTED HATE VERSION 2) {
-	-Update items and enemy spawns
-	-quadrupal the enemy count
-	-add a few 2d clips
-	-Update music system
-	-Fix info_location console errors
-	}
 	(PLAYGROUND) {
 	}
 	(CONCRETE JUNGLE) {
