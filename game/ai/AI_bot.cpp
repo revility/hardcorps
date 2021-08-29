@@ -714,7 +714,10 @@ void idAI_Bot::Killed( idEntity *inflictor, idEntity *attacker, int damage, cons
 	idAI::Killed( inflictor, attacker, damage, dir, location );
 	
 	// drop the current weapon
-	DropWeapon(currentWeapon);
+	
+//rev 2021 start. prevent bots from dropping weapons because we want them to drop ammo instead.
+	//DropWeapon(currentWeapon);
+//rev 2021 end
 
 	//now we can remove all the weapons
 	RemoveWeapons();
