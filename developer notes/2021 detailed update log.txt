@@ -9,6 +9,30 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.51
+Started: 08.31.21 
+
+	*Other:
+		+Everything merged into 1 pak files
+		+Fixed Ammo_shells_large pick up sound not working
+	*Enemies:
+		+Updated collision box shapes and sizes for the following enemies to better reflect their actual size:
+			+imp
+			+hellknight
+			+baron of hell 
+			+Mancubus
+			+revenant
+			+cacodemon
+			+pain elemental
+	*Weapons:
+		+RuinBlade/Chainsaw Gauntlet: 
+			+Fixed bug where the player would get stuck in idle animation if died while attacking.
+				*Was missing owner died State.
+		+Double barrel shotgun now uses 6 shells instead of 8
+		+Double barrel shotgun now checks and requires atleast 6 shells to fire.
+		
+************************************************************************************************
+
 Build: 0.8.50
 08.29.21 
 
