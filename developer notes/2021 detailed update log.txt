@@ -9,6 +9,20 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.52
+Started: 09.3.21 
+
+	*Other:
+		+Updated Build number in main menu game options.
+	*Enemies:
+		+Fixed a bug where imps and other monsters would throw the fireball too late or early and thus miss the player often.
+			*Done by adjusting anim timing & bone origin of fireballs thrown to align closer to directly in front of them.
+			+imp
+			+hellknight
+			+baron of hell 
+		
+************************************************************************************************
+
 Build: 0.8.51
 Started: 08.31.21 
 
