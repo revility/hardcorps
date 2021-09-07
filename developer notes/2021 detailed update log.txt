@@ -9,6 +9,21 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.53
+Started: 09.07.21 
+
+	*Item Containers:
+		+Slightly increased size
+		+Added collision box
+		+Added Orb model and fx
+		+New & improved sound shader for explosion.
+		+changed glowing colors from yellow to orange
+	*Enemies:
+		+Mostly lowered monster Soldier health amounts.  Was all originally 70.  most are now 30
+
+		
+************************************************************************************************
+
 Build: 0.8.52
 Started: 09.3.21 
 
