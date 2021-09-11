@@ -6,7 +6,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	
 *MONSTERS (ALL OF THEM)
 	+NOAIM 			1/0		Enemies will only shoot straight ahead when turned on.  On by default for many enemies.
-	+DISABLE_MOVING         1/0		Disable the monster from moving
+	+DISABLE_MOVING         1/0		Disable the monster from moving. * Mostly used on bots/monster soldiers/ monster player
 	+NOMOVE			1/0		Disable the monster from moving.  Buggy when using on bots.
 	+TEAM_NON_SOLID 	1/0		enabled by default for most enemies.  Enemies may clip through each other.
 	+TOUCHOFDEATH 		1/0		enabled by default for most enemies.  Damage the player touching him.
@@ -14,7 +14,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+NOSTATS 		1/0		whether or not to add them to the enemies list during the level complete stats screen.
 	+ISXLOCKED		1/0		if the monster is locked to the 0 x position.
 	+UPDXLOCK		1/0		Enable and disable the enemy being locked to 0 x position.
-	+FRIENDLY_FIRE		1/0		Enable (0) and disable (1) the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
+	+FRIENDLY_FIRE		1/0		Enable the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
 	
 *SPECIFIC MONSTERS BY DEFAULT: Generic Zombies, Maggots,
 	+NEVER_STOP_MOVING	1/0		Monster will no longer go idle or stand still.  Will always pursue the player, even off cliffs and into walls.
