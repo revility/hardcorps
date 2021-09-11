@@ -1,5 +1,4 @@
 # DHEWM 3 HARD CORPS
-Started 2019
 Updated files for Doom 3: Harqore 2 Dhewm 3 sdk.  This is an online back up of the updated files only during development.  The original sdk with all files is over at dhewm3 sdk's hub.  They are meant to be used with Hard Corps 1.0.00 for Dhewm 3 1.5.0+ after it is released.  It will not work with the original HardQore 2012 release.
 
 Formerly known as HardQore 2 for Doom 3;  the Dhewm 3 version features many improvements and additions to the game while running on a modern source port of Doom 3.  Doom 3: Hardqore 2 was a good start in the right direction, but was lacking many features and changes needed to turn Doom 3 into a 2.5d action sidescroller.  The main goal of the release of Hard Core for Dhewm 3 was to match the gameplay of classic 2d action platformers such as Contra, Metal Slug, Ninja Gaiden, Metroid, and Castlevania.
