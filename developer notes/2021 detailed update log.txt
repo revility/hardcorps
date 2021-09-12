@@ -9,6 +9,29 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.54
+Started: 09.12.21 
+
+	*Enemies:
+		+never_stop_moving key added .  When True, the enemy will never idle/stand still and always move after the player. This includes off cliffs and walls.
+			*The following enemies have had their scripts and/or defs updated for this:
+				+Generic Zombies, base zombie, default zombie, morgue zombie, sawyer,
+				*The following zombies inherited this from zombie default.  no def or script changes needed: 
+						+fat zombies, bernie, boney
+				+Maggots
+				+Imps
+				+Cacodemon
+				+Tentacle Commandos
+		+Generic Zombies now have a total of 6 different run animations.  various frame rates and 2 different torso animations.
+		+Imp attacks are no longer interupted by damage/pain.  This was making them too easy to kill
+		+Cacodemons attacks are no longer interupted by damage/pain.  This was making them too easy to kill
+		+Tentacle Commandos attacks are no longer interupted by damage/pain.  This was making them too easy to kill
+		+New Enemy Varient:  Imp Lord.  An imp that does not move, and has free aim by default.  Uses modified vanilla imp textures
+			
+
+
+************************************************************************************************
+
 Build: 0.8.53
 Started: 09.07.21 
 
