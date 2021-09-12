@@ -5,7 +5,7 @@ Formerly known as HardQore 2 for Doom 3;  the Dhewm 3 version features many impr
 
 Potential mod makers and map authors will find a host of features to achieve many of the most common gameplay mechanics and enemies encountered in action platformers.  We kept the mapper in mind during development and tried to make it as simple as possible to add in the new features.  Many documents, tutorials and examples have been included.
 
-# UPGRADES, ADDITIONS, FIXES & CHANGES FOR HARD CORE:
+# UPGRADES, ADDITIONS, FIXES & CHANGES:
 
 +Dhewm 3 port supports modern resolutions, modern hardware, multiple OOS, updated built in editing tools and much, much more.
 
