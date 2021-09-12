@@ -12,6 +12,8 @@ NOTES ON THE PAK FILES:
 Build: 0.8.54
 Started: 09.12.21 
 
+	*Other:
+		+Added more colored ember particles.  hc_embers_2021.prt. red, cyan, green, yellow, blue
 	*Enemies:
 		+never_stop_moving key added .  When True, the enemy will never idle/stand still and always move after the player. This includes off cliffs and walls.
 			*The following enemies have had their scripts and/or defs updated for this:
