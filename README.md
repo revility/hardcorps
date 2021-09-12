@@ -10,7 +10,6 @@ Potential mod makers and map authors will find a host of features to achieve man
 +Dhewm 3 port supports modern resolutions, modern hardware, multiple OOS, updated built in editing tools and much, much more.
 +Replaced D3 ROE Bloom with Denton/Rivensin's HDR lighting
 +Updated Main Menu: New images, new & more options.
-
 +New Hud . Includes read outs for all ammo types and new images.
 +Upgraded Textures for many enemies
 +Many updates to enemy AI and animations tweaks for more classic 2d action platformer behaviour
