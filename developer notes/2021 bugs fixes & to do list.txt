@@ -1,13 +1,10 @@
 (UPDATES)
-	+Monsters always run key and system added to all monsters that need the option
 	+red embers on wooden burn barrels
 	+yellow embers around all weapon pick ups
 	+green embers around armor pick ups
 	+blue embers around health pick ups
 	+moveable weapon drops with heavy mass to disable moving around for use when item containers are above ground (so they drop to the ground)
-	+Sniper Imp/Imp Lord added: D3 default imp which does not move and aims freely
 	+Malwraith added: Blue cacodemon that does chase the player, only moves up and down or not at all. (Think of it as an organic turrent)
-	+More enemy run animations speed varients.  Helps seperate them while running since they can clip through each other.
 	+Adjust zombie health and increase amounts in maps.  Less health and more of them.
 	+Bullets pass through enemy corpses/ragdolls might be needed
 	+Exploding fat zombies (charcoal skin, glowing red veins and red embers)
