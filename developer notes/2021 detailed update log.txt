@@ -28,8 +28,6 @@ Started: 09.12.21
 		+Tentacle Commandos attacks are no longer interupted by damage/pain.  This was making them too easy to kill
 		+New Enemy Varient:  Imp Lord.  An imp that does not move, and has free aim by default.  Uses modified vanilla imp textures
 			
-
-
 ************************************************************************************************
 
 Build: 0.8.53
