@@ -8,31 +8,59 @@ Potential mod makers and map authors will find a host of features to achieve man
 # MAIN UPGRADES, ADDITIONS AND CHANGES FOR HARD CORE:
 
 +Dhewm 3 port supports modern resolutions, modern hardware, multiple OOS, updated built in editing tools and much, much more.
+
 +Replaced D3 ROE Bloom with Denton/Rivensin's HDR lighting
+
 +Updated Main Menu: New images, new & more options.
+
 +New Hud . Includes read outs for all ammo types and new images.
+
 +Upgraded Textures for many enemies
+
 +Many updates to enemy AI and animations tweaks for more classic 2d action platformer behaviour
+
 +Added more varients to enemies.
+
 +Much More responsive Keyboard/Controller aiming
+
 +New player damage feed back system. Similar to many classic side scrollers.
+
 +Revamped Weapon Arsenal. Includes new weapons, models, new effects, animations, and ammo use
+
 +Melee combat overhauled.  Player can instantly access a quick melee weapon
+
 +Charge Attack in 8 directions while on the ground and in air.  Charge attacks deal massive damage and slowly recharge.
+
 +Slide Attack improved
+
 +New textures and map objects.
+
 +More movable and breakable objects
+
 +Jump through platforms added
+
 +Multiple Character select with custom stats support.
+
 +New playable character added: Scarlet Rivensin
+
 +Upgraded 2d camera system
+
 +Many bug fixes. This includes player respawning, save points, music and the camera.
+
 +More responsive Doors
+
 +New Map:  Hell Rizer
+
 +Updated Maps: Wasted Hate and Playground
+
 +Motion Trails for Melee Weapons
+
 +Improvements to player animations
+
 +New input based animation and attack system added for the player.  This is similar to the Special moves and combos found in Street Fighter and Mortal Kombat.
+
 +New Ammo Types and revamped old ones
+
 +New items and power ups.
+
 +Breakable item containers similar to many classic action platformers.
