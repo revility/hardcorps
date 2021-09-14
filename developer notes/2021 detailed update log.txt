@@ -9,6 +9,37 @@ NOTES ON THE PAK FILES:
 	
 ************************************************************************************************
 
+Build: 0.8.55
+Started: 09.14.21 
+
+	*Other:
+		+Changed colors of embers on Wooden exploding barrels to red.
+		+Combined a few item def files together.
+	*Weapons:
+		+Added glowing embers to all item weapon and moveable item weapons to make them easier to see.
+		+Convertered Riveter weapon model from ase to lwo.  Currently used for the Rail Gun
+		+BFG: fixed missing item_bfg
+		+BFG: fixed other missing stuff in def file
+		+BFG: fixed ammo required bug preventing the weapon from firing when it does have enough ammo
+		+BFG: Increased and corrected ammo use per shot from 1 to 6.
+	*Maps:
+		*Playground:
+			+ BFG now correctly spawns like it should due to the above listed fix.
+			- removed unused item_riveter from starting area.  Weapon was removed years ago
+			+Move 1up in start area near jet pack pick up
+	*Items:
+		+Armor Shard: red glowing part changed to green.
+		+Ammo items now have blue embers around them
+		+Armor items now have green embers around them
+		+health items now have cyan embers around them.
+		+Backpack now has yellow embers around it
+		+Highjump boots now have yellow embers around it.
+		+1up item now has green embers around it
+		+Jetpack item now has yellow embers
+
+
+************************************************************************************************
+
 Build: 0.8.54
 Started: 09.12.21 
 
