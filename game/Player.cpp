@@ -8458,7 +8458,7 @@ void idPlayer::Think( void ) {
 
 //REV 2020 CHARGE ATTACK START
 	if ( chargeAmount < 2 ) {	// 2 is the maximum amount we can do in a row
-		if ( gameLocal.time > lastChargeTime + 2000 ) {	//was 1500
+		if ( gameLocal.time > lastChargeTime + spawnArgs.GetInt( "charge_time" ) ) {	//was 1500
 			if ( chargeAmount == 1 ) {				
 				spawnArgs.Set( "charge_amount", "2" );	//this method proved be the most reliable in setting the amount.
 				//gameLocal.Printf(" c1 + 1 ");
