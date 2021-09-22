@@ -2,11 +2,25 @@
 DOOM 3: HARD CORPS
 2018-2020 UPDATE LOG
 FINAL BUILD: 1.0.00
-
-NOTES ON THE PAK FILES:
-	pak 1100 contains the original HQ assets merged with the 1.1 build pak assets
-	pak 1200 contains the 2018-2020 updated content.
 	
+************************************************************************************************
+
+Build: 0.8.56
+Started: 09.21.21 
+
+	*SDK:
+		+Player.cpp:  charge attack time now uses the "charge_time" key from the player.def file and no longer hard coded.
+	*Monsters:
+		+Imp Lord:  Fixed typo in material file for glowing eyes.
+		+Added Stone Cacodemon:  Does not chase the player and only fires straight ahead.  Does move up and down.  Think of it like a turrent.
+		+Monsters burn away faster and gib faster.  Improves gameplay because corpses block bullets!
+	*Weapons:
+	*Maps:
+	*Items:
+	*Player:
+		+Time to gain a charge attack increased from 2000 to 4000.
+
+
 ************************************************************************************************
 
 Build: 0.8.55
