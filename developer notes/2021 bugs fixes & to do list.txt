@@ -1,10 +1,4 @@
 (UPDATES)
-	+green embers around armor pick ups
-	+blue embers around health pick ups
-	+Malwraith added: Blue cacodemon that does not chase the player, only moves up and down or not at all. (Think of it as an organic turrent). fast fly speed
-	+Adjust zombie health and increase amounts in maps.  Less health and more of them.
-	+Bullets pass through enemy corpses/ragdolls might be needed
-	+"droptofloor" key enabled for all item drops.  will help with item holders
 	+Exploding fat zombies (charcoal skin, glowing red veins and red embers)
 	+Exploding Maggots (charcoal skin, glowing red veins and red embers)
 	+Adjust main menu colors and mars model
@@ -35,7 +29,7 @@
 
 
 (ADD ONS) {
-	+Jill Valentine bsaa Playable character?
+	+Jill Valentine Playable character?
 		+Bowie Knife melee weapon	
 	+Vanilla Doom Marine playable character (no helmet and no armor version)
 		+CSG melee weapon
@@ -49,6 +43,8 @@
 
 (MAPS) {
 	(PLAYGROUND) {
+		remove riveter from main area
+		add bfg
 	}
 	(Wasted Hate) {
 	}
