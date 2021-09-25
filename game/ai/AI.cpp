@@ -1234,8 +1234,8 @@ void idAI::Think( void ) {
 	UpdateIsOnScreen(); //NOTE: my "isOnScreen" value is useful also to other entities.
 	//ivan end
 
-//rev 2020 hurt the player when overlapping enemies
-	if( spawnArgs.GetInt( "touchofdeath", "1") ){
+//rev 2020 hurt the player when overlapping enemies. Updated: make sure the enemy isn't hidden or else the box will still spawn.
+	if( !IsHidden() && spawnArgs.GetInt( "touchofdeath", "1") ){
 		gameLocal.HurtBox( this );		
 	}
 	
