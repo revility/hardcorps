@@ -5,6 +5,32 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.57
+09.27.21 
+
+	*SDK:
+		+Fixed AI will not spawn the hurt box if hidden.  Used for touch of death system.  AI.cpp
+	*Monsters:
+		+REMOVED MONSTER FASTER DEATH CHANGES FROM PREVIOUS BUILD.... CAUSED THE GAME TO RANDOMLLY CRASH
+		+Grenade soldiers should now throw the grenades quicker
+		+Zombies and soldiers delay before gibbing greatly reduced.  Gib almost instantly
+		+delay before zombies and soldiers removed reduced
+		+time to burn key added to monster default def and script.  This is the actual time used for the burn away effect
+		+time to burn added and adjusted for all demons.
+	*Weapons:
+		-Riveter def file removed.  a backup file hangs in the def folder if ever needed. weapon_riveter.unused
+		+Increased Enforcer Damage from 30 to 100
+	*Maps:
+	*Items:
+		+Increased Item container collision box size
+		+Slightly shrank size of item container model
+	*Player:
+		+FIXED player damage skins not preloading before the map.  not all 4 damage skins were in.  Was causing the game to freeze briefly when player is first hit.
+		+Cleaned up skin info in player.def file
+
+
+************************************************************************************************
+
 Build: 0.8.56
 Started: 09.21.21 
 
