@@ -4,7 +4,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 *MONSTER_SOLDIER_*
 	+ALWAYSCROUCH 		0/1/2		set to 2 to always attack crouch. 1 for 50/50 chance and 0 for never.
 	
-*MONSTERS (ALL OF THEM)
+*MONSTERS
 	+NOAIM 			1/0		Enemies will only shoot straight ahead when turned on.  On by default for many enemies.
 	+DISABLE_MOVING         1/0		Disable the monster from moving. * Mostly used on bots/monster soldiers/ monster player
 	+NOMOVE			1/0		Disable the monster from moving.  Buggy when using on bots.
@@ -17,7 +17,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+FRIENDLY_FIRE		1/0		Enable the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
 	+TIME_TO_BURN		INTEGER		This is the amount of time for the burn away FX to occur before the body disapears. Used on Demons.
 	
-*SPECIFIC MONSTERS BY DEFAULT: Zombies, Maggots, Imps, Commandos, Cacodemons
+*MONSTERS SPECIFIC: Zombies, Maggots, Imps, Commandos, Cacodemons
 	+NEVER_STOP_MOVING	1/0		Monster will no longer go idle or stand still.  Will always pursue the player, even off cliffs and into walls.
 
 *FUNC_STATIC
