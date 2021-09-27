@@ -15,8 +15,9 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+ISXLOCKED		1/0		if the monster is locked to the 0 x position.
 	+UPDXLOCK		1/0		Enable and disable the enemy being locked to 0 x position.
 	+FRIENDLY_FIRE		1/0		Enable the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
+	+TIME_TO_BURN		INTEGER		This is the amount of time for the burn away FX to occur before the body disapears. Used on Demons.
 	
-*SPECIFIC MONSTERS BY DEFAULT: Generic Zombies, Maggots,
+*SPECIFIC MONSTERS BY DEFAULT: Zombies, Maggots, Imps, Commandos, Cacodemons
 	+NEVER_STOP_MOVING	1/0		Monster will no longer go idle or stand still.  Will always pursue the player, even off cliffs and into walls.
 
 *FUNC_STATIC
