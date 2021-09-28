@@ -3635,7 +3635,10 @@ void idAI::Killed( idEntity *inflictor, idEntity *attacker, int damage, const id
 	// make monster nonsolid
 	physicsObj.SetContents( 0 );
 	physicsObj.GetClipModel()->Unlink();
-
+	
+//rev 2021 bullets pass through corpses because it causes a bottleneck in 2d gameplay. dead bodies block bullets!
+	combatModel->SetContents( 0 );
+	
 	Unbind();
 
 	if ( StartRagdoll() ) {
