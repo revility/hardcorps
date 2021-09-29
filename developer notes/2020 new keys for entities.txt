@@ -7,7 +7,7 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 *MONSTERS
 	+NOAIM 			1/0		Enemies will only shoot straight ahead when turned on.  On by default for many enemies.
 	+DISABLE_MOVING         1/0		Disable the monster from moving. * Mostly used on bots/monster soldiers/ monster player
-	+NOMOVE			1/0		Disable the monster from moving.  Buggy when using on bots.
+	+NOMOVE			1/0		Disable the monster from moving.  1 to disable moving, 2 to disable moving and physics push. Buggy when using on bots.
 	+TEAM_NON_SOLID 	1/0		enabled by default for most enemies.  Enemies may clip through each other.
 	+TOUCHOFDEATH 		1/0		enabled by default for most enemies.  Damage the player touching him.
 	+SCORE 			INTEGER		How many points to give the player when killed
