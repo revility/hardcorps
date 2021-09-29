@@ -39,6 +39,8 @@ Potential mod makers and map authors will find a host of features to achieve man
 
 +Jump through platforms added
 
++Improved Music system.
+
 +Multiple Character select with custom stats support.
 
 +New playable character added: Scarlet Rivensin
