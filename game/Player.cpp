@@ -8458,7 +8458,8 @@ void idPlayer::Think( void ) {
 
 //REV 2020 CHARGE ATTACK START
 	if ( chargeAmount < 2 ) {	// 2 is the maximum amount we can do in a row
-		if ( gameLocal.time > lastChargeTime + spawnArgs.GetInt( "charge_time" ) ) {	//was 1500
+		//if ( gameLocal.time > lastChargeTime + spawnArgs.GetInt( "charge_time" ) ) {	//was 1500
+		if ( gameLocal.time > lastChargeTime + 4000 ) {	//was 1500
 			if ( chargeAmount == 1 ) {				
 				spawnArgs.Set( "charge_amount", "2" );	//this method proved be the most reliable in setting the amount.
 				//gameLocal.Printf(" c1 + 1 ");
@@ -12233,7 +12234,8 @@ bool idPlayer::EvaluateKick( void ) {
 		}
 		//gameLocal.Printf( "idPlayer::EvaluateKick - ent = %s \n",ent->GetName());
 
-		if ( ent->fl.takedamage ) {
+//rev 2021 make sure to not trigger any damage to jump through platforms.  Could cause charge attack damage to end early.
+		if ( ( ent->fl.takedamage ) && !ent->spawnArgs.GetBool( "platform" ) ) {
 			idVec3 kickDir, globalKickDir;
 			kickDef->dict.GetVector( "kickDir", "0 0 0", kickDir );
 			globalKickDir = renderEntity.axis * kickDir; //TODO: check if this is always the dir we want...
