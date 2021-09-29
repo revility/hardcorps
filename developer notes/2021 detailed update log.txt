@@ -5,8 +5,38 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.59
+9.29.21 
+
+	*SDK:
+		+Charge/kick attacks no longer trigger damage when touching jump through platforms.  Player.cpp
+	*Monsters:
+		+Global burn away time back to Denton defaults... dead bodies stick around longer.
+		+Time for zombies and player bots to start gibbing automatically set back to denton defaults... dead bodies stick around longer.
+		+Sawyer now drops item_chainsaw instead of moveable item chainsaw.
+		+monster_soldier_mach_sub Fixed: dropping a sub machine gun instead of ammo bullets
+		+monster_soldier_mach_sub Fixed: noaim is now set to true by default.
+	*Weapons:
+		-Removed the ability to gib from most weapons. Only the Rail Gun, BFG, and explosive weapons may gib.
+	*Maps:
+		*Hell Rizer:
+			+Updated description in main menu map selection
+			+Adjusted and updated Enemy Spawns
+			+Added boss camera trigger
+			+Added monster clips around Stone cacodemons to prevent push back from projectiles.
+			+Fixed team info for boss monsters
+			+Fixed Revenant Boss being able to move
+	*Items:
+	*Player:
+	*Other:
+		+Fixed game randomly crashing due to the old gib and burnaway key integers being set too short. ?Game logic would get confused and crash?
+
+
+
+************************************************************************************************
+
 Build: 0.8.58
-10.28.21 
+9.28.21 
 
 	*SDK:
 		+Dead Bodies no longer take damage and projectiles pass through them.  AI.cpp
