@@ -2,6 +2,9 @@ Feature/Files edited list.
 08.28.21
 This is a list of all the sdk files modified from 2018 to 2020.
 
+-Added Projectiles pass through Enemy corpses/Ragdolls.
+	-AI.cpp
+	
 -Added AI Can't Damage.  Check if AI is allowed to damage an entity such as breakable items.
 	-projectile.cpp
 	
