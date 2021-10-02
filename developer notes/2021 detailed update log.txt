@@ -5,6 +5,46 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.60
+10.1.21 
+
+	*SDK:
+	*Monsters:
+		+Commandos now drop bullets
+		+Grenade Soldiers should throw much faster than before.  Faster animations added.
+		+Grenade Soldiers should spend less time aiming a grenade to throw.  Much faster animation added.
+		+Fixed the previous fix for Submachine gun soldiers dropping weapons instead of ammo.
+	*Weapons:
+		+Increased Shotgun damage from 10 to 12
+		-Reduced Chaingun from 18 to 15.
+		-Reduced Advocate Damage from 20 to 15
+		+Increased Chainsaw range
+		+Increased Chainsaw damage from 10 to 15 and blob increased.
+		+Increased Onslaught damage from 8 to 9
+		*Enforcer Changes:
+			+Now fires 5 homing missles
+			+Damage rebalanced.  Total possible splash damage from all missles is 100. Increased from the 1 missle only doing 30 splash damage.
+	*Maps:
+		*Hell Rizer
+			+Added End Level camera.
+			+Added player clip when boss camera is triggered to prevent back tracking.
+			+Added exploded bridges over blood river area.
+			+Added Trigger hurts to falling off the screen for the 2nd half of the map.
+			+Adjusted some of the metal fence in the map.  Made it shorter.
+			+Added a couple more exploding barrels.
+			+Raised Z cam hieght from -20 to -15.
+			+Increased Boss Revenant health
+	*Items:
+	*Player:
+	*Other:
+		+Added func_damagable_exploding_large4: large smoke cloud and small debris
+		+Fixed/removed small debris 2 from damagables, was causing massive slow down.
+		-Reduced exploding barrel health from 25 to 16. Faster explosions = more explosions = more fun!
+
+
+
+************************************************************************************************
+
 Build: 0.8.59
 9.29.21 
 
