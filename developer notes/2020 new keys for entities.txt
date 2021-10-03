@@ -16,6 +16,12 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 	+UPDXLOCK		1/0		Enable and disable the enemy being locked to 0 x position.
 	+FRIENDLY_FIRE		1/0		Enable the enemy's projectiles hurting other enemies. Enabled by all monsters by default.
 	+TIME_TO_BURN		INTEGER		This is the amount of time for the burn away FX to occur before the body disapears. Used on Demons.
+
+*EXPLOSIVE MONSTER KEYS				All monsters that derive from zombie base and monster base scripts can use these. No Bots
+	+DEAD_EXPLODE		1/0		If enabled, the monster will spawn an explosion upon death
+	+MODEL_DEAD_EXPLODE	"name.prt"	Name of the explosion particle to use in explosion death
+	+SND_DEAD_EXPLODE	"key"		Key from monster def defining the sound shader used for explosive death
+	+DEAD_EXPLODE_DAMAGE	"name"		Name of the def damage to use for the explosion's damage
 	
 *MONSTERS SPECIFIC: Zombies, Maggots, Imps, Commandos, Cacodemons
 	+NEVER_STOP_MOVING	1/0		Monster will no longer go idle or stand still.  Will always pursue the player, even off cliffs and into walls.
