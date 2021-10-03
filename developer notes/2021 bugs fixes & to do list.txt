@@ -1,6 +1,4 @@
 (UPDATES)
-	+Exploding fat zombies (charcoal skin, glowing red veins and red embers)
-	+Exploding Maggots (charcoal skin, glowing red veins and red embers)
 	+Adjust main menu colors and mars model
 (BUGS) {
 	+If the player touches both jump through platform triggers in just the right way, the platform goes solid and stops their momentum while jumping.
