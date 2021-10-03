@@ -5,6 +5,33 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.61
+10.03.21 
+
+	*SDK:
+	*Monsters:
+		+Stone Caco: fixed missing dds files
+		+Stone Caco: Fixed missing eye texture
+		+Exploding Monster Death System: New keys and script added to ai_monster_base.script so monsters could explode and cause damage on death.
+		+New Monster Added: Fiend: black and glowing red Maggot.  Explodes on death or when close to the player
+		+New Monster Added: zombie Ghoul.  black and glowing red running zombie. Explodes on death or when close to the player
+		+Renamed Stone Cacodemon to Calbinodemon
+		+Fixed missing channel info the CalbinoDemon mesh
+	*Weapons:
+		-Slightly lowered Advocate Nail Gun damage
+	*Maps:
+		*Hell Rizer
+			+Fixed slow down at start of map due to too many ragdolls in the map at start.
+			+Added Ghouls and Fiends
+			+Recompiled Playground map
+	*Items:
+	*Player:
+	*Other:
+		+New Enemy Boomer particle fx added.  Explosion with blood spurts.
+		-Lowered Exploding barrels, all types, health to 10
+
+************************************************************************************************
+
 Build: 0.8.60
 10.1.21 
 
