@@ -5,6 +5,59 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.62
+10.09.21 
+
+	*SDK:
+		+jpt_monster_pass key added.  Enable on Jump through platforms to allow monsters to pass through them.  Entity.cpp, Misc.cpp
+	*Monsters:
+		+Pain Elemental: Increased flying speed.
+		+Pain Elemental: Increased projectile damage.
+		+Pain Elemental: Increased melee damage.
+		+Pain Elemental: Now Launches 3 lost souls at a time.
+		+Pain Elemental: Added Collision box to lost souls projectile model
+	*Weapons:
+		+Increased Shotgun damage from 12 to 14
+		+Increased Shotgun double damage from 12 to 14
+		*Plasma gun changes:
+			+parallel spread instead of 2d spread
+			-Projectiles changed from 3 to 2
+			+Improved collision boxes.  Larger more accurate collision box.
+			+Enabled blood effects when hitting enemies
+			+Enabled gibbing
+		+Onslaught:  Now shoots a swarm of homing nails.
+		+Advocate:	 Updated Projectile def. No longer just inherits from pistol projectiles.
+		*Updated projectile collision box and adjusted Size of it for the following weapons:
+			+Enforcer, Rocket Launcher, shotgun, DB shotgun, mach gun, Onslaught, Advocate, sub mach gun, chaingun, enforcer, pistol
+	*Maps:
+		*Hell Rizer
+			+Added Check Points
+			+Added Boss Fight:
+				+Cacodemons kick it off
+				+Then it is a Revenant & Commando.
+				+Finally a Pain Elemental.
+			+Added Ending door explosion, level stats and end game triggers.
+			+Fixed Issues with the Camera settings being set AFTER the final boss trigger instead of before.
+			+Adjusted item spawns.
+			+Added Music for level, boss and finish & stats/end level.
+			+Added Level ending stuff.
+			+Added 2 secrets
+			+Adjusted some enemy spawn triggers
+			+Replaced DB Shotgun with Plasma Rifle
+		*Test Platforms:
+			+Added Death pits
+			+Added check points
+			+Added trigger to end the game/level
+	*Items:
+	*Player:
+		-Reduced Charge attack damage from 120 to 75.
+	*Other:
+		+Added Trigger_levelstats:  When the player is touching this trigger, Level Stats will be shown.
+		*Updated and Upgraded the following textures used in the editor:
+			+Trigger_Once, Trigger_multi, Trigger_hurt, trigger_checkpoint, trigger_interaction, trigger_levelStats.
+
+************************************************************************************************
+
 Build: 0.8.61
 10.03.21 
 
