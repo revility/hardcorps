@@ -1974,7 +1974,11 @@ void idStaticEntity::Spawn( void ) {
 			GetPhysics()->SetContents( 0 );
 		}
 	} else {
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
+		if ( spawnArgs.GetBool( "jpt_monster_pass" ) ) {	//rev 2021 check if monster should be able to pass
+			GetPhysics()->SetContents( CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+		} else {
+			GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+		}		
 	}
 //rev 2019 end	
 
@@ -2085,7 +2089,11 @@ void idStaticEntity::Show( void ) {
 			GetPhysics()->SetContents( CONTENTS_SOLID );
 		}
 	} else {
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );		
+		if ( spawnArgs.GetBool( "jpt_monster_pass" ) ) {
+			GetPhysics()->SetContents( CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+		} else {
+			GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+		}		
 	}
 //rev 2019 end
 

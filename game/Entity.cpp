@@ -1310,10 +1310,14 @@ void idEntity::Show( void ) {
 idEntity::PlatformUnder
 ================
 */
-void idEntity::PlatformUnder( void ) {	
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );	
-		FreeModelDef();
-		UpdateVisuals();
+void idEntity::PlatformUnder( void ) {
+	if ( spawnArgs.GetBool( "jpt_monster_pass" ) ) {
+		GetPhysics()->SetContents( CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+	} else {
+		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+	}		
+	FreeModelDef();
+	UpdateVisuals();
 }
 
 /*
@@ -1322,8 +1326,12 @@ idEntity::PlatformOver
 ================
 */
 void idEntity::PlatformOver( void ) {
-		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );	
-		UpdateVisuals();
+	if ( spawnArgs.GetBool( "jpt_monster_pass" ) ) {
+		GetPhysics()->SetContents( CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+	} else {
+		GetPhysics()->SetContents( CONTENTS_MONSTERCLIP|CONTENTS_PLAYERCLIP|CONTENTS_MOVEABLECLIP|CONTENTS_IKCLIP );
+	}	
+	UpdateVisuals();
 }
 //rev 2020 end. new stuff
 /*
