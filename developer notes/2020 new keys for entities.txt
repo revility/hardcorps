@@ -28,9 +28,10 @@ SOME OF THESE KEY ARE FROM ORIGINAL DOOM 3 HARDQORE 2 RELEASE.
 
 *FUNC_STATIC
 	+PLATFORM 		1/0		Enable to allow bullets to pass through the object... 
-						also checked by triggers to allow jumping through.
+						also checked by triggers to allow jumping through. "Jump Through Platforms
+	+JPT_MONSTER_PASS	1/0		Allow monsters to pass/fall through jumpthrough platforms
 	+PLATFORM_CANT_HIDE	1/0		Enable to allow the player to pass through when triggered instead of hiding.
-	*IMPORTANT NOTE*			it is advised to use the new func_platform_jumpthrough instead.
+	*IMPORTANT NOTE*			it is advised to use the new func_platform_jumpthrough instead. Platform key must be 1 as well.
 	
 *TRIGGER_MULTIPLE/TRIGGER_ONCE
 	+JUMPTHROUGH 		1/0		When enabled, and targeting a func_static with the jumpthrough key on, 
