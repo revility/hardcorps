@@ -6854,7 +6854,7 @@ void idPlayer::SetCurrentHeartRate( void ) {
 		pct += (float)zeroVol;
 
 		if ( pct != zeroVol ) {
-			StartSound( "snd_heartbeat", SND_CHANNEL_HEART, SSF_PRIVATE_SOUND, false, NULL );
+			//StartSound( "snd_heartbeat", SND_CHANNEL_HEART, SSF_PRIVATE_SOUND, false, NULL );		//rev 2021 get rid of this
 			// modify just this channel to a custom volume
 			soundShaderParms_t	parms;
 			memset( &parms, 0, sizeof( parms ) );
