@@ -5,6 +5,44 @@ FINAL BUILD: 1.0.00
 	
 ************************************************************************************************
 
+Build: 0.8.63
+10.10.21 
+
+	*SDK:
+	*GUIS:
+		+Main Menu: Added new map preview images to level select
+		+Main Menu: Updated Playground and platforming test map descriptions in level select
+		+Hell Rizer, Playground, Platforming Test Loading Screen GUIS:  Added New Splash images.
+	*Weapons:
+		-Explosive weapons now give 5 ammo instead of 10 on pick up
+		-Reduced splash damage for flame thrower from 4 to 2
+		+Reverted Onslaught's projectiles back to regular nails instead of homing... one homing weapon is enough.
+	*Maps:
+		*Hell Rizer
+			+Added 2d clip to left of boss fight to stop flying enemies from getting pushed too far left
+			+Added 2d clip above boss fight
+			+Updated End Level stat trigger to the new trigger_levelStats
+			+Imps are removed at start of boss fight if alive
+			+Added health bar for boss
+		*Wasted Hate:
+			+Updated to new music system
+			+Added item containers
+			+Added a few soldiers, and zombies
+			+Shotgun pick up at start is a new easy secret
+			+Added in a few camera changes including one during boss fight.
+			+Now loads Hell Rizer map on finish.
+			+Many enemeis will now spawn sooner than before
+	*Items:
+		-Ammo explosives reduced from 10 to 5
+		-Ammo bullets large reduced from 40 to 30
+		-Reduced security ammo amount from 50 to 20
+		-Backpack now gives half as much ammo
+		-Reduced medkit amounts in half
+	*Player:
+	*Other:
+
+************************************************************************************************
+
 Build: 0.8.62
 10.09.21 
 
