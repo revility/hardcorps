@@ -304,7 +304,7 @@ extern idCVar r_HDR_eyeAdjustmentBloomBias;
 extern idCVar r_HDR_vignetteBias;
 
 //Ivan start
-extern idCVar hardqore2_bind_run_once;
+extern idCVar hardcorps_bind_run_once;
 extern idCVar s_music_volume;
 extern idCVar g_mouselook;
 //extern idCVar ai_debugXlock;

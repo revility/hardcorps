@@ -379,7 +379,7 @@ idCVar r_HDR_vignetteBias			( "r_HDR_vignetteBias",				"0.45",			CVAR_GAME | CVA
 
 
 //Ivan start
-idCVar hardqore2_bind_run_once(		"hardqore2_bind_run_once",		"0",			CVAR_GAME | CVAR_BOOL | CVAR_ARCHIVE, "Rebind all controls once for HardQore 2." );
+idCVar hardcorps_bind_run_once(		"hardcorps_bind_run_once",		"0",			CVAR_GAME | CVAR_BOOL | CVAR_ARCHIVE, "Rebind all controls once for Hard Corps." );
 idCVar s_music_volume(				"s_music_volume",				"0",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "In-game music volume." );
 idCVar g_mouselook(					"g_mouselook",					"1",			CVAR_GAME | CVAR_BOOL | CVAR_ARCHIVE, "Use the mouse to aim" );
 //idCVar ai_debugXlock(				"ai_debugXlock",				"0",			CVAR_GAME | CVAR_INTEGER, "print X-lock information for monsters. 1 = few info. 2 = more info." );
