@@ -2843,6 +2843,14 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	//fix: upd camera Cvars on reload
 	UpdateCameraCvarsFromSettings();
 	//ivan end
+	
+////rev 2021 Dhewm 1.5.1 updates:
+	// DG: workaround for lingering messages that are shown forever after loading a savegame
+	//     (one way to get them is saving again, while the message from first save is still
+	//      shown, and then load)
+	if ( hud ) {
+		hud->SetStateString( "message", "" );
+	}
 }
 
 /*

@@ -490,6 +490,10 @@ public:
 
 private:
 	const static int		INITIAL_SPAWN_COUNT = 1;
+	
+//rev 2021 dhewm 3 1.5.1 updates
+	const static int		INTERNAL_SAVEGAME_VERSION = 1; // DG: added this for >= 1305 savegames
+//rev 2021 dhewm 3 1.5.1 updates end	
 
 	idStr					mapFileName;			// name of the map, empty string if no map loaded
 	idMapFile *				mapFile;				// will be NULL during the game unless in-game editing is used
