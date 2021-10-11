@@ -16,16 +16,6 @@
 		+Fix and/or improve charge attack surface damage sounds
 }
 
-(TUTORIALS) {
-	+Update camera changing tutorials
-	+Update music speaker tutorials.
-}
-
-(ENGINE) {
-	+Update the Dhewm3 bundled with the builds to the latest version before release.
-}
-
-
 (ADD ONS) {
 	+Jill Valentine Playable character?
 		+Bowie Knife melee weapon	
@@ -40,21 +30,4 @@
 }
 
 (MAPS) {
-	(PLAYGROUND) {
-		remove riveter from main area
-		add bfg
-	}
-	(Wasted Hate) {
-	}
-	(Hell Rizer) {
-	-optimize
-	-add bridges and related explosion scripts
-	-Add boss camera and 2d clips
-	-Add boss doors
-	-Add boss music
-	-Add end level script
-	-more breakable objects
-	-more ammo and items
-	-Add boss:  Revenant and commandos around the base door?
-	}
 }
