@@ -1,8 +1,45 @@
 ************************************************************************************************
 DOOM 3: HARD CORPS
 2018-2021 UPDATE LOG
-FINAL BUILD: 1.0.00
+BUILD: 0.8.66
 	
+************************************************************************************************
+
+Build: 0.8.66
+10.12.21 
+
+	+Packed up with the latest Dhewm 3 bundle
+	+Updated documentation and read me file
+	+Ready for Release
+
+************************************************************************************************
+
+Build: 0.8.65
+10.11.21 
+
+	*SDK:
+	*GUIS:
+	*Weapons:
+	*Monsters:
+		+Set spread and accuracty 0 for the following enemies.  This makes their bullets straight and Greatly improves the use of ducking
+			+Zsec pistol, shield, sub machinegun
+			+Mancubus
+			+Chain Gun Commando
+			+Machine gun, pistol, shield and sub machinegun soldiers.
+	*Maps:
+		*Hell Rizer
+			+Changed pistol soldier to sniper soldier in grenade soldier area.
+		*Wasted Hate:
+			+Fixed door in background before grenade soldiers constantly opening... should have been a static entity.
+			-Removed some armor pick ups
+			+Grenade launcher now in item container
+			-reduced large ammo pick ups before boss to small ones.
+	*Items:
+		-Reduced armor shards from 5 to 2...  pick up more stuff.  give the player more reason to and more to do.
+		-Reduced Security armor from 20 to 10
+	*Player:
+	*Other:
+
 ************************************************************************************************
 
 Build: 0.8.64
