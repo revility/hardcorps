@@ -5,6 +5,7 @@
 	+Enemy fireballs do not explode when hitting water and roll around
 	+Back pedaling with keyboard aiming can get wonky.
 	+Enemies run in circles if above or below the player.  This is due to the hacky method of always making some of them run and never idle.
+	+Visual distortion and lighting oddities when particles are seen over liquids.
 }
 
 (FIXES) {
@@ -47,4 +48,7 @@
 	+Make the mod standalone
 	+The enemy soldier/bot code is original and can be used create AI examples for stand alone release.  Clean out and replace D3 content needs
 	+New Player skeleton and animations to replace default one.  More universal and easier to work with.
+	+Controller support
+	+Upgrade visuals and performance
+	+Upgrade Vis portals to be more useful in a side scroller view.
 }
