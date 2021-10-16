@@ -1,7 +1,10 @@
 (UPDATES)
-	+Adjust main menu colors and mars model
+	+Reduce push for plasma gun projectiles.
 (BUGS) {
 	+If the player touches both jump through platform triggers in just the right way, the platform goes solid and stops their momentum while jumping.
+	+Enemy fireballs do not explode when hitting water and roll around
+	+Back pedaling with keyboard aiming can get wonky.
+	+Enemies run in circles if above or below the player.  This is due to the hacky method of always making some of them run and never idle.
 }
 
 (FIXES) {
@@ -24,10 +27,24 @@
 }
 
 (FEATURES) {
+	+Quick Toss Grenades "Throwable items similar to Castlevania"
+	+Revamp, replace, or remove grenade launcher.
+	+Movement/Position Lock for Keyboard aiming
+	+Wave beam style player weapon... could convert the plasma gun into this.
+	+Charge Shot Weapon.
+	+Pre set up almost pattern based bosses.
 }
 
 (GUI) {
+	+Adjust main menu colors and mars model
 }
 
 (MAPS) {
+	+Make More!
+}
+
+(WISHLIST) {
+	+Make the mod standalone
+	+The enemy soldier/bot code is original and can be used create AI examples for stand alone release.  Clean out and replace D3 content needs
+	+New Player skeleton and animations to replace default one.  More universal and easier to work with.
 }
